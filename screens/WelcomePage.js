@@ -1,19 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PressableButton from '../components/PressableButton';
+import Colors from '../styles/Colors';
 
 export default function WelcomePage({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome to the App!</Text>
+      <Text style={styles.text}>Welcome to Budget Defender!</Text>
       <PressableButton
         pressedFunction={() => navigation.navigate('Login')} 
         pressedStyle={{ 
-          backgroundColor: '#ff0000',
+          backgroundColor: Colors.mintGreen,
           marginBottom: 10,
+          Opacity: 0.5,
         }}
         defaultStyle={{ 
-          backgroundColor: '#ff0000',
+          backgroundColor: Colors.mintGreen,
           marginBottom: 10,
         }}
         >
@@ -23,11 +25,12 @@ export default function WelcomePage({ navigation }) {
       <PressableButton
         pressedFunction={() => navigation.navigate('Signup')} 
         pressedStyle={{ 
-          backgroundColor: '#ff0000',
+          backgroundColor: Colors.mintGreen,
           marginBottom: 10,
+          Opacity: 0.5,
         }}
         defaultStyle={{ 
-          backgroundColor: '#ff0000',
+          backgroundColor: Colors.mintGreen,
           marginBottom: 10,
         }}
         >
@@ -47,5 +50,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     marginBottom: 20,
+    color: '#333',
   },
 });

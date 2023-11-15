@@ -12,6 +12,8 @@ const Colors = {
     'entryQuantityBackground': 'white',
     'checkboxSelected': '#4B527E',
     'checkboxUnselected': 'transparent',
+    
+    'mintGreen': '#309797',
 };
 
 export default Colors;
