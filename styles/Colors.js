@@ -1,5 +1,5 @@
 const Colors = {
-    'header': '#4A55A2',
+    'header': '#309797',
     'headerText': 'white',
     'screenBackground': '#C5DFF8',
     'entry':'#7895CB',
@@ -12,7 +12,7 @@ const Colors = {
     'entryQuantityBackground': 'white',
     'checkboxSelected': '#4B527E',
     'checkboxUnselected': 'transparent',
-    
+
     'mintGreen': '#309797',
 };
 

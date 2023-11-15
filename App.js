@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { auth } from './firebase/firebaseSetup';
 import { onAuthStateChanged } from 'firebase/auth';
+import { Text } from 'react-native';
 
 import WelcomePage from './screens/WelcomePage';
 import Signup from './screens/Signup';
@@ -121,10 +122,11 @@ function TabNavigator() {
         options={({ navigation }) => ({
           headerRight: () => (
             <PressableButton
-              pressedFunction={() => navigation.navigate('Export Reports')}
+              pressedFunction={() => auth.signOut()}
               pressedStyle={{ 
                 backgroundColor: Colors.header,
                 marginRight: 10,
+                opacity: 0.5,
               }}
               defaultStyle={{ 
                 backgroundColor: Colors.header,

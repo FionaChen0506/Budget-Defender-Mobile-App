@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity} from 'react-native';
-// import { FontAwesome5 } from '@expo/vector-icons';
-// import colors from '../styles/colors';
-// import GlobalStyles from '../styles/StylesHelper';
+import { FontAwesome5 } from '@expo/vector-icons';
+import Colors from '../styles/Colors';
+import GlobalStyles from '../styles/StylesHelper';
 
 function BottomTabBar({ state, descriptors, navigation }) {
   return (
@@ -10,11 +10,15 @@ function BottomTabBar({ state, descriptors, navigation }) {
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
 
-        const label = route.name === 'All Expenses' ? 'Home' : 'Overbudget';
+        // const label = route.name === 'All Expenses' ? 'All Expenses' :
+        //       route.name === 'Home' ? 'Home' : 
+        //       'Profile'; 
 
         const isFocused = state.index === index;
 
-        const iconName = route.name === 'All Expenses' ? 'home' : 'exclamation';
+        const iconName = route.name === 'All Expenses' ? 'chart-bar' : 
+                route.name === 'Home' ? 'home' :
+                'user';
 
         const onPress = () => {
           const event = navigation.emit({
@@ -45,10 +49,10 @@ function BottomTabBar({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             style={GlobalStyles.bottomTabBar}
           >
-            <FontAwesome5 name={iconName} size={20} color={isFocused ? colors.iconFocused : colors.iconDefault} />
-            <Text style={{fontSize: 16, color: isFocused ? colors.iconFocused : colors.iconDefault }}>
+            <FontAwesome5 name={iconName} size={30} color={isFocused ? Colors.iconFocused : Colors.iconDefault} />
+            {/* <Text style={{fontSize: 16, color: isFocused ? Colors.iconFocused : Colors.iconDefault }}>
               {label}
-            </Text>
+            </Text> */}
           </TouchableOpacity>
         );
       })}
