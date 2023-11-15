@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { auth } from './firebase/firebaseSetup';
 import { onAuthStateChanged } from 'firebase/auth';
 
+import WelcomePage from './screens/WelcomePage';
 import Signup from './screens/Signup';
 import Login from './screens/Login';
 
@@ -31,6 +32,11 @@ const Stack = createNativeStackNavigator();
 
 // Auth Screens
 const AuthStack = <>
+  <Stack.Screen
+      name="Welcome"
+      component={WelcomePage}
+      options={{ title: 'Welcome'}}
+    />
   <Stack.Screen
     name="Signup"
     component={Signup}
