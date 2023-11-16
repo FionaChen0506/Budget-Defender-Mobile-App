@@ -20,8 +20,10 @@
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-dropdown-picker": "^5.4.6",
+    "react-native-image-picker": "^7.0.2",
     "react-native-modal-datetime-picker": "^17.1.0",
-    "react-native-paper": "^5.11.1"
+    "react-native-paper": "^5.11.1",
+    "expo-image-picker": "~14.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

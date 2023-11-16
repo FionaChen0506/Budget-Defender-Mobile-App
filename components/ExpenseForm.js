@@ -3,12 +3,12 @@ import { View, Text, Alert,StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { TextInput, Menu, Divider, Provider } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {Picker} from '@react-native-picker/picker';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import DropDownPicker from 'react-native-dropdown-picker'; 
 import Colors from '../styles/Colors';
 import { AntDesign } from '@expo/vector-icons';
+import ImageManager from './ImageManager';
 
 const ExpenseForm = ({
     amount,
@@ -38,10 +38,17 @@ const ExpenseForm = ({
       };
     
       const handleConfirm = (selectedDate) => {
+        const currentDate = new Date();
+        // Check if the selected date is not after today
+        if (selectedDate.getTime() > currentDate.getTime()) {
+          alert('Oops! You cannot choose a date in the future.');
+          return;
+        }
         hideDatePicker();
         onDateChange(selectedDate);
         setSelectedDate(selectedDate);
       };
+      
     
 
     return (
@@ -94,15 +101,6 @@ const ExpenseForm = ({
         <View style={styles.datePickerContainer}>
           <Text style={styles.labelText}>Date</Text>
 
-          {/* <View style={styles.dateTextContainer}>
-            <Text style={styles.dateText}>
-            {selectedDate.toLocaleDateString()}
-            </Text>
-            <TouchableOpacity onPress={showDatePicker}>
-                <AntDesign name="calendar" size={24} color="black" />
-            </TouchableOpacity>
-          </View> */}
-
         <TouchableOpacity onPress={showDatePicker} style={styles.dateTextContainer}>
         <View style={styles.rowContainer}>
             <Text style={styles.dateText}>
@@ -122,6 +120,7 @@ const ExpenseForm = ({
 
         <View style={styles.formField}>
             <Text style={styles.labelText}>Upload a receipt</Text>
+            <ImageManager onPhotoSelected={(photoUri) => console.log('Selected Photo:', photoUri)} />
         </View>
         
       </View>
@@ -148,6 +147,7 @@ const styles = StyleSheet.create({
       marginBottom: 5,
       fontWeight:"bold",
       marginRight:'5%',
+      color:Colors.labelText,
     },
     inputField: {
       height: 40,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         marginHorizontal:20,
         width:'90%',
         fontSize: 20,
-        
+        width: 300,
     },
     datePickerContainer: {
       flexDirection: 'row',
