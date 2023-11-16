@@ -11,7 +11,12 @@ export default GlobalStyles = StyleSheet.create({
     // Components
     // bottom tab bar
     bottomTabBar: {
-        flex: 1, alignItems: 'center', padding: 10, backgroundColor: Colors.header
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        padding: 10, 
+        backgroundColor: Colors.header,
+        height: 80,
     },
 
     // checkbox

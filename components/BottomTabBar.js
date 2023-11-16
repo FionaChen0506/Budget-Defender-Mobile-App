@@ -49,7 +49,7 @@ function BottomTabBar({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             style={GlobalStyles.bottomTabBar}
           >
-            <FontAwesome5 name={iconName} size={30} color={isFocused ? Colors.iconFocused : Colors.iconDefault} />
+            <FontAwesome5 name={iconName} size={40} color={isFocused ? Colors.iconFocused : Colors.iconDefault} />
             {/* <Text style={{fontSize: 16, color: isFocused ? Colors.iconFocused : Colors.iconDefault }}>
               {label}
             </Text> */}
