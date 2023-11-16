@@ -4,6 +4,27 @@ import ExpenseForm from '../components/ExpenseForm';
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { isDataValid } from '../components/ValidateInput';
 import { writeToDB } from '../firebase/firebaseHelper';
+import { ref, uploadBytesResumable } from "firebase/storage";
+
+
+const uploadImageToStorage = async (uri) => {
+  try {
+    const response = await fetch(uri);
+    const imageBlob = await response.blob();
+    const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+    const imageRef = ref(storage, `images/${imageName}`);
+    const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
+    
+    // Get the download URL
+    const downloadURL = await getDownloadURL(imageRef);
+
+    return downloadURL;
+    // return uploadResult.metadata.fullPath;
+  } catch (err) {
+    console.log(err);
+    throw new Error('Failed to upload image to storage');
+  }
+};
 
 const AddAnExpense = ({ navigation }) => {
   const [amount, setAmount] = useState('');
@@ -11,6 +32,8 @@ const AddAnExpense = ({ navigation }) => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState(new Date());
+  const [selectedPhoto, setSelectedPhoto] = useState(null); // State to store the selected photo
+
 
   const saveExpense = async () => {
     if (!isDataValid(amount, category, description, location, date)) {
@@ -23,9 +46,16 @@ const AddAnExpense = ({ navigation }) => {
       description,
       location,
       date,
+      //photo: null, // Initialize photo as null
+      photo: selectedPhoto, // Include the selected photo in the expense data
     };
 
     try {
+      if (selectedPhoto) {
+        const photoURL = await uploadImageToStorage(selectedPhoto);
+        newExpenseEntry.photo = photoURL;
+      }
+  
       writeToDB(newExpenseEntry);
     } catch (error) {
       console.log("Error saving expense:", error.message);
@@ -46,11 +76,14 @@ const AddAnExpense = ({ navigation }) => {
         description={description}
         location={location}
         date={date}
+        selectedPhoto={selectedPhoto}
         onAmountChange={(text) => setAmount(text)}
         onCategoryChange={(text) => setCategory(text)}
         onDescriptionChange={(text) => setDescription(text)}
         onLocationChange={(text) => setLocation(text)}
         onDateChange={(selectedDate) => setDate(selectedDate)}
+        getImageUri={(imageUri) => setSelectedPhoto(imageUri)}
+        onSelectPhoto={(photo) => setSelectedPhoto(photo)}
       />
       <SaveCancelButtons onCancel={handleCancel} onSave={saveExpense} />
     </View>

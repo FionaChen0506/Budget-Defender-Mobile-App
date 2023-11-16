@@ -9,6 +9,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Colors from '../styles/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import ImageManager from './ImageManager';
+import { auth, database, storage } from "../firebase/firebaseSetup"
+import { ref, uploadBytesResumable } from "firebase/storage";
 
 const ExpenseForm = ({
     amount,
@@ -16,11 +18,13 @@ const ExpenseForm = ({
     description,
     location,
     date,
+    //selectedPhoto,
     onAmountChange,
     onCategoryChange,
     onDescriptionChange,
     onLocationChange,
     onDateChange,
+    //onSelectPhoto,
   }) => {
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -28,6 +32,63 @@ const ExpenseForm = ({
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [selectedDate, setSelectedDate] = useState(new Date());
+
+    //const [takenImageUri, setTakenImageUri] = useState("");
+    const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+    // const handleImageTaken = (uri) => {
+    //     setSelectedPhoto(uri);
+    //     console.log('Image URI in ExpenseForm:', uri);
+    // };
+  
+    const handleImageTaken = async (uri) => {
+        try {
+          setSelectedPhoto(uri);
+          console.log('Image URI in ExpenseForm:', uri);
+    
+          if (uri) {
+            // If a photo is selected, upload it to storage and get the download URL
+            const photoURL = await uploadImageToStorage(uri);
+            console.log('Download URL:', photoURL);
+          }
+        } catch (error) {
+          console.error('Error handling image:', error);
+        }
+      };
+    
+    //   async function uploadImageToStorage(uri) {
+    //     try {
+    //       const response = await fetch(uri);
+    //       const imageBlob = await response.blob();
+    //       const imageName = uri.substring(uri.lastIndexOf('/') + 1);
+    //       const imageRef = storage.ref().child(`images/${imageName}`);
+    
+    //       // Upload the image
+    //       await imageRef.put(imageBlob);
+    
+    //       // Get the URL of the uploaded image
+    //       const downloadURL = await imageRef.getDownloadURL();
+    
+    //       return downloadURL;
+    //     } catch (error) {
+    //       console.error('Error uploading image:', error);
+    //       throw error;
+    //     }
+    //   }
+    async function uploadImageToStorage(uri) {
+        try {
+          const response = await fetch(uri);
+          const imageBlob = await response.blob();
+          const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+          const imageRef = await ref(storage, `images/${imageName}`);
+          const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
+          //const downloadURL = await imageRef.getDownloadURL();
+          return uploadResult.metadata.fullPath;
+          //return downloadURL
+        } catch (err) {
+          console.log(err);
+        }
+      }
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -47,8 +108,7 @@ const ExpenseForm = ({
         hideDatePicker();
         onDateChange(selectedDate);
         setSelectedDate(selectedDate);
-      };
-      
+      };      
     
 
     return (
@@ -120,7 +180,8 @@ const ExpenseForm = ({
 
         <View style={styles.formField}>
             <Text style={styles.labelText}>Upload a receipt</Text>
-            <ImageManager onPhotoSelected={(photoUri) => console.log('Selected Photo:', photoUri)} />
+            {/* <ImageManager passImageUri={passImageUri} /> */}
+            <ImageManager onImageTaken={handleImageTaken} />
         </View>
         
       </View>
