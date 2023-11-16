@@ -8,6 +8,7 @@ import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import DropDownPicker from 'react-native-dropdown-picker'; 
 import Colors from '../styles/Colors';
+import { AntDesign } from '@expo/vector-icons';
 
 const ExpenseForm = ({
     amount,
@@ -92,14 +93,24 @@ const ExpenseForm = ({
         <View style={styles.formField}>
         <View style={styles.datePickerContainer}>
           <Text style={styles.labelText}>Date</Text>
-          <Text style={styles.selectedDateText}>
+
+          {/* <View style={styles.dateTextContainer}>
+            <Text style={styles.dateText}>
             {selectedDate.toLocaleDateString()}
-          </Text>
+            </Text>
+            <TouchableOpacity onPress={showDatePicker}>
+                <AntDesign name="calendar" size={24} color="black" />
+            </TouchableOpacity>
+          </View> */}
 
-          <TouchableOpacity onPress={showDatePicker}>
-            <Ionicons name="calendar" size={24} color="black" />
-          </TouchableOpacity>
-
+        <TouchableOpacity onPress={showDatePicker} style={styles.dateTextContainer}>
+        <View style={styles.rowContainer}>
+            <Text style={styles.dateText}>
+            {selectedDate.toLocaleDateString()}
+            </Text>
+            <AntDesign name="calendar" size={24} color="black" />
+        </View>
+        </TouchableOpacity>
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
@@ -109,9 +120,9 @@ const ExpenseForm = ({
             </View>
         </View>
 
-        <Text style={styles.labelText}>Upload a receipt</Text>
-
-          
+        <View style={styles.formField}>
+            <Text style={styles.labelText}>Upload a receipt</Text>
+        </View>
         
       </View>
     );
@@ -123,8 +134,7 @@ export default ExpenseForm;
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      //justifyContent: 'center', 
-      alignItems: 'center',
+      //alignItems: 'center',
       //padding: 10,
       marginHorizontal:'5%',
       marginTop:'10%',
@@ -132,12 +142,12 @@ const styles = StyleSheet.create({
     formField: {
       marginBottom: 20,
       marginHorizontal:20,
-      //width:'90%',
     },
     labelText: {
       fontSize: 20,
       marginBottom: 5,
       fontWeight:"bold",
+      marginRight:'5%',
     },
     inputField: {
       height: 40,
@@ -145,6 +155,7 @@ const styles = StyleSheet.create({
       backgroundColor:'transparent',
       fontSize: 20,
       width: 300,
+      borderColor: 'gray',
     },
     dropDownPicker: {
         zIndex: 2, // Higher zIndex to make it on top of the layers
@@ -152,6 +163,7 @@ const styles = StyleSheet.create({
         marginHorizontal:20,
         width:'90%',
         fontSize: 20,
+        
     },
     datePickerContainer: {
       flexDirection: 'row',
@@ -161,6 +173,21 @@ const styles = StyleSheet.create({
       flex: 1,
       height: 40,
     },
+    dateTextContainer: {
+        flexDirection: 'row',
+        padding: 5,
+        borderRadius: 5, 
+        borderColor:'gray',
+        borderWidth:1,
+      },
+      dateText: {
+        fontSize: 20,
+        marginHorizontal:'5%',
+      },
+      rowContainer: {
+        flexDirection: 'row',
+        alignItems: 'center', 
+      },
 
   
   })

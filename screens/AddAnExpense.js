@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text,StyleSheet } from 'react-native';
 import ExpenseForm from '../components/ExpenseForm';
 import SaveCancelButtons from '../components/SaveCancelButtons';
+import { isDataValid } from '../components/ValidateInput';
+import { writeToDB } from '../firebase/firebaseHelper';
 
 const AddAnExpense = ({ navigation }) => {
   const [amount, setAmount] = useState('');

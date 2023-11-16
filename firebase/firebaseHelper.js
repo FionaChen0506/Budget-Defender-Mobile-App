@@ -3,9 +3,9 @@ import {database} from './firebaseSetup';
 import {auth} from './firebaseSetup';
 
 
-export async function writeToDB(goal) {
+export async function writeToDB(expense) {
     try {
-      const docRef = await addDoc(collection(database, "Goals"), goal= {...goal, user:auth.currentUser.uid});
+      const docRef = await addDoc(collection(database, "Expenses"), expense= {...expense, user:auth.currentUser.uid});
       console.log("Document written with ID: ", docRef.id);
     } catch (err) {
       console.log(err);
@@ -14,16 +14,16 @@ export async function writeToDB(goal) {
   
   export async function deleteFromDB(id) {
     try {
-      await deleteDoc(doc(database, "Goals", id));
+      await deleteDoc(doc(database, "Expenses", id));
       console.log("Document successfully deleted!");
     } catch (err) {
       console.log(err);
     }
   }
   
-  export async function editInDB(id, goal) {
+  export async function editInDB(id, expense) {
     try {
-      await setDoc(doc(database, "Goals", id), goal, { merge: true });
+      await setDoc(doc(database, "Expenses", id), expense, { merge: true });
       console.log("Document successfully updated!");
     } catch (err) {
       console.log(err);
