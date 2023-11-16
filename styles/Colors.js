@@ -14,6 +14,7 @@ const Colors = {
     'checkboxUnselected': 'transparent',
 
     'mintGreen': '#309797',
+    'buttonBackground':'#368181',
 };
 
 export default Colors;
