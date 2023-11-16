@@ -33,15 +33,15 @@ const Home = () => {
         <Ionicons name="add" size={24} color="white" />
       </PressableButton> */}
 
-    <View style={styles.addButtonContainer}>
-        <PressableButton
-          pressedFunction={handleAddPress}
-          pressedStyle={styles.addButtonPressed}
-          defaultStyle={styles.addButtonDefault}
-        >
-          <Ionicons name="add" size={28} color="white" />
-        </PressableButton>
-      </View>
+
+      <PressableButton
+        pressedFunction={handleAddPress}
+        pressedStyle={styles.addButtonPressed}
+        defaultStyle={styles.addButtonDefault}
+      >
+        <Ionicons name="add" size={28} color="white" />
+      </PressableButton>
+
     </View>
   );
 };
@@ -54,17 +54,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center'
 },
-  addButtonContainer: {
-    backgroundColor: Colors.buttonBackground,
-    borderRadius: 20,
-    padding: 6,
-  },
+  // addButtonContainer: {
+  //   backgroundColor: Colors.buttonBackground,
+  //   borderRadius: 20,
+  //   padding: 6,
+  // },
   addButtonPressed: {
     backgroundColor: 'grey', 
     marginHorizontal: 30,
+    width:'25%',
+    padding: 10,
+    alignItems: 'center',
   },
   addButtonDefault: {
     backgroundColor: Colors.buttonBackground,
     marginHorizontal: 30,
+    width:'25%',
+    padding: 10,
+    alignItems: 'center',
   },
 })
