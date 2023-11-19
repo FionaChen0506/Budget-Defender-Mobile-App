@@ -10,7 +10,8 @@ import Colors from '../styles/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import ImageManager from './ImageManager';
 import { auth, database, storage } from "../firebase/firebaseSetup"
-import { ref, uploadBytesResumable } from "firebase/storage";
+import { ref, uploadBytesResumable,getDownloadURL } from "firebase/storage";
+import defaultCategories from './DefaultCategories';
 
 const ExpenseForm = ({
     amount,
@@ -28,7 +29,7 @@ const ExpenseForm = ({
   }) => {
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const categories = ['Food', 'Grocery', 'Travel', 'Furniture', 'Entertainment', 'Health and Wellness', 'Housing', 'Education', 'Miscellaneous', 'Gifts and Celebrations'];
+    //const categories = ['Food', 'Grocery', 'Travel', 'Furniture', 'Entertainment', 'Health and Wellness', 'Housing', 'Education', 'Miscellaneous', 'Gifts and Celebrations'];
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -82,9 +83,9 @@ const ExpenseForm = ({
           const imageName = uri.substring(uri.lastIndexOf("/") + 1);
           const imageRef = await ref(storage, `images/${imageName}`);
           const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
-          //const downloadURL = await imageRef.getDownloadURL();
-          return uploadResult.metadata.fullPath;
-          //return downloadURL
+          const downloadURL = await imageRef.getDownloadURL();
+          //return uploadResult.metadata.fullPath;
+          return downloadURL
         } catch (err) {
           console.log(err);
         }
@@ -129,7 +130,8 @@ const ExpenseForm = ({
             placeholder={category}
             open={open}
             value={value}
-            items={categories.map((val) => ({ label: val, value: val }))}
+            // items={categories.map((val) => ({ label: val, value: val }))}
+            items={defaultCategories.map((val) => ({ label: val, value: val }))}
             setOpen={setOpen}
             setValue={(val) => {
                 setValue(val);
@@ -180,9 +182,10 @@ const ExpenseForm = ({
 
         <View style={styles.formField}>
             <Text style={styles.labelText}>Upload a receipt</Text>
-            {/* <ImageManager passImageUri={passImageUri} /> */}
-            <ImageManager onImageTaken={handleImageTaken} />
+            
+            {/* <ImageManager onImageTaken={handleImageTaken} /> */}
         </View>
+        
         
       </View>
     );

@@ -46,7 +46,6 @@ const AddAnExpense = ({ navigation }) => {
       description,
       location,
       date,
-      //photo: null, // Initialize photo as null
       photo: selectedPhoto, // Include the selected photo in the expense data
     };
 
