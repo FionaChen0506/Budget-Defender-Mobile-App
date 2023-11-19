@@ -3,19 +3,21 @@ import React, { useEffect, useState } from 'react';
 //import { collection, getDocs, query, where } from 'firebase/firestore';
 import { database,auth } from "../firebase/firebaseSetup";
 import { collection, onSnapshot } from "firebase/firestore";
-import { Entypo } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import EditAnExpense from '../screens/EditAnExpense';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { where, query } from 'firebase/firestore';
+import { where, query, orderBy} from 'firebase/firestore';
 import Colors from '../styles/Colors';
+import { getDocs } from 'firebase/firestore';
 
 
 const EntriesList = ({navigation }) => {
     const [entries, setEntries] = useState([]);
   
     useEffect(() => {
-        onSnapshot(query(collection(database, "Expenses"), where("user", "==", auth.currentUser.uid)), (querySnapshot) => {
+        onSnapshot(query(collection(database, "Expenses"), 
+        where("user", "==", auth.currentUser.uid),orderBy("date", "desc")), (querySnapshot) => {
           if (!querySnapshot.empty) {
             let newArray = [];
             querySnapshot.forEach((docSnap) => {
@@ -32,38 +34,10 @@ const EntriesList = ({navigation }) => {
         });
       }, []);
     
-  
+
+
+    
     // Render the entries 
-    // return (
-    //     <View style={styles.container}>
-    //         <FlatList
-    //         data={entries}
-    //         keyExtractor={(item) => item.id}
-    //         renderItem={({ item }) => (
-    //           <TouchableOpacity
-    //             onPress={() => navigation.navigate('Edit An Expense', { 
-    //                 entryId: item.id,
-    //                 amount: item.amount.toString(),
-    //                 category: item.category,
-    //                 date: item.date.toString(),
-    //                 description: item.description,
-    //             })}
-    //           >
-    //             <View style={styles.entryContainer} >
-    //               <View style={styles.infoContainer}>
-    //                 <View style={styles.container}>
-    //                     <Text style={styles.text}>Category: {item.category}</Text>
-    //                     <Text style={styles.text}>Amount: ${item.amount.toFixed(2)}</Text>
-    //                     <Text style={styles.text}>Description: {item.description}</Text>
-    //                     <Text style={styles.text}>Date: {item.date.toLocaleDateString()}</Text>
-    //                     </View>
-    //               </View>
-    //             </View>
-    //           </TouchableOpacity>
-    //         )}
-    //       />
-    //     </View>
-    // );
     return (
         <View style={styles.container}>
           {entries.length === 0 ? (
@@ -85,15 +59,18 @@ const EntriesList = ({navigation }) => {
                   }
                 >
                  <View style={styles.entryContainer} >
-                   <View style={styles.infoContainer}>
-                     <View style={styles.container}>
-                         <Text style={styles.text}>Category: {item.category}</Text>
-                         <Text style={styles.text}>Amount: ${item.amount.toFixed(2)}</Text>
-                         <Text style={styles.text}>Description: {item.description}</Text>
-                         <Text style={styles.text}>Date: {item.date.toDate().toLocaleDateString()}</Text>
-
-                         </View>
-                   </View>
+                    <View style={styles.iconContainer}>
+                        <Feather name="file-text" size={26} color="black" />
+                    </View>
+                    <View style={styles.categoryContainer}>
+                        <Text style={styles.categoryText}>{item.category}</Text>
+                        <Text style={styles.descriptionText}>{item.description}</Text>
+                    </View>
+                    <View style={styles.priceDateContainer}>
+                        <Text style={styles.priceText}>${item.amount.toFixed(2)}</Text>
+                        <Text style={styles.dateText}>{item.date.toDate().toLocaleDateString()}</Text>
+                    </View>
+                    
                  </View>
                 </TouchableOpacity>
               )}
@@ -113,9 +90,10 @@ const styles = StyleSheet.create({
     },
     entryContainer: {
         backgroundColor: Colors.entryBackground, 
-        padding: 10,
+        padding: 5,
         alignItems:'center',
         flexDirection: 'row',
+        // justifyContent: 'left',
         justifyContent: 'space-between',
         marginVertical:8,
         marginHorizontal:'5%',
@@ -126,33 +104,36 @@ const styles = StyleSheet.create({
         shadowRadius: 3, // Shadow radius
         elevation: 4, // Android shadow elevation
       },
-
-      itemText: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 16,
-      },
-
-      infoContainer:{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical:1,
-      },
-
-    priceContainer: {
-        backgroundColor: 'white',
-        width: 80, 
-        padding: 5, 
-        borderRadius: 2, 
+      iconContainer: {
         marginLeft: 5,
-        alignItems: 'center',
+        marginRight: 10,
     },
 
-      priceText:{
-        marginLeft: 3,
-        color: 'black',
-        fontWeight: 'bold',
-        fontSize:16,
+      categoryContainer:{
+        flex: 1, // Allow categoryContainer to take remaining space between iconContainer and priceDateContainer
+        alignItems: 'flex-start', // Align children to the start
+        marginVertical:1,
       },
+      categoryText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    descriptionText: {
+        fontSize: 14,
+        color: '#888',
+    },
+    priceDateContainer: {
+        alignItems: 'center',
+        marginLeft:10,
+        marginTop: 5,
+    },
+    priceText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    dateText: {
+        fontSize: 14,
+        color: '#888',
+    },
 
 })

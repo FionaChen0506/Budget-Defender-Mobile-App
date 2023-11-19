@@ -5,7 +5,6 @@ import EntriesList from '../components/EntriesList'
 export default function AllExpenses({navigation}) {
   return (
     <View>
-      <Text>AllExpenses</Text>
       <EntriesList navigation={navigation} />
     </View>
   )
