@@ -36,7 +36,22 @@ const EntriesList = ({navigation }) => {
       }, []);
     
 
-      
+    // Format the date to display in the list
+    function formatDate(date) {
+      const entryDate = date.toDate(); 
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for today
+    
+      if (entryDate.setHours(0, 0, 0, 0) === today.getTime()) {
+        return "Today";
+      } else {
+        // Format to show as MM.DD
+        let month = (entryDate.getMonth() + 1).toString().padStart(2, '0');
+        let day = entryDate.getDate().toString().padStart(2, '0');
+        return `${month}.${day}`;
+      }
+    }
+    
     
     // Render the entries 
     return (
@@ -69,7 +84,9 @@ const EntriesList = ({navigation }) => {
                     </View>
                     <View style={styles.priceDateContainer}>
                         <Text style={styles.priceText}>${item.amount.toFixed(2)}</Text>
-                        <Text style={styles.dateText}>{item.date.toDate().toLocaleDateString()}</Text>
+                        {/* <Text style={styles.dateText}>{item.date.toDate().toLocaleDateString()}</Text> */}
+                        <Text style={styles.dateText}>{formatDate(item.date)}</Text>
+
                     </View>
                     
                  </View>

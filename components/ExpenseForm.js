@@ -138,6 +138,7 @@ const ExpenseForm = ({
                 onCategoryChange(val);
             }}
             style={styles.inputField}
+            autoScroll={true}
             />
         </View>
 
@@ -176,6 +177,8 @@ const ExpenseForm = ({
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
+            /* IOS14 picker style */
+            display='inline'
             />
             </View>
         </View>
