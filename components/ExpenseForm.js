@@ -177,6 +177,7 @@ const ExpenseForm = ({
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
+            date={date}
             /* IOS14 picker style */
             display='inline'
             />
