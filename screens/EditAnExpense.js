@@ -4,6 +4,7 @@ import ExpenseForm from '../components/ExpenseForm'
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { updateInDB } from '../firebase/firebaseHelper';
 import { isDataValid } from '../components/ValidateInput';
+import DeleteButton from '../components/DeleteButton';
 
 
 const EditAnExpense = ({ route,navigation }) => {
@@ -35,17 +36,16 @@ const EditAnExpense = ({ route,navigation }) => {
         navigation.goBack();
     };
 
-    // Define the navigation tab options
-    // useLayoutEffect(() => {
-    //     navigation.setOptions({
-    //     headerRight: () => (
-    //         <DeleteButton entryId={entryId} onDeleteSuccess={onDeleteSuccess} />
-    //     ),
-    //     });
-    // }, [navigation, onDeleteSuccess]);
+    //Define the navigation tab options
+    useLayoutEffect(() => {
+        navigation.setOptions({
+        headerRight: () => (
+            <DeleteButton entryId={entryId} onDeleteSuccess={onDeleteSuccess} />
+        ),
+        });
+    }, [navigation, onDeleteSuccess]);
 
     const handleSave = () => {
-      console.log(typeof editedDate); 
         if (!isDataValid(editedAmount, editedCategory, editedDescription, editedDate)) {
           console.log("Data is not valid");
           return;
@@ -110,6 +110,8 @@ const EditAnExpense = ({ route,navigation }) => {
   const styles = StyleSheet.create({
     container:{
       flex: 1,
+      justifyContent: 'center', 
+      alignItems: 'center'
     },
 })
   

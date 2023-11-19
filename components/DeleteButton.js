@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import PressableButton from './PressableButton';
 import { deleteFromDB } from '../firebase/firebaseHelper';
 
-
 const DeleteButton = ({ entryId, onDeleteSuccess }) => {
     const handleDelete = () => {
       Alert.alert(
@@ -46,12 +45,12 @@ export default DeleteButton;
 
 const styles = StyleSheet.create({
   buttonDefault: {
-    backgroundColor: 'gray', 
+    backgroundColor: 'transparent', 
     opacity: 1,
     justifyContent: 'center',
   },
   buttonPressed: {
-    backgroundColor: 'gray', 
+    backgroundColor: 'transparent', 
     opacity: 0.5
   },
 })
