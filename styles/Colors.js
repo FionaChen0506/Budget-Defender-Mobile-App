@@ -17,6 +17,8 @@ const Colors = {
     'buttonBackground':'#368181',
 
     'labelText':'#0F4457',
+
+    'entryBackground':'#EAE9E9'
 };
 
 export default Colors;

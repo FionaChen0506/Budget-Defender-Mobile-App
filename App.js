@@ -167,7 +167,7 @@ const AppStack =
     />
 
     <Stack.Screen 
-      name="Edit"
+      name="Edit An Expense"
       component={EditAnExpense}
       options={{ 
         headerShown: true,
