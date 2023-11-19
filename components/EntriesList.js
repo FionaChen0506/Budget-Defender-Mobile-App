@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { where, query, orderBy} from 'firebase/firestore';
 import Colors from '../styles/Colors';
 import { getDocs } from 'firebase/firestore';
+import getIconName from './CategoryIcons';
 
 
 const EntriesList = ({navigation }) => {
@@ -35,7 +36,7 @@ const EntriesList = ({navigation }) => {
       }, []);
     
 
-
+      
     
     // Render the entries 
     return (
@@ -60,7 +61,7 @@ const EntriesList = ({navigation }) => {
                 >
                  <View style={styles.entryContainer} >
                     <View style={styles.iconContainer}>
-                        <Feather name="file-text" size={26} color="black" />
+                        {getIconName(item.category)}
                     </View>
                     <View style={styles.categoryContainer}>
                         <Text style={styles.categoryText}>{item.category}</Text>
