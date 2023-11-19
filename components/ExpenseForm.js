@@ -12,6 +12,7 @@ import ImageManager from './ImageManager';
 import { auth, database, storage } from "../firebase/firebaseSetup"
 import { ref, uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import defaultCategories from './DefaultCategories';
+import getIconName from './CategoryIcons';
 
 const ExpenseForm = ({
     amount,
@@ -130,7 +131,7 @@ const ExpenseForm = ({
             open={open}
             value={value}
             // items={categories.map((val) => ({ label: val, value: val }))}
-            items={defaultCategories.map((val) => ({ label: val, value: val }))}
+            items={defaultCategories.map((val) => ({ label: val, value: val, icon: () => getIconName(val) }))} 
             setOpen={setOpen}
             setValue={(val) => {
                 setValue(val);
