@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import PressableButton from '../components/PressableButton';
 import EntriesList from '../components/EntriesList';
 import Colors from '../styles/Colors';
+import BudgetSummary from '../components/BudgetSummary';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -16,6 +17,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
+      <BudgetSummary/>
       <EntriesList navigation={navigation} />
       <View style={styles.addButtonContainer}>
         <PressableButton
