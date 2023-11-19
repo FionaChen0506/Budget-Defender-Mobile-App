@@ -53,7 +53,7 @@ const EntriesList = ({navigation }) => {
                       entryId: item.id,
                       amount: item.amount.toString(),
                       category: item.category,
-                      date: item.date.toString(),
+                      date: item.date.toDate().toISOString(),
                       description: item.description,
                     })
                   }

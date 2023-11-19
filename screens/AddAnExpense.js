@@ -36,7 +36,7 @@ const AddAnExpense = ({ navigation }) => {
 
 
   const saveExpense = async () => {
-    if (!isDataValid(amount, category, description, location, date)) {
+    if (!isDataValid(amount, category, description, date)) {
       return;
     }
 

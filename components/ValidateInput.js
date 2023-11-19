@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-export function isDataValid(amount, category, description, location, date) {
+export function isDataValid(amount, category, description, date) {
     // Check if amount is a numeric number with 2 decimal digits
     const amountRegex = /^\d+(\.\d{1,2})?$/;
     if (!amountRegex.test(amount)) {
@@ -14,6 +14,7 @@ export function isDataValid(amount, category, description, location, date) {
 
     // Check if date is a valid date
     if (isNaN(new Date(date).getTime())) {
+        Alert.alert('Invalid Data', 'Please choose a date');
         return false;
     }
   

@@ -32,8 +32,9 @@ const ExpenseForm = ({
     //const categories = ['Food', 'Grocery', 'Travel', 'Furniture', 'Entertainment', 'Health and Wellness', 'Housing', 'Education', 'Miscellaneous', 'Gifts and Celebrations'];
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
-    const [selectedDate, setSelectedDate] = useState(new Date());
-
+    // Use the provided date if available, otherwise default to a new Date()
+    const [selectedDate, setSelectedDate] = useState(date || new Date()); 
+    //const [selectedDate, setSelectedDate] = useState(new Date());
     //const [takenImageUri, setTakenImageUri] = useState("");
     const [selectedPhoto, setSelectedPhoto] = useState(null);
 

@@ -21,11 +21,21 @@ export async function writeToDB(expense) {
     }
   }
   
-  export async function editInDB(id, expense) {
-    try {
-      await setDoc(doc(database, "Expenses", id), expense, { merge: true });
-      console.log("Document successfully updated!");
-    } catch (err) {
+  // export async function editInDB(id, expense) {
+  //   try {
+  //     await setDoc(doc(database, "Expenses", id), expense, { merge: true });
+  //     console.log("Document successfully updated!");
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   }
+
+export async function updateInDB(entryId, updateEntry) {
+  try {
+      const entryRef = doc(database, 'Expenses', entryId);
+      await setDoc(entryRef, updateEntry,  { merge: true });
+      console.log('Updated');
+  } catch (err) {
       console.log(err);
-    }
-    }
+  }
+}
