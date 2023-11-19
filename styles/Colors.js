@@ -18,7 +18,8 @@ const Colors = {
 
     'labelText':'#0F4457',
 
-    'entryBackground':'#EAE9E9'
+    'entryBackground':'#EAE9E9',
+    'entryTextDark':'#0C3D4F',
 };
 
 export default Colors;

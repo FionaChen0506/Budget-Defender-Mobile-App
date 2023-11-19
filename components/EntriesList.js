@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
       categoryText: {
         fontSize: 18,
         fontWeight: 'bold',
+        color:Colors.entryTextDark,
     },
     descriptionText: {
         fontSize: 14,
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
     priceText: {
         fontSize: 18,
         fontWeight: 'bold',
+        color:Colors.entryTextDark,
     },
     dateText: {
         fontSize: 14,
