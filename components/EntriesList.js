@@ -40,10 +40,16 @@ const EntriesList = ({navigation }) => {
     function formatDate(date) {
       const entryDate = date.toDate(); 
       const today = new Date();
+      const yesterday = new Date(today);
+    
       today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for today
+      yesterday.setDate(yesterday.getDate() - 1); // Set to yesterday
+      yesterday.setHours(0, 0, 0, 0);
     
       if (entryDate.setHours(0, 0, 0, 0) === today.getTime()) {
         return "Today";
+      } else if (entryDate.getTime() === yesterday.getTime()) {
+        return "Yesterday";
       } else {
         // Format to show as MM.DD
         let month = (entryDate.getMonth() + 1).toString().padStart(2, '0');
