@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, StyleSheet} from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -83,12 +83,6 @@ export default function Signup({navigation}) {
                 >
                 <Text style={styles.buttonText}>Already registered? Login</Text>
             </PressableButton>
-            {/* <TouchableOpacity style={styles.button} onPress={signupHandler}>
-                <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={loginHandler}>
-                <Text style={styles.buttonText}>Already registered? Login</Text>
-            </TouchableOpacity> */}
         </View>
   )
 }
@@ -99,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5', // Consider a light gradient or pattern
+    backgroundColor: '#f5f5f5', 
 },
 input: {
     height: 50,

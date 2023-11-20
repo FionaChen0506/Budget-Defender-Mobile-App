@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput, StyleSheet} from 'react-native'
+import { View, Text, TextInput, StyleSheet} from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f5f5f5', // or a light gradient
+        backgroundColor: '#f5f5f5', 
     },
     input: {
         height: 50,
