@@ -39,11 +39,11 @@ Categories collection is a subcollection of the Users Collection. Each document 
 
 ### Screens
 #### Auth Stack Screens
-<img src="images/welcome-page.png" alt="Alt text" width="200"><img src="images/signup-page.png" alt="Alt text" width="200"><img src="images/login-page.png" alt="Alt text" width="200">
+<img src="images/welcome-page.png" alt="Alt text" height="400"> <img src="images/signup-page.png" alt="Alt text" height="400"> <img src="images/login-page.png" alt="Alt text" height="400">
 
 The Auth Stack has three screens, including Welcome Screen, Sign Up Screen and Login Screen. The Welcome Screen will appear when the user first open this app, and allow users to either signup or login to the app. The Log In Screen and Sign Up Screen can navigate to each other through informative buttons.
 
-<img src="images/alert-invalid-email.png" alt="Alt text" height="200"><img src="images/alert-weak-password.png" alt="Alt text" height="200"><img src="images/alert-mismatch-password.png" alt="Alt text" height="200">
+<img src="images/alert-invalid-email.png" alt="Alt text" height="200"> <img src="images/alert-weak-password.png" alt="Alt text" height="200"> <img src="images/alert-mismatch-password.png" alt="Alt text" height="200">
 
 The Log In Screen and Sign Up Screen follow Admin Authentication API Errors of Firebase, and show alerts to the main errors like invalid email format, weak password, mismatch password, etc.
 
