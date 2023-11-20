@@ -39,7 +39,7 @@ Categories collection is a subcollection of the Users Collection. Each document 
 
 ### Screens
 #### Auth Stack Screens
-<img src="images/welcome-page.png" alt="Alt text" height="400"> <img src="images/signup-page.png" alt="Alt text" height="400"> <img src="images/login-page.png" alt="Alt text" height="400">
+<img src="images/welcome-page.png" alt="Alt text" width="200"> <img src="images/signup-page.png" alt="Alt text" width="200"> <img src="images/login-page.png" alt="Alt text" width="200">
 
 The Auth Stack has three screens, including Welcome Screen, Sign Up Screen and Login Screen. The Welcome Screen will appear when the user first open this app, and allow users to either signup or login to the app. The Log In Screen and Sign Up Screen can navigate to each other through informative buttons.
 
