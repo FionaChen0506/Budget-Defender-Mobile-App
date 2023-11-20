@@ -25,7 +25,10 @@ const EntriesList = ({navigation }) => {
               newArray.push({...docSnap.data(), id: docSnap.id});
             });
             setEntries(newArray);
-          }
+          } else {
+            // Update the state to an empty array when there are no entries
+            setEntries([]);
+        }
           (err) => {
             console.log(err);
             if (err.code === 'permission-denied') {
