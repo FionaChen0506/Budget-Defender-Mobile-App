@@ -15,6 +15,7 @@ const Colors = {
 
     'mintGreen': '#309797',
     'buttonBackground':'#368181',
+    'summaryBackground':'#419898',
 
     'labelText':'#0F4457',
 
