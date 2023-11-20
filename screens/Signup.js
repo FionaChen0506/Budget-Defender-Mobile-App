@@ -1,8 +1,9 @@
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
+import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseSetup';
+import PressableButton from '../components/PressableButton';
 
 export default function Signup({navigation}) {
     const [email, setEmail] = useState("");
@@ -40,46 +41,93 @@ export default function Signup({navigation}) {
 
   return (
     <View style = {styles.container}>
+            <Text style={styles.label}>Email</Text>
+            <TextInput 
+                style={styles.input}
+                placeholder='Email'
+                onChangeText={setEmail}
+                value={email}
+                placeholderTextColor="#aaa"
+            />
+            <Text style={styles.label}>Password</Text>
+            <TextInput 
+                style={styles.input}
+                secureTextEntry={true}
+                placeholder='Password'
+                onChangeText={setPassword}
+                value={password} 
+                placeholderTextColor="#aaa"
+            />
+            <Text style={styles.label}>Confirm Password</Text>
+            <TextInput 
+                style={styles.input}
+                secureTextEntry={true} 
+                placeholder='Confirm Password'
+                onChangeText={setConfirm}
+                value={confirmPassword}
+                placeholderTextColor="#aaa"
+            />
 
-      <Text>Email</Text>
-      <TextInput 
-        style={styles.input}
-        placeholder='Email'
-        onChangeText={setEmail}
-        value={email}
-        />
-      <Text>Password</Text>
-      <TextInput 
-        style={styles.input}
-        secureTextEntry={true}
-        placeholder='Password'
-        onChangeText={setPassword}
-        value={password} 
-      />
-      <Text>Confirm Password</Text>
-      <TextInput 
-        style={styles.input}
-        secureTextEntry={true} 
-        placeholder='Confirm Password'
-        onChangeText={setConfirm}
-        value={confirmPassword}
-      />
+            <PressableButton
+                pressedFunction={signupHandler}
+                pressedStyle={styles.button}
+                defaultStyle={styles.button}
+                >
+                <Text style={styles.buttonText}>Register</Text>
+            </PressableButton>
 
-      <Button title="Register" onPress={signupHandler} />
-      <Button title="Already registered? Login" onPress={() => navigation.navigate('Login')} />
-    </View>
+            <PressableButton
+                pressedFunction={loginHandler}
+                pressedStyle={styles.button}
+                defaultStyle={styles.button}
+                >
+                <Text style={styles.buttonText}>Already registered? Login</Text>
+            </PressableButton>
+            {/* <TouchableOpacity style={styles.button} onPress={signupHandler}>
+                <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={loginHandler}>
+                <Text style={styles.buttonText}>Already registered? Login</Text>
+            </TouchableOpacity> */}
+        </View>
   )
 }
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5', // Consider a light gradient or pattern
+},
+input: {
+    height: 50,
+    width: '80%',
+    margin: 12,
+    borderWidth: 1,
+    borderColor: '#309797',
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+},
+label: {
+  color: '#333',
+  alignSelf: 'flex-start',
+  marginLeft: '10%',
+  fontWeight: 'bold',
+  marginTop: 10,
+},
+button: {
+    backgroundColor: '#309797',
+    width: '80%',
+    padding: 15,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginTop: 10,
+},
+buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+},
 });

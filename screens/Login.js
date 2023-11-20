@@ -1,8 +1,9 @@
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
+import { View, Text, Button, TextInput, StyleSheet} from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseSetup';
+import PressableButton from '../components/PressableButton';
 
 export default function Login({navigation}) {
     const [email, setEmail] = useState("");
@@ -35,25 +36,40 @@ export default function Login({navigation}) {
     
   return (
     <View style = {styles.container}>
-      <Text>Email</Text>
-      <TextInput 
-        style={styles.input}
-        onChangeText={setEmail}
-        value={email}
-        placeholder='Email'
-        />
-      <Text>Password</Text>
-      <TextInput 
-        style={styles.input}   
-        secureTextEntry={true}
-        onChangeText={setPassword}
-        value={password}
-        placeholder='Password' 
-        />
+            <Text style={styles.label}>Email</Text>
+            <TextInput 
+                style={styles.input}
+                onChangeText={setEmail}
+                value={email}
+                placeholder='Email'
+                placeholderTextColor="#aaa"
+            />
+            <Text style={styles.label}>Password</Text>
+            <TextInput 
+                style={styles.input}   
+                secureTextEntry={true}
+                onChangeText={setPassword}
+                value={password}
+                placeholder='Password'
+                placeholderTextColor="#aaa"
+            />
 
-        <Button title="Login" onPress={loginHandler} />
-        <Button title="New user? Create an account" onPress={() => navigation.navigate('Signup')} />
-    </View>
+            <PressableButton
+                pressedFunction={loginHandler}
+                pressedStyle={styles.button}
+                defaultStyle={styles.button}
+                >
+                <Text style={styles.buttonText}>Login</Text>
+            </PressableButton>
+
+            <PressableButton
+                pressedFunction={() => navigation.navigate('Signup')}
+                pressedStyle={styles.button}
+                defaultStyle={styles.button}
+                >
+                <Text style={styles.buttonText}>New user? Create an account</Text>
+            </PressableButton>
+        </View>
   )
 }
 
@@ -61,10 +77,35 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f5f5f5', // or a light gradient
     },
     input: {
-        height: 40,
+        height: 50,
+        width: '80%',
         margin: 12,
         borderWidth: 1,
+        borderColor: '#309797',
+        borderRadius: 5,
+        padding: 10,
+    },
+    label: {
+        color: '#333',
+        alignSelf: 'flex-start',
+        marginLeft: '10%',
+        fontWeight: 'bold',
+        marginTop: 10,
+    },
+    button: {
+        backgroundColor: '#309797',
+        width: '80%',
+        padding: 15,
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 15,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
     },
 });
