@@ -31,10 +31,15 @@ export default function Signup({navigation}) {
             if (error.code === "auth/invalid-email") {
                 alert("Invalid email");
             }
-            if (error.code === "auth/email-already-in-use") {
+            else if (error.code === "auth/email-already-in-use") {
                 alert("Email already in use");
             }
+            else if (error.code === "auth/weak-password") {
+                alert("Password must be at least 6 characters");
+            }
+            else {
             alert("Error signing up" + error);
+            }
         }
     }
 

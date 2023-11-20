@@ -1,9 +1,10 @@
-##   APP Name: Budget-Defender
+#   APP Name: Budget-Defender
+### Budget Defender is a financial management Cross-Platform Native Mobile Application. It delivers features for detailed expense tracking, budget oversight, and analytical financial reporting.
 ###    Authors: Shaoyujie(Fiona) Chen, Yunke Li
 
-####    Iteration1:
-####    Data Modal and Collections:
-#####   Users Collection:
+##    Iteration1: overall stucture, navigation, and basis of CRUD operations to Firestore
+###    Data Modal and Collections:
+####   1. Users Collection:
 This is a top-level collection. Each document in the Users collection represents a user of our application. It has these fields:
 
 -   "uid": "user_unique_id",
@@ -11,7 +12,7 @@ This is a top-level collection. Each document in the Users collection represents
 -   "displayName": "User Name",
 -   "createdAt": Timestamp,
 
-#####   Expenses Collection:
+####  2. Expenses Collection:
 This is a top-level collection. Each document in the Expenses collection represents a single expense entry created by a user. It has these fields:
  
 -   "amount": 100.0,
@@ -23,18 +24,30 @@ This is a top-level collection. Each document in the Expenses collection represe
 -   "user": "user_unique_id",
 
 
-#####   Budgets Collection:
+####  3. Budgets Collection:
 Budgets collection is a subcollection of the Users Collection. Each document in the Budgets collection represents the budget information for a user. It has these fields:
 
 -   "limit": 3000.0,
 -   "user": "user_unique_id",
 
-#####   Categories Collection:
+####  4. Categories Collection:
 Categories collection is a subcollection of the Users Collection. Each document in the Categories collection represents a unique expense category. It has these fields:
 
 -   "name": "Newly-created category",
 -   "user": "user_unique_id",
 
+
+### Screens
+#### Auth Stack Screens
+<img src="images/welcome-page.png" alt="Alt text" width="200"><img src="images/signup-page.png" alt="Alt text" width="200"><img src="images/login-page.png" alt="Alt text" width="200">
+
+The Auth Stack has three screens, including Welcome Screen, Sign Up Screen and Login Screen. The Welcome Screen will appear when the user first open this app, and allow users to either signup or login to the app. The Log In Screen and Sign Up Screen can navigate to each other through informative buttons.
+
+<img src="images/alert-invalid-email.png" alt="Alt text" height="200"><img src="images/alert-weak-password.png" alt="Alt text" height="200"><img src="images/alert-mismatch-password.png" alt="Alt text" height="200">
+
+The Log In Screen and Sign Up Screen follow Admin Authentication API Errors of Firebase, and show alerts to the main errors like invalid email format, weak password, mismatch password, etc.
+
+#### App Stack Screens
 **Home Screen**
 
 <img src="images/image-1.png" alt="Alt text" width="200">
