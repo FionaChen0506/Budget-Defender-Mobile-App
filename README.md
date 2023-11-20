@@ -2,6 +2,39 @@
 ###    Authors: Shaoyujie(Fiona) Chen, Yunke Li
 
 ####    Iteration1:
+####    Data Modal and Collections:
+#####   Users Collection:
+This is a top-level collection. Each document in the Users collection represents a user of our application. It has these fields:
+
+-   "uid": "user_unique_id",
+-   "email": "user@example.com",
+-   "displayName": "User Name",
+-   "createdAt": Timestamp,
+
+#####   Expenses Collection:
+This is a top-level collection. Each document in the Expenses collection represents a single expense entry created by a user. It has these fields:
+ 
+-   "amount": 100.0,
+-   "category": "Grocery",
+-   "description": "Weekly grocery shopping",
+-   "date": Timestamp,
+-   "location": Location,
+-   "photo": "photo uri",
+-   "user": "user_unique_id",
+
+
+#####   Budgets Collection:
+Budgets collection is a subcollection of the Users Collection. Each document in the Budgets collection represents the budget information for a user. It has these fields:
+
+-   "limit": 3000.0,
+-   "user": "user_unique_id",
+
+#####   Categories Collection:
+Categories collection is a subcollection of the Users Collection. Each document in the Categories collection represents a unique expense category. It has these fields:
+
+-   "name": "Newly-created category",
+-   "user": "user_unique_id",
+
 **Home Screen**
 
 <img src="images/image-1.png" alt="Alt text" width="200">
@@ -10,7 +43,7 @@ On the home screen, the user can see all spending totals and can see the set bud
 
 **Add An Expense Screen**
 
-<img src="images/image-2.png" alt="Alt text" width="170"><img src="images/image-7.png" alt="Alt text" width="170"><img src="images/image-8.png" alt="Alt text" width="170">
+<img src="images/image-2.png" alt="Alt text" width="200"> <img src="images/image-7.png" alt="Alt text" width="200"> <img src="images/image-8.png" alt="Alt text" width="200">
 
 On the "Add An Expense" screen, users can enter the amount of money spent, select the category, enter a description (optional), a location (optional, to be implemented later), and a date. The amount spent must be a number with at most two decimals, the category cannot be empty, and the date must be today or earlier, or the APP will alert the users. Upon clicking Save, the expense will be upload to the database, and users can see that expense immediately on Home Screen and both All Expenses Screen.
 
