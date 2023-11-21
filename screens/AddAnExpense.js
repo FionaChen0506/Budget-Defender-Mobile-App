@@ -5,6 +5,8 @@ import SaveCancelButtons from '../components/SaveCancelButtons';
 import { isDataValid } from '../components/ValidateInput';
 import { writeToDB } from '../firebase/firebaseHelper';
 import { ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase/firebaseSetup";
 
 
 const uploadImageToStorage = async (uri) => {

@@ -83,9 +83,9 @@ const ExpenseForm = ({
           const imageName = uri.substring(uri.lastIndexOf("/") + 1);
           const imageRef = await ref(storage, `images/${imageName}`);
           const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
-          const downloadURL = await imageRef.getDownloadURL();
+          const downloadURL = await getDownloadURL(imageRef);
           //return uploadResult.metadata.fullPath;
-          return downloadURL
+          return downloadURL;
         } catch (err) {
           console.log(err);
         }
