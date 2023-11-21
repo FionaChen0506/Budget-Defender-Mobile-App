@@ -20,27 +20,21 @@ const ExpenseForm = ({
     description,
     location,
     date,
-    //selectedPhoto,
     onAmountChange,
     onCategoryChange,
     onDescriptionChange,
     onLocationChange,
     onDateChange,
-    //onSelectPhoto,
+    onPhotoSelected,
   }) => {
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
-    // Use the provided date if available, otherwise default to a new Date()
     const [selectedDate, setSelectedDate] = useState(date || new Date()); 
-    //const [takenImageUri, setTakenImageUri] = useState("");
     const [selectedPhoto, setSelectedPhoto] = useState(null);
 
-    // const handleImageTaken = (uri) => {
-    //     setSelectedPhoto(uri);
-    //     console.log('Image URI in ExpenseForm:', uri);
-    // };
+    
   
     const handleImageTaken = async (uri) => {
         try {
@@ -51,31 +45,15 @@ const ExpenseForm = ({
             // If a photo is selected, upload it to storage and get the download URL
             const photoURL = await uploadImageToStorage(uri);
             console.log('Download URL:', photoURL);
+
+            onPhotoSelected(photoURL);
           }
         } catch (error) {
           console.error('Error handling image:', error);
         }
       };
     
-    //   async function uploadImageToStorage(uri) {
-    //     try {
-    //       const response = await fetch(uri);
-    //       const imageBlob = await response.blob();
-    //       const imageName = uri.substring(uri.lastIndexOf('/') + 1);
-    //       const imageRef = storage.ref().child(`images/${imageName}`);
-    
-    //       // Upload the image
-    //       await imageRef.put(imageBlob);
-    
-    //       // Get the URL of the uploaded image
-    //       const downloadURL = await imageRef.getDownloadURL();
-    
-    //       return downloadURL;
-    //     } catch (error) {
-    //       console.error('Error uploading image:', error);
-    //       throw error;
-    //     }
-    //   }
+
     async function uploadImageToStorage(uri) {
         try {
           const response = await fetch(uri);
@@ -84,8 +62,7 @@ const ExpenseForm = ({
           const imageRef = await ref(storage, `images/${imageName}`);
           const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
           const downloadURL = await getDownloadURL(imageRef);
-          //return uploadResult.metadata.fullPath;
-          return downloadURL;
+          return uploadResult.metadata.fullPath;
         } catch (err) {
           console.log(err);
         }
@@ -130,7 +107,6 @@ const ExpenseForm = ({
             placeholder={category}
             open={open}
             value={value}
-            // items={categories.map((val) => ({ label: val, value: val }))}
             items={defaultCategories.map((val) => ({ label: val, value: val, icon: () => getIconName(val) }))} 
             setOpen={setOpen}
             setValue={(val) => {

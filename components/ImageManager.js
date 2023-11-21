@@ -31,7 +31,7 @@ export default function ImageManager({onImageTaken}) {
             }
         }
         catch (err) {
-            console.log(err);
+            console.log("Error in taking image with camera: ", err);
         }
     };
 
@@ -59,7 +59,7 @@ export default function ImageManager({onImageTaken}) {
             }
         }
         catch (err) {
-            console.log(err);
+            console.log("Error in selecting images from library: ", err);
         }
     };
 
