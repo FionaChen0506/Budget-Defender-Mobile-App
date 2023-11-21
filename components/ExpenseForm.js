@@ -187,7 +187,7 @@ const ExpenseForm = ({
         <View style={styles.formField}>
             <Text style={styles.labelText}>Upload a receipt</Text>
             
-            {/* <ImageManager onImageTaken={handleImageTaken} /> */}
+            <ImageManager onImageTaken={handleImageTaken} />
         </View>
         
         

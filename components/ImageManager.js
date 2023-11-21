@@ -8,6 +8,7 @@ import PressableButton from './PressableButton';
 export default function ImageManager({onImageTaken}) {
     const [imageUri, setImageUri] = useState(null);
     
+    // take a new image with the camera
     const takeImageHandler = async () => {
         let permissionResult = await ImagePicker.getCameraPermissionsAsync();
         if (!permissionResult.granted) {
@@ -23,12 +24,38 @@ export default function ImageManager({onImageTaken}) {
                 allowsEditing: true,
                 quality: 1,
             });
-            if (!result.canceled) {
-                const imageUri = result.assets[0].uri; 
+            if (!result.canceled && result.assets && result.assets.length > 0) {
+                const imageUri = result.assets[0].uri;
                 setImageUri(imageUri);
-                //getImageUri(imageUri);
-                // console.log('Image URI:', imageUri); NOT WORKING 
                 onImageTaken(imageUri);
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    };
+
+
+    // select an image from the camera roll
+    const selectImageHandler = async () => {
+        let permissionResult = await ImagePicker.getMediaLibraryPermissionsAsync();
+        if (!permissionResult.granted) {
+            permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (!permissionResult.granted) {
+                alert("You need to grant permission to access the media library");
+                return;
+            }
+        }
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                quality: 1,
+            });
+            if (!result.canceled && result.assets && result.assets.length > 0) {
+                const selectedImageUri = result.assets[0].uri;
+                setImageUri(selectedImageUri);
+                onImageTaken(selectedImageUri);
             }
         }
         catch (err) {
@@ -45,6 +72,14 @@ export default function ImageManager({onImageTaken}) {
             defaultStyle={{backgroundColor: 'gray'}}>
             <Text>Take Image</Text>
         </PressableButton>
+
+        <PressableButton 
+            pressedFunction={selectImageHandler} 
+            pressedStyle={{backgroundColor: 'blue'}} 
+            defaultStyle={{backgroundColor: 'gray'}}>
+            <Text>Select Image from Library</Text>
+        </PressableButton>
+
         {imageUri && <Image source={{uri: imageUri}} style={{width: 100, height: 100}}/> }
     </View>
   )
