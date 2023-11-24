@@ -6,87 +6,19 @@ import EditBudgetLimit from './EditBudgetLimit';
 import Colors from '../styles/Colors';
 import GetMonthSummary from './GetMonthSummary';
 
-const BudgetSummary = () => {
+const BudgetSummary = ({selectedMonth}) => {
+  console.log("selected month in budget summary:",selectedMonth)
     // Assuming we only want the current month, format it to 'YYYY-MM' string
-    const currentMonth = new Date().toISOString().slice(0, 7);
+    //const currentMonth = new Date().toISOString().slice(0, 7);
 
     // Get spending and budgetLimit using the GetMonthSummary component
-    const { spending, budgetLimit } = GetMonthSummary({ month: currentMonth });
-  
-    // const [spending, setSpending] = useState(0);
-    // const [budgetLimit, setBudgetLimit] = useState(0);
-    
-    // // to show current month text
-    // const currentDate = new Date();
-    // const currentMonthString = currentDate.toLocaleString('default', {
-    //   // year: 'numeric',
-    //   month: 'long',
-    // });
-  
-
-    // useEffect(() => {
-    //   const userUid = auth.currentUser.uid;
-    //   const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
-  
-    //   const listenForChanges = () => {
-    //     // Query for Expenses
-    //     const expensesQuery = query(
-    //       collection(database, 'Expenses'),
-    //       where('user', '==', userUid)
-    //     );
-  
-    //     // Query for Budgets
-    //     const budgetsQuery = query(
-    //       collection(database, 'Budgets'),
-    //       where('user', '==', userUid)
-    //     );
-  
-    //     // Listen for changes in both collections
-    //     const unsubscribeExpenses = onSnapshot(expensesQuery, (expenseSnapshot) => {
-    //       let totalSpending = 0;
-  
-    //       expenseSnapshot.forEach((doc) => {
-    //         const expenseDate = doc.data().date.toDate();
-    //         const expenseMonth = expenseDate.getMonth();
-    //         if (expenseMonth === currentMonth) {
-    //           totalSpending += doc.data().amount;
-    //         }
-    //       });
-  
-    //       setSpending(totalSpending);
-    //     });
-  
-    //     const unsubscribeBudgets = onSnapshot(budgetsQuery, (budgetSnapshot) => {
-    //       if (!budgetSnapshot.empty) {
-    //         const latestBudget = budgetSnapshot.docs[budgetSnapshot.docs.length - 1].data();
-    //         setBudgetLimit(latestBudget.limit || 0);
-    //       } else {
-    //         setBudgetLimit(0);
-    //       }
-    //     });
-  
-    //     return () => {
-    //       // Unsubscribe from both snapshots when the component unmounts
-    //       unsubscribeExpenses();
-    //       unsubscribeBudgets();
-    //     };
-        
-    //   };
-  
-    //   // Listen for changes when the component mounts
-    //   const unsubscribe = listenForChanges();
-  
-    //   return () => {
-    //     // Unsubscribe from the snapshot listener when the component unmounts
-    //     unsubscribe();
-    //   };
-    // }, []);
-  
+    const { spending, budgetLimit } = GetMonthSummary({ month: selectedMonth });
+    //const { spending, budgetLimit } = GetMonthSummary({ month: '2023-11' });
 
     return (
         <View style={styles.container}>
             <View style={styles.row1Container}>
-            <Text style={styles.monthText}>{currentMonth}</Text>
+            <Text style={styles.monthText}>{selectedMonth}</Text>
             </View>
             <Text style={styles.spendingText}>Spending:</Text>
             <Text style={styles.spendingText}>${spending.toFixed(2)}</Text>
