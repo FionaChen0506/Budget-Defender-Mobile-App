@@ -10,6 +10,7 @@ const BudgetSummary = () => {
   
     useEffect(() => {
       const userUid = auth.currentUser.uid;
+      const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
       const expensesQuery = query(
         collection(database, 'Expenses'),
         where('user', '==', userUid)
@@ -19,7 +20,11 @@ const BudgetSummary = () => {
         let totalSpending = 0;
   
         snapshot.forEach((doc) => {
-          totalSpending += doc.data().amount;
+          const expenseDate = doc.data().date.toDate();
+          const expenseMonth = expenseDate.getMonth();
+          if (expenseMonth === currentMonth) {
+            totalSpending += doc.data().amount;
+          }
         });
   
         setSpending(totalSpending);
