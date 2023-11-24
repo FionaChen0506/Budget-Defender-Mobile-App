@@ -8,7 +8,6 @@ import Colors from '../styles/Colors';
 const BudgetSummary = () => {
     const [spending, setSpending] = useState(0);
     const [budgetLimit, setBudgetLimit] = useState(0);
-    const [remaining, setRemaining] = useState(0);
     
     // to show current month text
     const currentDate = new Date();
@@ -82,10 +81,8 @@ const BudgetSummary = () => {
           if (!budgetSnapshot.empty) {
             const latestBudget = budgetSnapshot.docs[budgetSnapshot.docs.length - 1].data();
             setBudgetLimit(latestBudget.limit || 0);
-            setRemaining((latestBudget.limit || 0) - spending);
           } else {
             setBudgetLimit(0);
-            setRemaining(0);
           }
         });
   
@@ -94,6 +91,7 @@ const BudgetSummary = () => {
           unsubscribeExpenses();
           unsubscribeBudgets();
         };
+        
       };
   
       // Listen for changes when the component mounts
@@ -105,7 +103,7 @@ const BudgetSummary = () => {
       };
     }, []);
   
-  
+
     return (
         <View style={styles.container}>
             <View style={styles.row1Container}>
@@ -120,13 +118,13 @@ const BudgetSummary = () => {
             <View style={styles.row5Container}>
               <Text style={styles.budgetRemainingText}>${budgetLimit.toFixed(2)}</Text>
               <Text
-                style={[
-                  styles.budgetRemainingText,
-                  remaining < 0 ? styles.negativeRemaining : null,
-                ]}
-              >
-                {remaining < 0 ? `($${Math.abs(remaining).toFixed(2)})` : `$${remaining.toFixed(2)}`}
-              </Text>
+              style={[
+                styles.budgetRemainingText,
+                budgetLimit - spending < 0 ? styles.negativeRemaining : null,
+              ]}
+            >
+              {budgetLimit - spending < 0 ? `($${Math.abs(budgetLimit - spending).toFixed(2)})` : `$${(budgetLimit - spending).toFixed(2)}`}
+            </Text>
             </View>
         </View>
     );
