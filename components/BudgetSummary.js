@@ -8,6 +8,7 @@ import Colors from '../styles/Colors';
 const BudgetSummary = () => {
     const [spending, setSpending] = useState(0);
     const [budgetLimit, setBudgetLimit] = useState(0);
+    const [remaining, setRemaining] = useState(0);
     
     // to show current month text
     const currentDate = new Date();
@@ -81,8 +82,10 @@ const BudgetSummary = () => {
           if (!budgetSnapshot.empty) {
             const latestBudget = budgetSnapshot.docs[budgetSnapshot.docs.length - 1].data();
             setBudgetLimit(latestBudget.limit || 0);
+            setRemaining((latestBudget.limit || 0) - spending);
           } else {
             setBudgetLimit(0);
+            setRemaining(0);
           }
         });
   
@@ -115,8 +118,15 @@ const BudgetSummary = () => {
               <Text style={styles.budgetRemainingText}>Remaining:</Text>
             </View>
             <View style={styles.row5Container}>
-            <Text style={styles.budgetRemainingText}>${budgetLimit.toFixed(2)}</Text>
-              <Text style={styles.budgetRemainingText}>$00.00</Text>
+              <Text style={styles.budgetRemainingText}>${budgetLimit.toFixed(2)}</Text>
+              <Text
+                style={[
+                  styles.budgetRemainingText,
+                  remaining < 0 ? styles.negativeRemaining : null,
+                ]}
+              >
+                {remaining < 0 ? `($${Math.abs(remaining).toFixed(2)})` : `$${remaining.toFixed(2)}`}
+              </Text>
             </View>
         </View>
     );
@@ -177,6 +187,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     fontWeight:'600',
+  },
+  negativeRemaining: {
+    color: Colors.darkRed,
   },
 
 

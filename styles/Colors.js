@@ -21,6 +21,7 @@ const Colors = {
 
     'entryBackground':'#EAE9E9',
     'entryTextDark':'#0C3D4F',
+    'darkRed':"#B8233D",
 };
 
 export default Colors;
