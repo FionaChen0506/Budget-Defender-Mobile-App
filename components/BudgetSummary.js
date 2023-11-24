@@ -7,10 +7,17 @@ import Colors from '../styles/Colors';
 
 const BudgetSummary = () => {
     const [spending, setSpending] = useState(0);
+    // to show current month text
+    const currentDate = new Date();
+    const currentMonthString = currentDate.toLocaleString('default', {
+      // year: 'numeric',
+      month: 'long',
+    });
   
     useEffect(() => {
       const userUid = auth.currentUser.uid;
       const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
+      
       const expensesQuery = query(
         collection(database, 'Expenses'),
         where('user', '==', userUid)
@@ -38,13 +45,16 @@ const BudgetSummary = () => {
   
     return (
         <View style={styles.container}>
+            <View style={styles.row1Container}>
+            <Text style={styles.monthText}>{currentMonthString}</Text>
+            </View>
             <Text style={styles.spendingText}>Spending:</Text>
             <Text style={styles.spendingText}>${spending.toFixed(2)}</Text>
             <View style={styles.BudgetRemainingContainer}>
               <Text style={styles.budgetRemainingText}>Budget:</Text>
               <Text style={styles.budgetRemainingText}>Remaining:</Text>
             </View>
-            <View style={styles.row4Container}>
+            <View style={styles.row5Container}>
               <Text style={styles.budgetRemainingText}>$00.00</Text>
               <Text style={styles.budgetRemainingText}>$00.00</Text>
             </View>
@@ -70,6 +80,16 @@ const styles = StyleSheet.create({
       shadowRadius: 3, // Shadow radius
       elevation: 4, // Android shadow elevation
   },
+  row1Container: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
+  monthText: {
+    fontSize: 16,
+    color: Colors.labelText,
+    fontWeight:'600',
+  },
    spendingText: {
     fontSize: 32,
     color: 'white',
@@ -86,7 +106,7 @@ const styles = StyleSheet.create({
    BudgetContainer:{
     //justifyContent: 'space-between',
    },
-   row4Container: {
+   row5Container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '90%',
