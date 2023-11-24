@@ -39,3 +39,12 @@ export async function updateInDB(entryId, updateEntry) {
       console.log(err);
   }
 }
+
+export async function writeToBudgetsDB(budget) {
+  try {
+    const docRef = await addDoc(collection(database, "Budgets"), expense= {...budget, user:auth.currentUser.uid});
+    console.log("Document written with ID: ", docRef.id);
+  } catch (err) {
+    console.log(err);
+  }
+}

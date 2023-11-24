@@ -7,6 +7,8 @@ import Colors from '../styles/Colors';
 
 const BudgetSummary = () => {
     const [spending, setSpending] = useState(0);
+    const [budgetLimit, setBudgetLimit] = useState(0);
+    
     // to show current month text
     const currentDate = new Date();
     const currentMonthString = currentDate.toLocaleString('default', {
@@ -14,34 +16,92 @@ const BudgetSummary = () => {
       month: 'long',
     });
   
+    // useEffect(() => {
+    //   const userUid = auth.currentUser.uid;
+    //   const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
+      
+    //   const expensesQuery = query(
+    //     collection(database, 'Expenses'),
+    //     where('user', '==', userUid)
+    //   );
+  
+    //   const unsubscribe = onSnapshot(expensesQuery, (snapshot) => {
+    //     let totalSpending = 0;
+  
+    //     snapshot.forEach((doc) => {
+    //       const expenseDate = doc.data().date.toDate();
+    //       const expenseMonth = expenseDate.getMonth();
+    //       if (expenseMonth === currentMonth) {
+    //         totalSpending += doc.data().amount;
+    //       }
+    //     });
+  
+    //     setSpending(totalSpending);
+    //   });
+  
+    //   return () => {
+    //     // Unsubscribe from the snapshot listener when the component unmounts
+    //     unsubscribe();
+    //   };
+    // }, []);
+
     useEffect(() => {
       const userUid = auth.currentUser.uid;
       const currentMonth = new Date().getMonth(); // Get the current month (0-indexed)
-      
-      const expensesQuery = query(
-        collection(database, 'Expenses'),
-        where('user', '==', userUid)
-      );
   
-      const unsubscribe = onSnapshot(expensesQuery, (snapshot) => {
-        let totalSpending = 0;
+      const listenForChanges = () => {
+        // Query for Expenses
+        const expensesQuery = query(
+          collection(database, 'Expenses'),
+          where('user', '==', userUid)
+        );
   
-        snapshot.forEach((doc) => {
-          const expenseDate = doc.data().date.toDate();
-          const expenseMonth = expenseDate.getMonth();
-          if (expenseMonth === currentMonth) {
-            totalSpending += doc.data().amount;
+        // Query for Budgets
+        const budgetsQuery = query(
+          collection(database, 'Budgets'),
+          where('user', '==', userUid)
+        );
+  
+        // Listen for changes in both collections
+        const unsubscribeExpenses = onSnapshot(expensesQuery, (expenseSnapshot) => {
+          let totalSpending = 0;
+  
+          expenseSnapshot.forEach((doc) => {
+            const expenseDate = doc.data().date.toDate();
+            const expenseMonth = expenseDate.getMonth();
+            if (expenseMonth === currentMonth) {
+              totalSpending += doc.data().amount;
+            }
+          });
+  
+          setSpending(totalSpending);
+        });
+  
+        const unsubscribeBudgets = onSnapshot(budgetsQuery, (budgetSnapshot) => {
+          if (!budgetSnapshot.empty) {
+            const latestBudget = budgetSnapshot.docs[budgetSnapshot.docs.length - 1].data();
+            setBudgetLimit(latestBudget.limit || 0);
+          } else {
+            setBudgetLimit(0);
           }
         });
   
-        setSpending(totalSpending);
-      });
+        return () => {
+          // Unsubscribe from both snapshots when the component unmounts
+          unsubscribeExpenses();
+          unsubscribeBudgets();
+        };
+      };
+  
+      // Listen for changes when the component mounts
+      const unsubscribe = listenForChanges();
   
       return () => {
         // Unsubscribe from the snapshot listener when the component unmounts
         unsubscribe();
       };
     }, []);
+  
   
     return (
         <View style={styles.container}>
@@ -55,7 +115,7 @@ const BudgetSummary = () => {
               <Text style={styles.budgetRemainingText}>Remaining:</Text>
             </View>
             <View style={styles.row5Container}>
-              <Text style={styles.budgetRemainingText}>$00.00</Text>
+            <Text style={styles.budgetRemainingText}>${budgetLimit.toFixed(2)}</Text>
               <Text style={styles.budgetRemainingText}>$00.00</Text>
             </View>
         </View>
@@ -68,7 +128,7 @@ const styles = StyleSheet.create({
     container: {
       //flex: 1, 
       alignItems:'center',
-      width:'90%',
+      width:'95%',
       backgroundColor: Colors.summaryBackground,
       borderRadius: 18,
       padding: 15,

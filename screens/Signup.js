@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseSetup';
 import PressableButton from '../components/PressableButton';
+import { writeToBudgetsDB } from '../firebase/firebaseHelper';
 
 export default function Signup({navigation}) {
     const [email, setEmail] = useState("");
@@ -26,6 +27,13 @@ export default function Signup({navigation}) {
         }
         try {
             const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            // Create a new budget entry for the user
+            const newBudgetEntry = {
+                limit: 0.00, // Set the limit to 0.00 as a float
+            };
+        
+            // Write the new budget entry to the Budgets collection
+            await writeToBudgetsDB(newBudgetEntry);
             console.log(userCred);
         } catch (error) {
             if (error.code === "auth/invalid-email") {
