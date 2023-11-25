@@ -13,11 +13,11 @@ const GetMonthSummary = ({ month }) => {
     const monthDate = new Date(year, parseInt(monthString) - 1, 1);
     const monthStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
     const monthEnd = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0);
-    console.log("year:", year)
-    console.log("month string:", monthString)
-    console.log("month start:", monthStart)
-    console.log("month end:", monthEnd)
-    console.log("month date:", monthDate)
+    // console.log("year:", year)
+    // console.log("month string:", monthString)
+    // console.log("month start:", monthStart)
+    // console.log("month end:", monthEnd)
+    // console.log("month date:", monthDate)
 
     const listenForChanges = () => {
       // Query for Expenses within the specified month

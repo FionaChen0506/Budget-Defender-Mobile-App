@@ -9,12 +9,13 @@ import GetMonthSummary from './GetMonthSummary';
 const BudgetSummary = ({selectedMonth}) => {
   console.log("selected month in budget summary:",selectedMonth)
     // Assuming we only want the current month, format it to 'YYYY-MM' string
-    //const currentMonth = new Date().toISOString().slice(0, 7);
+    const currentMonth = new Date().toISOString().slice(0, 7);
 
     // Get spending and budgetLimit using the GetMonthSummary component
     const { spending, budgetLimit } = GetMonthSummary({ month: selectedMonth });
-    //const { spending, budgetLimit } = GetMonthSummary({ month: '2023-11' });
 
+    //const { spending, budgetLimit } = GetMonthSummary({ month: '2023-11' });
+    
     return (
         <View style={styles.container}>
             <View style={styles.row1Container}>

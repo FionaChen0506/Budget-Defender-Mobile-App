@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import RNPickerSelect from 'react-native-picker-select';
+import { useEffect } from 'react';
 
 const SelectMonthForHome = ({ onMonthChange }) => {
-  const [selectedMonth, setSelectedMonth] = useState('');
+  //const [selectedMonth, setSelectedMonth] = useState('');
+  const currentMonth = new Date().toISOString().slice(0, 7);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
 
   const months = Array.from({ length: 12 }, (_, i) => {
     const month = new Date();
@@ -12,11 +15,11 @@ const SelectMonthForHome = ({ onMonthChange }) => {
       value: `${month.getFullYear()}-${(month.getMonth() + 1).toString().padStart(2, '0')}`,
     };
   });
-  
 
   return (
     <RNPickerSelect
-      default={{ label: '2023-11', value: '2023-11' }}
+    placeholder={{}}  
+    default={{ label: currentMonth, value: currentMonth }}
       items={months}
       onValueChange={(value) => {
         setSelectedMonth(value);
