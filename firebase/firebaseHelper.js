@@ -48,3 +48,13 @@ export async function writeToBudgetsDB(budget) {
     console.log(err);
   }
 }
+
+export async function updateInBudgetsDB(entryId, updateEntry) {
+  try {
+      const entryRef = doc(database, 'Budgets', entryId);
+      await setDoc(entryRef, updateEntry,  { merge: true });
+      console.log('Updated');
+  } catch (err) {
+      console.log(err);
+  }
+}
