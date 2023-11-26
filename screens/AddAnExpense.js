@@ -4,9 +4,10 @@ import ExpenseForm from '../components/ExpenseForm';
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { isDataValid } from '../components/ValidateInput';
 import { writeToDB } from '../firebase/firebaseHelper';
-import { ref, uploadBytesResumable } from "firebase/storage";
+import { ref, uploadBytesResumable, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
+
 
 
 const AddAnExpense = ({ navigation }) => {
@@ -15,7 +16,60 @@ const AddAnExpense = ({ navigation }) => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState(new Date());
-  const [selectedPhoto, setSelectedPhoto] = useState(null); 
+  // const [selectedPhoto, setSelectedPhoto] = useState(null); 
+
+  async function fetchImage(uri) {
+    try{
+    const response = await fetch(uri);
+    const imageBlob = await response.blob();
+    const imageName = uri.substring(uri.lastIndexOf('/') + 1);
+    const imageRef = await ref(storage, `images/${imageName}`);
+    const uploadResult = await uploadBytes(imageRef, imageBlob);
+    return(uploadResult.metadata.fullPath);
+    }
+    catch(err) {
+      console.log(err);
+    }
+
+  }
+
+  
+  async function changeDataHandler(data) {
+
+    if (!isDataValid(data.amount, data.category, data.description, data.date)) {
+      return;
+    } 
+    
+    const newExpenseEntry = {
+      amount: parseFloat(data.amount),
+      category: data.category,
+      description: data.description,
+      location: data.location,
+      date: data.date,
+      photo: null, 
+    };
+
+    let imageRef = null;
+    if (data.uri) {
+      imageRef = await fetchImage(data.uri);
+    }
+
+    if (imageRef) {
+      newExpenseEntry.photo = imageRef;
+      writeToDB(newExpenseEntry);
+    }
+    else {
+      writeToDB(newExpenseEntry);
+    }
+
+    // setAmount('');
+    // setCategory('');
+    // setDescription('');
+    // setLocation('');
+    // setDate(new Date());
+    // setImageUri(null);
+    navigation.goBack();
+  }
   
 
   const onPhotoSelected = (photoURL) => {
@@ -23,46 +77,46 @@ const AddAnExpense = ({ navigation }) => {
   };
 
 
-  const saveExpense = async () => {
-    if (!isDataValid(amount, category, description, date)) {
-      return;
-    }      
+  // const saveExpense = async () => {
+  //   if (!isDataValid(amount, category, description, date)) {
+  //     return;
+  //   }      
       
-    const newExpenseEntry = {
-      amount: parseFloat(amount),
-      category,
-      description,
-      location,
-      date,
-      photo: selectedPhoto, 
-    };
+  //   const newExpenseEntry = {
+  //     amount: parseFloat(amount),
+  //     category,
+  //     description,
+  //     location,
+  //     date,
+  //     photo: selectedPhoto, 
+  //   };
 
-    const checkSelectedPhoto = () => {
-      if (selectedPhoto) {
-        try {
-          newExpenseEntry.photo = selectedPhoto;
-          console.log('New expense entry:', newExpenseEntry);
-          writeToDB(newExpenseEntry);
-        } catch (error) {
-          console.log("Error saving expense:", error.message);
-        }
-      navigation.goBack();
-      }
-      else {
-        setTimeout(checkSelectedPhoto, 1000); 
-      }
-    };
+  //   const checkSelectedPhoto = () => {
+  //     if (selectedPhoto) {
+  //       try {
+  //         newExpenseEntry.photo = selectedPhoto;
+  //         console.log('New expense entry:', newExpenseEntry);
+  //         writeToDB(newExpenseEntry);
+  //       } catch (error) {
+  //         console.log("Error saving expense:", error.message);
+  //       }
+  //     navigation.goBack();
+  //     }
+  //     else {
+  //       setTimeout(checkSelectedPhoto, 1000); 
+  //     }
+  //   };
 
-    checkSelectedPhoto();
-  }
+  //   checkSelectedPhoto();
+  // }
 
-  const handleCancel = () => {
-    navigation.goBack();
-  };
+  // const handleCancel = () => {
+  //   navigation.goBack();
+  // };
 
   return (
     <View style={styles.container}>
-      <ExpenseForm
+      {/* <ExpenseForm
         amount={amount}
         category={category}
         description={description}
@@ -75,7 +129,12 @@ const AddAnExpense = ({ navigation }) => {
         onDateChange={(selectedDate) => setDate(selectedDate)}
         onPhotoSelected={onPhotoSelected}
       />
-      <SaveCancelButtons onCancel={handleCancel} onSave={saveExpense} />
+      <SaveCancelButtons onCancel={handleCancel} onSave={saveExpense} /> */}
+
+      <ExpenseForm
+        changeHandler={changeDataHandler} />
+
+
     </View>
   );
 };

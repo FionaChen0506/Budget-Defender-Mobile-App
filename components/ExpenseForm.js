@@ -13,60 +13,80 @@ import { auth, database, storage } from "../firebase/firebaseSetup"
 import { ref, uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import defaultCategories from './DefaultCategories';
 import getIconName from './CategoryIcons';
+import SaveCancelButtons from '../components/SaveCancelButtons';
 
-const ExpenseForm = ({
-    amount,
-    category,
-    description,
-    location,
-    date,
-    onAmountChange,
-    onCategoryChange,
-    onDescriptionChange,
-    onLocationChange,
-    onDateChange,
-    onPhotoSelected,
-  }) => {
 
+const ExpenseForm = ({changeHandler, navigation}) => {
+    const [amount, setAmount] = useState('');
+    const [category, setCategory] = useState('');
+    const [value, setValue] = useState(null);
+    const [description, setDescription] = useState('');
+    const [location, setLocation] = useState('');
+    const [date, setDate] = useState(new Date());
+    const [imageUri, setImageUri] = useState(null);
+
+    
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
+    // const [value, setValue] = useState(null);
     const [selectedDate, setSelectedDate] = useState(date || new Date()); 
-    const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+
+    function onAmountChange(inputAmount) {
+        setAmount(inputAmount);
+    }
+
+    function onCategoryChange(inputCategory) {
+        setCategory(inputCategory);
+    }
+
+    function onDescriptionChange(inputDescription) {
+        setDescription(inputDescription);
+    }
+
+    function onLocationChange(inputLocation) {
+
+        setLocation(inputLocation);
+    }
+
+    function onDateChange(inputDate) {
+        setDate(inputDate);
+    }
+
 
     
   
-    const handleImageTaken = async (uri) => {
-        try {
-          setSelectedPhoto(uri);
-          console.log('Image URI in ExpenseForm:', uri);
+    // const handleImageTaken = async (uri) => {
+    //     try {
+    //       setSelectedPhoto(uri);
+    //       console.log('Image URI in ExpenseForm:', uri);
     
-          if (uri) {
-            // If a photo is selected, upload it to storage and get the download URL
-            const photoURL = await uploadImageToStorage(uri);
-            console.log('Download URL:', photoURL);
+    //       if (uri) {
+    //         // If a photo is selected, upload it to storage and get the download URL
+    //         const photoURL = await uploadImageToStorage(uri);
+    //         console.log('Download URL:', photoURL);
 
-            onPhotoSelected(photoURL);
-          }
-        } catch (error) {
-          console.error('Error handling image:', error);
-        }
-      };
+    //         onPhotoSelected(photoURL);
+    //       }
+    //     } catch (error) {
+    //       console.error('Error handling image:', error);
+    //     }
+    //   };
     
 
-    async function uploadImageToStorage(uri) {
-        try {
-          const response = await fetch(uri);
-          const imageBlob = await response.blob();
-          const imageName = uri.substring(uri.lastIndexOf("/") + 1);
-          const imageRef = await ref(storage, `images/${imageName}`);
-          const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
-          const downloadURL = await getDownloadURL(imageRef);
-          return uploadResult.metadata.fullPath;
-        } catch (err) {
-          console.log(err);
-        }
-      }
+    // async function uploadImageToStorage(uri) {
+    //     try {
+    //       const response = await fetch(uri);
+    //       const imageBlob = await response.blob();
+    //       const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+    //       const imageRef = await ref(storage, `images/${imageName}`);
+    //       const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
+    //       const downloadURL = await getDownloadURL(imageRef);
+    //       return uploadResult.metadata.fullPath;
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //   }
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -75,8 +95,10 @@ const ExpenseForm = ({
       const hideDatePicker = () => {
         setDatePickerVisibility(false);
       };
+
+
     
-      const handleConfirm = (selectedDate) => {
+      const confirmDate = (selectedDate) => {
         const currentDate = new Date();
         // Check if the selected date is not after today
         if (selectedDate.getTime() > currentDate.getTime()) {
@@ -84,10 +106,35 @@ const ExpenseForm = ({
           return;
         }
         hideDatePicker();
-        onDateChange(selectedDate);
         setSelectedDate(selectedDate);
+        onDateChange(selectedDate);
       };      
-    
+
+      function confirmHandler() {
+        changeHandler({amount: amount, category: category, description: description, location: location, date: date, uri: imageUri});
+        // setAmount('');
+        // setCategory('');
+        // setDescription('');
+        // setLocation('');
+        // setDate(new Date());
+        // setImageUri(null);
+      } 
+
+      
+      function getImageUri(uri) {
+        setImageUri(uri);
+      }
+
+      function cancelHandler() {
+        setAmount('');
+        setCategory('');
+        setDescription('');
+        setLocation('');
+        setDate(new Date());
+        setImageUri(null);
+        navigation.goBack();
+      }
+
 
     return (
       <View style={styles.container}>
@@ -151,7 +198,7 @@ const ExpenseForm = ({
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
-            onConfirm={handleConfirm}
+            onConfirm={confirmDate}
             onCancel={hideDatePicker}
             date={date}
             /* IOS14 picker style */
@@ -163,9 +210,10 @@ const ExpenseForm = ({
         <View style={styles.formField}>
             <Text style={styles.labelText}>Upload a receipt</Text>
             
-            <ImageManager onImageTaken={handleImageTaken} />
+            <ImageManager onImageTaken={getImageUri} />
         </View>
         
+        <SaveCancelButtons onCancel={cancelHandler} onSave={confirmHandler} />
         
       </View>
     );
