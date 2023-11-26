@@ -4,15 +4,40 @@ import { collection, query, where, onSnapshot, sum } from 'firebase/firestore';
 import { database,auth } from "../firebase/firebaseSetup";
 import EditBudgetLimit from './EditBudgetLimit';
 import Colors from '../styles/Colors';
-import GetMonthSummary from './GetMonthSummary';
+import GetMonthSpending from './GetMonthSpending';
 
 const BudgetSummary = ({selectedMonth}) => {
-  console.log("selected month in budget summary:",selectedMonth)
+  const userUid = auth.currentUser.uid;
+  const [budgetLimit, setBudgetLimit] = useState(0);
+
+  // Get budgetLimit
+  useEffect(() => {
+    const budgetsQuery = query(
+      collection(database, 'Budgets'),
+      where('user', '==', userUid)
+    );
+
+    const unsubscribeBudgets = onSnapshot(budgetsQuery, (budgetSnapshot) => {
+      if (!budgetSnapshot.empty) {
+        const latestBudget = budgetSnapshot.docs[budgetSnapshot.docs.length - 1].data();
+        setBudgetLimit(latestBudget.limit || 0);
+      } else {
+        setBudgetLimit(0);
+      }
+    });
+
+    return () => {
+      unsubscribeBudgets();
+    };
+  }, [userUid]);
+
+  console.log("selected month in budget summary:", selectedMonth);
+
     // Assuming we only want the current month, format it to 'YYYY-MM' string
     const currentMonth = new Date().toISOString().slice(0, 7);
 
     // Get spending and budgetLimit using the GetMonthSummary component
-    const { spending, budgetLimit } = GetMonthSummary({ month: selectedMonth });
+    const { spending } = GetMonthSpending({ month: selectedMonth });
 
     //const { spending, budgetLimit } = GetMonthSummary({ month: '2023-11' });
     
