@@ -16,7 +16,7 @@ const AddAnExpense = ({ navigation }) => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState(new Date());
-  // const [selectedPhoto, setSelectedPhoto] = useState(null); 
+  const [imageUri, setImageUri] = useState(null);
 
   async function fetchImage(uri) {
     try{
@@ -34,11 +34,10 @@ const AddAnExpense = ({ navigation }) => {
   }
 
   
-  async function changeDataHandler(data) {
-
+  const onSave = async (data) => {
     if (!isDataValid(data.amount, data.category, data.description, data.date)) {
       return;
-    } 
+    }
     
     const newExpenseEntry = {
       amount: parseFloat(data.amount),
@@ -61,13 +60,6 @@ const AddAnExpense = ({ navigation }) => {
     else {
       writeToDB(newExpenseEntry);
     }
-
-    // setAmount('');
-    // setCategory('');
-    // setDescription('');
-    // setLocation('');
-    // setDate(new Date());
-    // setImageUri(null);
     navigation.goBack();
   }
   
@@ -76,63 +68,42 @@ const AddAnExpense = ({ navigation }) => {
     setSelectedPhoto(photoURL); 
   };
 
+  const onCancel = () => {
+    // Reset local state if needed
+    setAmount('');
+    setCategory('');
+    setDescription('');
+    setLocation('');
+    setDate(new Date());
+    setImageUri(null);
 
-  // const saveExpense = async () => {
-  //   if (!isDataValid(amount, category, description, date)) {
-  //     return;
-  //   }      
-      
-  //   const newExpenseEntry = {
-  //     amount: parseFloat(amount),
-  //     category,
-  //     description,
-  //     location,
-  //     date,
-  //     photo: selectedPhoto, 
-  //   };
+    // Navigate back
+    navigation.goBack();
+  };
 
-  //   const checkSelectedPhoto = () => {
-  //     if (selectedPhoto) {
-  //       try {
-  //         newExpenseEntry.photo = selectedPhoto;
-  //         console.log('New expense entry:', newExpenseEntry);
-  //         writeToDB(newExpenseEntry);
-  //       } catch (error) {
-  //         console.log("Error saving expense:", error.message);
-  //       }
-  //     navigation.goBack();
-  //     }
-  //     else {
-  //       setTimeout(checkSelectedPhoto, 1000); 
-  //     }
-  //   };
 
-  //   checkSelectedPhoto();
-  // }
+  const onImageTaken = (uri) => {
+    setImageUri(uri);
+  };
 
-  // const handleCancel = () => {
-  //   navigation.goBack();
-  // };
+
+  
 
   return (
     <View style={styles.container}>
-      {/* <ExpenseForm
-        amount={amount}
-        category={category}
-        description={description}
-        location={location}
-        date={date}
-        onAmountChange={(text) => setAmount(text)}
-        onCategoryChange={(text) => setCategory(text)}
-        onDescriptionChange={(text) => setDescription(text)}
-        onLocationChange={(text) => setLocation(text)}
-        onDateChange={(selectedDate) => setDate(selectedDate)}
-        onPhotoSelected={onPhotoSelected}
-      />
-      <SaveCancelButtons onCancel={handleCancel} onSave={saveExpense} /> */}
+    
 
-      <ExpenseForm
-        changeHandler={changeDataHandler} />
+    <ExpenseForm
+        initialAmount={amount}
+        initialCategory={category}
+        initialDescription={description}
+        initialLocation={location}
+        initialDate={date}
+        initialImageUri={imageUri}
+        onSave={onSave}
+        onCancel={onCancel}
+        onImageTaken={onImageTaken}
+      />
 
 
     </View>

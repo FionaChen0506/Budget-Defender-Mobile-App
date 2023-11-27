@@ -1,105 +1,123 @@
-import { StyleSheet, Text, View, TouchableOpacity, Alert,} from 'react-native'
-import React, { useLayoutEffect,useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image} from 'react-native'
+import React, { useLayoutEffect,useState, useEffect } from 'react'
 import ExpenseForm from '../components/ExpenseForm'
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { updateInDB } from '../firebase/firebaseHelper';
 import { isDataValid } from '../components/ValidateInput';
 import DeleteButton from '../components/DeleteButton';
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase/firebaseSetup";
+
 
 
 const EditAnExpense = ({ route,navigation }) => {
-  const { entryId, amount, category, date, description,} = route.params;
-    const [editedAmount, setEditedAmount] = useState(amount);
-    const [editedCategory, setEditedCategory] = useState(category);
-    const [editedDescription, setEditedDescription] = useState(description);
-    const [editedDate, setEditedDate] = useState(new Date(date)); // Convert back to a Date object
+  const { entryId, amount, category, description, date, location, photo } = route.params
 
+  const [formAmount, setFormAmount] = useState(amount.toString());
+  const [formCategory, setFormCategory] = useState(category);
+  const [formDescription, setFormDescription] = useState(description);
+  const [formLocation, setFormLocation] = useState(location);
+  const [formDate, setFormDate] = useState(new Date(date));
+  const [formImageUri, setFormImageUri] = useState(photo);
 
-    const handleAmountChange = (text) => {
-      setEditedAmount(text);
-    };
   
-    const handleCategoryChange = (text) => {
-      setEditedCategory(text);
-    };
+  const onSave = (data) => {
+    if (!isDataValid(data.amount, data.category, data.description, data.date)) {
+      return;
+    }
   
-    const handleDescriptionChange = (text) => {
-      setEditedDescription(text);
-    };
+    Alert.alert(
+      'Important',
+      'Are you sure you want to save these changes?',
+      [
+        {
+          text: 'No', 
+          style: 'cancel', 
+        },
+        {
+          text: 'Yes',
+
+          onPress: () => {
+            const updatedExpense = {
+              amount: parseFloat(data.amount),
+              category: data.category,
+              description: data.description,
+              location: data.location,
+              date: data.date,
+              photo: data.uri || formImageUri, 
+            };
+
+            updateInDB(entryId, updatedExpense);
   
+            navigation.goBack();
+          },
+        },
+      ]
+    );
+  };
+
+  const onCancel = () => {
+    navigation.goBack();
+  };
+
+  const onImageTaken = (uri) => {
+    setFormImageUri(uri);
+  };
+
   
-    const handleDateChange = (selectedDate) => {
-      setEditedDate(selectedDate);
-    };
 
     const onDeleteSuccess = () => {
+      
         navigation.goBack();
     };
 
-    //Define the navigation tab options
-    useLayoutEffect(() => {
-        navigation.setOptions({
-        headerRight: () => (
-            <DeleteButton entryId={entryId} onDeleteSuccess={onDeleteSuccess} />
-        ),
-        });
-    }, [navigation, onDeleteSuccess]);
 
-    const handleSave = () => {
-        if (!isDataValid(editedAmount, editedCategory, editedDescription, editedDate)) {
-          console.log("Data is not valid");
+    useEffect(() => {
+      const fetchDownloadUrl = async () => {
+        if (!photo || typeof photo !== 'string') {
+          console.log("No valid photo path provided.");
           return;
         }
-      
-        Alert.alert(
-          'Important',
-          'Are you sure you want to save these changes?',
-          [
-            {
-              text: 'No', 
-              style: 'cancel', // This makes it a "Cancel" action
-            },
-            {
-              text: 'Yes',
-              // this is the real "save" action
-              onPress: () => {
-                // Prepare the updated entry object
-                const updatedEntry = {
-                  amount: parseFloat(editedAmount),
-                  category:editedCategory,
-                  description: editedDescription,
-                  date: editedDate,
-                };
-      
-                // Call the updateInDB function to update the entry
-                updateInDB(entryId, updatedEntry);
-      
-                // Navigate back to the previous screen
-                navigation.goBack();
-              },
-            },
-          ]
-        );
+        
+        try {
+          const reference = ref(storage, photo);
+          const url = await getDownloadURL(reference);
+          setFormImageUri(url); // Assuming you want to set the fetched URL to formImageUri
+        } catch (error) {
+          console.error("Error fetching download URL:", error);
+        }
       };
+    
+      if (photo) {
+        fetchDownloadUrl();
+      }
+    
+      navigation.setOptions({
+        headerRight: () => (
+          <DeleteButton entryId={entryId} onDeleteSuccess={onDeleteSuccess} />
+        ),
+      });
+    }, [navigation, onDeleteSuccess, photo]); // Add 'photo' as a dependency
+    
       
 
-    const handleCancel = () => {
-        navigation.goBack();
-      };
+
 
     return (
       <View style={styles.container}>
       <ExpenseForm
-        amount={editedAmount}
-        category={editedCategory}
-        description={editedDescription}
-        date={editedDate}
-        onAmountChange={handleAmountChange}
-        onCategoryChange={handleCategoryChange}
-        onDescriptionChange={handleDescriptionChange}
-        onDateChange={handleDateChange}
+        initialAmount={formAmount}
+        initialCategory={formCategory}
+        initialDescription={formDescription}
+        initialLocation={formLocation}
+        initialDate={formDate}
+        initialImageUri={formImageUri}
+        onSave={onSave}
+        onCancel={onCancel}
+        onImageTaken={onImageTaken}
       />
-        <SaveCancelButtons onCancel={handleCancel} onSave={handleSave} />
+
+      { photo && <Image source={{uri: photo}} style={{width: 100, height: 100}}/> }
       
       </View>
     );

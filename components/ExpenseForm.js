@@ -16,19 +16,29 @@ import getIconName from './CategoryIcons';
 import SaveCancelButtons from '../components/SaveCancelButtons';
 
 
-const ExpenseForm = ({changeHandler, navigation}) => {
-    const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState('');
-    const [value, setValue] = useState(null);
-    const [description, setDescription] = useState('');
-    const [location, setLocation] = useState('');
-    const [date, setDate] = useState(new Date());
-    const [imageUri, setImageUri] = useState(null);
+const ExpenseForm = ({
+  initialAmount = '',
+    initialCategory = '',
+    initialDescription = '',
+    initialLocation = '',
+    initialDate = new Date(),
+    initialImageUri = null,
+    categories = defaultCategories,
+    onSave,
+    onCancel,
+    onImageTaken,
+}) => {
+  const [amount, setAmount] = useState(initialAmount);
+  const [category, setCategory] = useState(initialCategory);
+  const [description, setDescription] = useState(initialDescription);
+  const [location, setLocation] = useState(initialLocation);
+  const [date, setDate] = useState(initialDate);
+  const [imageUri, setImageUri] = useState(initialImageUri);
 
     
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [open, setOpen] = useState(false);
-    // const [value, setValue] = useState(null);
+    const [value, setValue] = useState(null);
     const [selectedDate, setSelectedDate] = useState(date || new Date()); 
 
 
@@ -53,41 +63,6 @@ const ExpenseForm = ({changeHandler, navigation}) => {
         setDate(inputDate);
     }
 
-
-    
-  
-    // const handleImageTaken = async (uri) => {
-    //     try {
-    //       setSelectedPhoto(uri);
-    //       console.log('Image URI in ExpenseForm:', uri);
-    
-    //       if (uri) {
-    //         // If a photo is selected, upload it to storage and get the download URL
-    //         const photoURL = await uploadImageToStorage(uri);
-    //         console.log('Download URL:', photoURL);
-
-    //         onPhotoSelected(photoURL);
-    //       }
-    //     } catch (error) {
-    //       console.error('Error handling image:', error);
-    //     }
-    //   };
-    
-
-    // async function uploadImageToStorage(uri) {
-    //     try {
-    //       const response = await fetch(uri);
-    //       const imageBlob = await response.blob();
-    //       const imageName = uri.substring(uri.lastIndexOf("/") + 1);
-    //       const imageRef = await ref(storage, `images/${imageName}`);
-    //       const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
-    //       const downloadURL = await getDownloadURL(imageRef);
-    //       return uploadResult.metadata.fullPath;
-    //     } catch (err) {
-    //       console.log(err);
-    //     }
-    //   }
-
     const showDatePicker = () => {
         setDatePickerVisibility(true);
       };
@@ -110,30 +85,31 @@ const ExpenseForm = ({changeHandler, navigation}) => {
         onDateChange(selectedDate);
       };      
 
+      // function confirmHandler() {
+      //   changeHandler({amount: amount, category: category, description: description, location: location, date: date, uri: imageUri});
+      // } 
       function confirmHandler() {
-        changeHandler({amount: amount, category: category, description: description, location: location, date: date, uri: imageUri});
-        // setAmount('');
-        // setCategory('');
-        // setDescription('');
-        // setLocation('');
-        // setDate(new Date());
-        // setImageUri(null);
-      } 
-
+        onSave({ amount, category, description, location, date, uri: imageUri });
+      }
       
       function getImageUri(uri) {
         setImageUri(uri);
+        onImageTaken && onImageTaken(uri);
       }
 
       function cancelHandler() {
-        setAmount('');
-        setCategory('');
-        setDescription('');
-        setLocation('');
-        setDate(new Date());
-        setImageUri(null);
-        navigation.goBack();
-      }
+        onCancel(); 
+    }
+
+      // function cancelHandler() {
+      //   setAmount('');
+      //   setCategory('');
+      //   setDescription('');
+      //   setLocation('');
+      //   setDate(new Date());
+      //   setImageUri(null);
+      //   navigation.goBack();
+      // }
 
 
     return (
@@ -210,7 +186,7 @@ const ExpenseForm = ({changeHandler, navigation}) => {
         <View style={styles.formField}>
             <Text style={styles.labelText}>Upload a receipt</Text>
             
-            <ImageManager onImageTaken={getImageUri} />
+            <ImageManager onImageTaken={getImageUri} initialImageUri={imageUri} />
         </View>
         
         <SaveCancelButtons onCancel={cancelHandler} onSave={confirmHandler} />

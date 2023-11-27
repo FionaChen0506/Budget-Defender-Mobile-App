@@ -80,6 +80,8 @@ const EntriesList = ({navigation }) => {
                       category: item.category,
                       date: item.date.toDate().toISOString(),
                       description: item.description,
+                      location: item.location,
+                      photo: item.photo,
                     })
                   }
                 >
