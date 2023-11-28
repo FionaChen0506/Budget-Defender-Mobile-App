@@ -14,6 +14,7 @@ import { ref, uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import defaultCategories from './DefaultCategories';
 import getIconName from './CategoryIcons';
 import SaveCancelButtons from '../components/SaveCancelButtons';
+import { deletePhotoFromExpense } from '../firebase/firebaseHelper';
 
 
 const ExpenseForm = ({
@@ -101,16 +102,6 @@ const ExpenseForm = ({
         onCancel(); 
     }
 
-      // function cancelHandler() {
-      //   setAmount('');
-      //   setCategory('');
-      //   setDescription('');
-      //   setLocation('');
-      //   setDate(new Date());
-      //   setImageUri(null);
-      //   navigation.goBack();
-      // }
-
 
     return (
       <View style={styles.container}>
@@ -186,7 +177,7 @@ const ExpenseForm = ({
         <View style={styles.formField}>
             <Text style={styles.labelText}>Upload a receipt</Text>
             
-            <ImageManager onImageTaken={getImageUri} initialImageUri={imageUri} />
+            <ImageManager onImageTaken={getImageUri} initialPhotoUri={initialImageUri} />
         </View>
         
         <SaveCancelButtons onCancel={cancelHandler} onSave={confirmHandler} />

@@ -2,11 +2,14 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert, Image} from 'react-nat
 import React, { useLayoutEffect,useState, useEffect } from 'react'
 import ExpenseForm from '../components/ExpenseForm'
 import SaveCancelButtons from '../components/SaveCancelButtons';
-import { updateInDB } from '../firebase/firebaseHelper';
 import { isDataValid } from '../components/ValidateInput';
 import DeleteButton from '../components/DeleteButton';
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
+import { deletePhotoFromExpense, updateInDB } from '../firebase/firebaseHelper';
+import { uploadBytes } from "firebase/storage";
+
+
 
 
 
@@ -20,11 +23,33 @@ const EditAnExpense = ({ route,navigation }) => {
   const [formDate, setFormDate] = useState(new Date(date));
   const [formImageUri, setFormImageUri] = useState(photo);
 
+
+
+  async function fetchImage(uri) {
+    if (!uri) {
+      return null;
+    }
+    try{
+    const response = await fetch(uri);
+    const imageBlob = await response.blob();
+    const imageName = uri.substring(uri.lastIndexOf('/') + 1);
+    const imageRef = await ref(storage, `images/${imageName}`);
+    const uploadResult = await uploadBytes(imageRef, imageBlob);
+    const downloadURL = await getDownloadURL(uploadResult.ref);
+    // return(uploadResult.metadata.fullPath);
+    return(downloadURL);
+    }
+    catch(err) {
+      console.log('Error in fetchImage in EditAnExpense: ', err);
+    }
+
+  }
   
-  const onSave = (data) => {
+  const onSave = async(data) => {
     if (!isDataValid(data.amount, data.category, data.description, data.date)) {
       return;
     }
+
   
     Alert.alert(
       'Important',
@@ -37,21 +62,36 @@ const EditAnExpense = ({ route,navigation }) => {
         {
           text: 'Yes',
 
-          onPress: () => {
+          onPress: async() => {
+
+            try{
+              let newPhoto = null;
+              if (data.uri && data.uri !== photo) {
+                newPhoto = await fetchImage(data.uri);
+                if (photo) {
+                  deletePhotoFromExpense(photo);
+                }
+              }
+          
             const updatedExpense = {
               amount: parseFloat(data.amount),
               category: data.category,
               description: data.description,
               location: data.location,
               date: data.date,
-              photo: data.uri || formImageUri, 
+              photo: newPhoto || formImageUri,
             };
 
-            updateInDB(entryId, updatedExpense);
+            
+            await updateInDB(entryId, updatedExpense);
   
             navigation.goBack();
+          }
+          catch(err) {
+            console.log('Error in onSave in EditAnExpense: ', err);
+          }
           },
-        },
+          },
       ]
     );
   };
@@ -66,10 +106,9 @@ const EditAnExpense = ({ route,navigation }) => {
 
   
 
-    const onDeleteSuccess = () => {
-      
-        navigation.goBack();
-    };
+  const onDeleteSuccess = () => {
+    navigation.goBack();
+  };
 
 
     useEffect(() => {
@@ -82,7 +121,7 @@ const EditAnExpense = ({ route,navigation }) => {
         try {
           const reference = ref(storage, photo);
           const url = await getDownloadURL(reference);
-          setFormImageUri(url); // Assuming you want to set the fetched URL to formImageUri
+          setFormImageUri(url); 
         } catch (error) {
           console.error("Error fetching download URL:", error);
         }
@@ -97,9 +136,9 @@ const EditAnExpense = ({ route,navigation }) => {
           <DeleteButton entryId={entryId} onDeleteSuccess={onDeleteSuccess} />
         ),
       });
-    }, [navigation, onDeleteSuccess, photo]); // Add 'photo' as a dependency
+    }, [navigation, onDeleteSuccess, photo]); 
     
-      
+
 
 
 
@@ -117,7 +156,6 @@ const EditAnExpense = ({ route,navigation }) => {
         onImageTaken={onImageTaken}
       />
 
-      { photo && <Image source={{uri: photo}} style={{width: 100, height: 100}}/> }
       
       </View>
     );
@@ -129,7 +167,8 @@ const EditAnExpense = ({ route,navigation }) => {
     container:{
       flex: 1,
       justifyContent: 'center', 
-      alignItems: 'center'
+      alignItems: 'center',
+      marginBottom: 20,
     },
 })
   

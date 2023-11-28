@@ -25,7 +25,9 @@ const AddAnExpense = ({ navigation }) => {
     const imageName = uri.substring(uri.lastIndexOf('/') + 1);
     const imageRef = await ref(storage, `images/${imageName}`);
     const uploadResult = await uploadBytes(imageRef, imageBlob);
-    return(uploadResult.metadata.fullPath);
+    const downloadURL = await getDownloadURL(uploadResult.ref);
+    // return(uploadResult.metadata.fullPath);
+    return(downloadURL);
     }
     catch(err) {
       console.log(err);
@@ -64,9 +66,6 @@ const AddAnExpense = ({ navigation }) => {
   }
   
 
-  const onPhotoSelected = (photoURL) => {
-    setSelectedPhoto(photoURL); 
-  };
 
   const onCancel = () => {
     // Reset local state if needed

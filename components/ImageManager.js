@@ -1,13 +1,16 @@
 import { View, Text, Image } from 'react-native'
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import React from 'react'
 import * as ImagePicker from 'expo-image-picker';
 import PressableButton from './PressableButton';
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase/firebaseSetup";
 
+export default function ImageManager({onImageTaken, initialPhotoUri}) {
+    const [imageUri, setImageUri] = useState(initialPhotoUri);
 
-export default function ImageManager({onImageTaken}) {
-    const [imageUri, setImageUri] = useState(null);
-    
+    console.log("ImageManager: imageUri: ", imageUri);
+
     // take a new image with the camera
     const takeImageHandler = async () => {
         let permissionResult = await ImagePicker.getCameraPermissionsAsync();
@@ -63,6 +66,8 @@ export default function ImageManager({onImageTaken}) {
         }
     };
 
+    
+
   return (
     <View>
         
@@ -80,7 +85,12 @@ export default function ImageManager({onImageTaken}) {
             <Text>Select Image from Library</Text>
         </PressableButton>
 
-        {imageUri && <Image source={{uri: imageUri}} style={{width: 100, height: 100}}/> }
+        {imageUri ? (
+            <Image source={{ uri: imageUri }} style={{ width: 100, height: 100 }} />
+        ) : (
+            <Text>No Image Selected</Text>
+        )}
+
     </View>
   )
 }

@@ -70,6 +70,27 @@ export async function updateInBudgetsDB(entryId, updateEntry) {
 }
 // delete photo from storage
 export async function deletePhotoFromStorage(url) {
-  const photoRef = ref(storage, url); // Create a reference from the URL
-  await deleteObject(photoRef);
+  try {
+    const photoRef = ref(storage, url);
+    await deleteObject(photoRef);
+    console.log('Deleted in storage');
+  } catch (err) {
+    console.log('Error in deleting photo from storage: ', err);
+  }
 };
+
+
+// delete photo from an expense
+export async function deletePhotoFromExpense(url, entryId) {
+  try {
+    const photoRef = ref(storage, url);
+    await deleteObject(photoRef);
+    
+    const entryRef = doc(database, 'Expenses', entryId);
+    await setDoc(entryRef, {photo: null}, { merge: true });
+    console.log('Deleted');
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
