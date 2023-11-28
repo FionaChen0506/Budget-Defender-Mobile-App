@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Image} from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image, ScrollView} from 'react-native'
 import React, { useLayoutEffect,useState, useEffect } from 'react'
 import ExpenseForm from '../components/ExpenseForm'
 import SaveCancelButtons from '../components/SaveCancelButtons';
@@ -143,7 +143,7 @@ const EditAnExpense = ({ route,navigation }) => {
 
 
     return (
-      <View style={styles.container}>
+      <ScrollView>
       <ExpenseForm
         initialAmount={formAmount}
         initialCategory={formCategory}
@@ -157,7 +157,7 @@ const EditAnExpense = ({ route,navigation }) => {
       />
 
       
-      </View>
+      </ScrollView>
     );
   };
   
