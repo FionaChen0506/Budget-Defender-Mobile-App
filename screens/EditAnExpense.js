@@ -4,10 +4,10 @@ import ExpenseForm from '../components/ExpenseForm'
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { isDataValid } from '../components/ValidateInput';
 import DeleteButton from '../components/DeleteButton';
-import { ref, getDownloadURL } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
 import { deletePhotoFromExpense, updateInDB } from '../firebase/firebaseHelper';
-import { uploadBytes } from "firebase/storage";
+import { uploadBytes} from "firebase/storage";
 
 
 
@@ -34,7 +34,7 @@ const EditAnExpense = ({ route,navigation }) => {
     const imageBlob = await response.blob();
     const imageName = uri.substring(uri.lastIndexOf('/') + 1);
     const imageRef = await ref(storage, `images/${imageName}`);
-    const uploadResult = await uploadBytes(imageRef, imageBlob);
+    const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
     const downloadURL = await getDownloadURL(uploadResult.ref);
     // return(uploadResult.metadata.fullPath);
     return(downloadURL);

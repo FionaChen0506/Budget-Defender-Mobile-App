@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text,StyleSheet } from 'react-native';
+import { View, Text,StyleSheet, ScrollView } from 'react-native';
 import ExpenseForm from '../components/ExpenseForm';
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { isDataValid } from '../components/ValidateInput';
@@ -24,7 +24,7 @@ const AddAnExpense = ({ navigation }) => {
     const imageBlob = await response.blob();
     const imageName = uri.substring(uri.lastIndexOf('/') + 1);
     const imageRef = await ref(storage, `images/${imageName}`);
-    const uploadResult = await uploadBytes(imageRef, imageBlob);
+    const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
     const downloadURL = await getDownloadURL(uploadResult.ref);
     // return(uploadResult.metadata.fullPath);
     return(downloadURL);
@@ -89,7 +89,7 @@ const AddAnExpense = ({ navigation }) => {
   
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
     
 
     <ExpenseForm
@@ -105,7 +105,7 @@ const AddAnExpense = ({ navigation }) => {
       />
 
 
-    </View>
+    </ScrollView>
   );
 };
 
