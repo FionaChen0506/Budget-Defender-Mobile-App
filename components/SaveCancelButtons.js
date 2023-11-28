@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         //marginTop:'5%',
         marginBottom: '10%',
         width:'90%',
+        alignSelf:'center',
       },
       buttonDefault: {
         backgroundColor: Colors.buttonBackground,
