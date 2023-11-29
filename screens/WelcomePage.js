@@ -30,7 +30,7 @@ export default function WelcomePage({ navigation }) {
           <Text style={styles.title}>Ignite Your Savings!</Text>
 
           <View style={styles.button}>
-          <TouchableOpacity onPress={()=>navigation.navigate('Signup')}>
+          <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
               <LinearGradient
                   colors={['#A6CF98', '#309797']}
                   style={styles.signIn}
@@ -62,15 +62,15 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#2B2A4C',
+    color: 'white',
     position: 'absolute',
     top: '20%',
     textAlign: 'center',
     left: 0,
     right: 0,
-    textShadowColor: '#FEFAE0', 
-    textShadowOffset: {width: 0, height: 0},
-    textShadowRadius: 10,
+    // textShadowColor: '#FEFAE0', 
+    // textShadowOffset: {width: 0, height: 0},
+    // textShadowRadius: 10,
   },
   logo: {
     width: 250, 
