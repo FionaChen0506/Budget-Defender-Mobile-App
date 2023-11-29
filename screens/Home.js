@@ -53,7 +53,7 @@ const Home = () => {
           pressedStyle={styles.toolButtonPressed}
           defaultStyle={styles.toolButtonDefault}
         >
-          <Text>Need a currency conversion? Click here!</Text>
+          <Text style={styles.toolButtonText}>Need a currency conversion? Click here!</Text>
         </PressableButton>
 
       <EntriesList navigation={navigation} />
@@ -104,15 +104,19 @@ const styles = StyleSheet.create({
   toolButtonPressed: {
     backgroundColor: 'grey', 
     marginHorizontal: 10,
-    width:'70%',
+    width:'60%',
     padding: 6,
     //alignItems: 'center',
   },
   toolButtonDefault: {
     backgroundColor: Colors.entryBackground,
     marginHorizontal: 10,
-    width:'70%',
+    width:'60%',
     padding: 6,
     //alignItems: 'center',
+  },
+  toolButtonText: {
+    color:'blue',
+    fontSize: 16,
   },
 })
