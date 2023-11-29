@@ -102,7 +102,7 @@ export default function Signup({navigation}) {
             </PressableButton>
 
             <PressableButton
-                pressedFunction={() => navigation.navigate('Signup')}
+                pressedFunction={() => navigation.navigate('Login')}
                 pressedStyle={styles.buttonSignupPressed}
                 defaultStyle={styles.buttonSignupDefault}
                 >
