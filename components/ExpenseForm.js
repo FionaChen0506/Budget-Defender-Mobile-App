@@ -144,12 +144,14 @@ const ExpenseForm = ({
 
         <View style={styles.formField}>
           <Text style={styles.labelText}>Location</Text>
+          <View style={styles.rowContainer}>
           <TextInput
             style={styles.inputField}
             onChangeText={onLocationChange}
             value={location}
           />
           <LocationManager />
+          </View>
         </View>
 
         <View style={styles.formField}>

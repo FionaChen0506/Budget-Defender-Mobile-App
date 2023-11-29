@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import * as Location from "expo-location";
 import { MAPS_API_KEY } from "@env";
 import { useNavigation } from "@react-navigation/native";
+import PressableButton from "./PressableButton";
+import { Entypo } from '@expo/vector-icons';
+
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -27,24 +30,39 @@ export default function LocationManager() {
       }
       const locationObject = await Location.getCurrentPositionAsync();
 
-      setLocation({
-        latitude: locationObject.coords.latitude,
-        longitude: locationObject.coords.longitude,
-      });
+    //   setLocation({
+    //     latitude: locationObject.coords.latitude,
+    //     longitude: locationObject.coords.longitude,
+    //   });
+    //   console.log("locationObject: ", locationObject);
+    //   console.log("location: ", location);
+      // navigate to SelectLocation screen and pass the location object
+        navigation.navigate("Location", {
+            currentLatitude: locationObject.coords.latitude,
+            currentLongitude: locationObject.coords.longitude,
+        });
     } catch (err) {
       console.log("locate user ", err);
     }
   }
 
-  const chooseLocationHandler = () => {
-    navigation.navigate("Location");
-  };
+//   const chooseLocationHandler = () => {
+//     navigation.navigate("Location");
+//   };
 
   return (
     <View>
-      <Button title="Locate Me!" onPress={locateMeHandler} />
+      {/* <Button title="Locate Me!" onPress={locateMeHandler} /> */}
 
-      <Button
+      <PressableButton
+        pressedFunction={locateMeHandler}
+        pressedStyle={{ backgroundColor: "#ccc" }}
+        defaultStyle={{ backgroundColor: "#eee" }}
+        >
+            <Entypo name="location" size={24} color="black" />
+        </PressableButton>
+
+      {/* <Button
         title="Let me choose on the map"
         onPress={chooseLocationHandler}
       />
@@ -56,7 +74,7 @@ export default function LocationManager() {
           }}
           style={styles.image}
         />
-      )}
+      )} */}
     </View>
   );
 }
