@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import EditBudgetLimit from '../components/EditBudgetLimit'
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity,StyleSheet } from 'react-native';
 import { query,collection,where, getDocs } from 'firebase/firestore';
 import { database,auth } from "../firebase/firebaseSetup";
 import { updateInBudgetsDB } from '../firebase/firebaseHelper';
+import { MaterialIcons } from '@expo/vector-icons';
+import Colors from '../styles/Colors';
 
 const Profile = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -51,9 +53,14 @@ const getBudgetEntryId = async (userUid) => {
     <View>
       <Text>{auth.currentUser.email}</Text>
       <Text>{userUid}</Text>
-      <TouchableOpacity onPress={() => setIsModalVisible(true)}>
-        <Text style={{ color: 'blue' }}>Edit Budget Limit</Text>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity 
+        onPress={() => setIsModalVisible(true)} 
+        style={styles.EditLimitContainer}>
+          <Text style={styles.EditLimitText}>Edit My Budget Limit</Text>
+          <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
+        </TouchableOpacity>
+      </View>
 
       <EditBudgetLimit
         isVisible={isModalVisible}
@@ -65,3 +72,26 @@ const getBudgetEntryId = async (userUid) => {
 };
 
 export default Profile;
+
+
+const styles = StyleSheet.create({
+  EditLimitContainer: {
+    flexDirection: 'row',
+    backgroundColor: Colors.entryBackground, 
+    padding: 5,
+    width: "95%",
+    justifyContent: 'space-between',
+    borderRadius: 8,
+    shadowColor: 'gray',
+    shadowOffset: { width: 0, height: 1 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 3, 
+    elevation: 4,
+  },
+  EditLimitText: {
+    color: 'black',
+    fontSize: 20,
+    //fontWeight: 'bold',
+    //marginBottom: 10,
+  },
+});
