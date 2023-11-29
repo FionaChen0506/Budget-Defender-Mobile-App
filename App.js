@@ -20,6 +20,7 @@ import EditAnExpense from './screens/EditAnExpense';
 import ExportReports from './screens/ExportReports';
 import EditProfile from './screens/EditProfile';
 import SelectLocation from './screens/SelectLocation';
+import CurrencyExchangeTool from './screens/CurrencyExchangeTool';
 
 import BottomTabBar from './components/BottomTabBar';
 import Colors from './styles/Colors';
@@ -188,6 +189,14 @@ const AppStack =
     <Stack.Screen
       name="Edit Profile"
       component={EditProfile}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
+    <Stack.Screen
+      name="Currency Exchange Tool"
+      component={CurrencyExchangeTool}
       options={{ 
         headerShown: true,
         }}

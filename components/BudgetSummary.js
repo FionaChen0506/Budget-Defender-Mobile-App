@@ -44,7 +44,7 @@ const BudgetSummary = ({selectedMonth}) => {
     return (
         <View style={styles.container}>
             <View style={styles.row1Container}>
-            <Text style={styles.monthText}>{selectedMonth}</Text>
+            {/* <Text style={styles.monthText}>{selectedMonth}</Text> */}
             </View>
             <Text style={styles.spendingText}>Spending:</Text>
             <Text style={styles.spendingText}>${spending.toFixed(2)}</Text>
