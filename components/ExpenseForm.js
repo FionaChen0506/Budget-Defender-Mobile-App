@@ -15,6 +15,7 @@ import defaultCategories from './DefaultCategories';
 import getIconName from './CategoryIcons';
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { deletePhotoFromExpense } from '../firebase/firebaseHelper';
+import LocationManager from './LocationManager';
 
 
 const ExpenseForm = ({
@@ -148,6 +149,7 @@ const ExpenseForm = ({
             onChangeText={onLocationChange}
             value={location}
           />
+          <LocationManager />
         </View>
 
         <View style={styles.formField}>

@@ -19,6 +19,7 @@ import AddAnExpense from './screens/AddAnExpense';
 import EditAnExpense from './screens/EditAnExpense';
 import ExportReports from './screens/ExportReports';
 import EditProfile from './screens/EditProfile';
+import SelectLocation from './screens/SelectLocation';
 
 import BottomTabBar from './components/BottomTabBar';
 import Colors from './styles/Colors';
@@ -173,6 +174,8 @@ const AppStack =
         headerShown: true,
         }} 
     />
+
+    <Stack.Screen name="Location" component={SelectLocation} />
 
     <Stack.Screen
       name="Export Reports"
