@@ -1,13 +1,20 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Dimensions, Input } from 'react-native'
 import React from 'react'
 import MapView from "react-native-maps";
 import { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import * as Location from "expo-location";
-import { MAPS_API_KEY } from "@env";
+import { MAPS_API_KEY, PLACES_API_KEY } from "@env";
 import { useNavigation } from "@react-navigation/native";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Ionicons } from '@expo/vector-icons';
 
+// map view dimensions
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+const ASPECT_RATIO = windowWidth / windowHeight;
+const LATITUDE_DELTA = 0.02;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-// const windowWidth = Dimensions.get("window").width;
 
 
 export default function SelectLocation({route, navigation}) {
@@ -17,7 +24,7 @@ export default function SelectLocation({route, navigation}) {
     const starMarker = require('../images/markers/star.png');
     const redMarker = require('../images/markers/red.png');
 
-
+    // get user's current location
     const {currentLatitude, currentLongitude} = route.params;
     // console.log("currentLatitude: ", currentLatitude);
     // console.log("currentLongitude: ", currentLongitude);
@@ -25,14 +32,40 @@ export default function SelectLocation({route, navigation}) {
 
   return (
     <View style={styles.container}>
+      
+      <View style={styles.searchBox}>
+
+        <GooglePlacesAutocomplete
+        placeholder='Search a Place'
+        fetchDetails={true}
+        debounce={1000}
+        onPress={(data, details = null) => {
+          // 'details' is provided when fetchDetails = true
+          console.log(data, details);
+        }}
+
+        query={{
+          key: PLACES_API_KEY,
+          language: 'en',
+          // only show nearby results
+          // components: 'country:ca',
+          location: `${currentLatitude},${currentLongitude}`,
+          radius: 10000,
+        }}
+        
+        onFail={(error) => console.error('Error using GooglePlacesAutocomplete: ', error)}
+      />
+      <Ionicons name="search" size={24} color="gray" />
+    </View>
+
     <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={{
             latitude: currentLatitude,
             longitude: currentLongitude,
-            latitudeDelta: 0.03,
-            longitudeDelta: 0.03,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
         }}
     >
         <Marker 
@@ -74,15 +107,32 @@ export default function SelectLocation({route, navigation}) {
 
 const styles = StyleSheet.create({
     container: {
-      ...StyleSheet.absoluteFillObject,
+      // ...StyleSheet.absoluteFillObject,
       flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
+      // justifyContent: "center",
+      // alignItems: "center",
     },
-
+    searchBox: {
+      zIndex:1, 
+      flex: 0.5,
+      // flexDirection: 'row',
+      // alignItems: 'center',
+      // justifyContent: 'center',
+      // position: 'absolute', 
+      // width: '90%',
+      // top: '5%', 
+      // paddingRight: 10, 
+      // height: 60, 
+      // backgroundColor: 'white',
+      // borderRadius: 10,
+      // borderWidth: 1.5,
+      // borderColor: 'gray',
+    },
     map: {
-      height: '100%',
-      width: '100%',
+      ...StyleSheet.absoluteFillObject,
+      zIndex:0,
+      // height: '100%',
+      // width: '100%',
     },
 
     bubble: {

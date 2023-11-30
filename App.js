@@ -176,7 +176,16 @@ const AppStack =
         }} 
     />
 
-    <Stack.Screen name="Location" component={SelectLocation} />
+    <Stack.Screen 
+      name="Location" 
+      component={SelectLocation} 
+      options={{ 
+        headerShown: true,
+        // don't show the header back button's text
+        headerBackTitleVisible: false,
+
+        }} 
+      />
 
     <Stack.Screen
       name="Export Reports"
