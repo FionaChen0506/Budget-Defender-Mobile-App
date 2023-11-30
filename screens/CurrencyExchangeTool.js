@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
+import PressableButton from '../components/PressableButton';
 import{REACT_APP_BASE_API_URL,} from "@env";
+import Colors from '../styles/Colors';
 
 const CurrencyExchangeTool = () => {
     const [amount, setAmount] = useState('');
-    const [fromCurrency, setFromCurrency] = useState('USD');
-    // Set the initial state of 'toCurrency' to 'CAD'
+    const [fromCurrency, setFromCurrency] = useState('CAD');
     const [toCurrency, setToCurrency] = useState('CAD');
     const [result, setResult] = useState('');
 
@@ -37,6 +38,18 @@ const CurrencyExchangeTool = () => {
     }, []);
   
     const convertCurrency = async () => {
+      if (!amount || isNaN(amount)) {
+        // Check if the amount is not entered or not a valid numeric number
+        alert('Please enter a valid numeric amount.');
+        return;
+      }
+  
+      if (!fromCurrency || !toCurrency) {
+        // Check if both "from currency" and "to currency" are selected
+        alert('Please choose both "from currency" and "to currency" fields.');
+        return;
+      }
+
       try {
         const response = await axios.get(`${apiUrl}/${fromCurrency}`);
         const exchangeRate = response.data.rates[toCurrency];
@@ -68,8 +81,16 @@ const CurrencyExchangeTool = () => {
           onValueChange={(value) => setToCurrency(value)}
           items={currencyList.map((currency) => ({ label: currency, value: currency }))}
         />
-        <Button title="Convert" onPress={convertCurrency} />
-        <Text>{result}</Text>
+        <View style={styles.buttonContainer}>
+          <PressableButton
+            pressedFunction={convertCurrency}
+            pressedStyle={styles.buttonPressed}
+            defaultStyle={styles.buttonDefault}
+          >
+            <Text style={styles.buttonText}>Convert</Text>
+          </PressableButton>
+        </View>
+        <Text style={styles.resultText}>{result}</Text>
       </View>
     );
   };
@@ -86,6 +107,36 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       marginBottom: 10,
       paddingHorizontal: 10,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginVertical: '5%',
+    },
+    buttonDefault: {
+      backgroundColor: Colors.buttonBackground,
+      opacity: 1,
+      borderRadius: 4,
+      padding: 5,
+      width:'35%',
+      justifyContent: 'center',
+      alignItems:'center',
+    },
+    buttonPressed: {
+      backgroundColor: '#aaa',
+      opacity: 0.5,
+      borderRadius: 4,
+      padding: 5,
+      width:'35%',
+      justifyContent: 'center',
+      alignItems:'center',
+    },
+    buttonText: {
+      color: 'white', 
+      fontSize: 17,
+    },
+    resultText: {
+      fontSize: 17,
     },
   });
   
