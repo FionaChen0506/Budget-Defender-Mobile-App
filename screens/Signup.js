@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseSetup';
 import PressableButton from '../components/PressableButton';
+import { writeToBudgetsDB } from '../firebase/firebaseHelper';
+import * as Animatable from 'react-native-animatable';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function Signup({navigation}) {
     const [email, setEmail] = useState("");
@@ -26,6 +29,13 @@ export default function Signup({navigation}) {
         }
         try {
             const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            // Create a new budget entry for the user
+            const newBudgetEntry = {
+                limit: 0.00, // Set the limit to 0.00 as a float
+            };
+        
+            // Write the new budget entry to the Budgets collection
+            await writeToBudgetsDB(newBudgetEntry);
             console.log(userCred);
         } catch (error) {
             if (error.code === "auth/invalid-email") {
@@ -46,6 +56,16 @@ export default function Signup({navigation}) {
 
   return (
     <View style = {styles.container}>
+        <View style={styles.header}>
+            <FontAwesome5 name="laugh-wink" size={30} color="white" />
+            <Text style={styles.text_header}>Welcome!</Text>
+        </View>
+
+        <Animatable.View 
+            animation="fadeInUpBig"
+            style={styles.footer}
+        >
+
             <Text style={styles.label}>Email</Text>
             <TextInput 
                 style={styles.input}
@@ -75,58 +95,115 @@ export default function Signup({navigation}) {
 
             <PressableButton
                 pressedFunction={signupHandler}
-                pressedStyle={styles.button}
-                defaultStyle={styles.button}
+                pressedStyle={styles.buttonLoginPressed}
+                defaultStyle={styles.buttonLoginDefault}
                 >
-                <Text style={styles.buttonText}>Register</Text>
+                <Text style={styles.buttonLoginText}>Sign Up</Text>
             </PressableButton>
 
             <PressableButton
-                pressedFunction={loginHandler}
-                pressedStyle={styles.button}
-                defaultStyle={styles.button}
+                pressedFunction={() => navigation.navigate('Login')}
+                pressedStyle={styles.buttonSignupPressed}
+                defaultStyle={styles.buttonSignupDefault}
                 >
-                <Text style={styles.buttonText}>Already registered? Login</Text>
+                <Text style={styles.buttonSignupText}>Log In</Text>
             </PressableButton>
+        </Animatable.View>
         </View>
   )
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5', 
-},
-input: {
-    height: 50,
-    width: '80%',
-    margin: 12,
-    borderWidth: 1,
-    borderColor: '#309797',
-    borderRadius: 5,
-    padding: 10,
-    fontSize: 16,
-},
-label: {
-  color: '#333',
-  alignSelf: 'flex-start',
-  marginLeft: '10%',
-  fontWeight: 'bold',
-  marginTop: 10,
-},
-button: {
+    container: {
+        flex: 1, 
+        backgroundColor: '#309797'
+      },
+      header: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingHorizontal: 20,
+        paddingBottom: 50,
+        alignItems: 'center',
+    },
+    footer: {
+        flex: 4,
+        backgroundColor: '#F2FFE9',
+        alignItems: 'center',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        paddingHorizontal: 10,
+        paddingVertical: 30
+    },
+    text_header: {
+        marginLeft: '5%',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 30
+    },
+    input: {
+        height: 50,
+        width: '80%',
+        margin: 12,
+        borderWidth: 1,
+        borderColor: '#309797',
+        borderRadius: 5,
+        padding: 10,
+    },
+    label: {
+        color: '#2B2A4C',
+        alignSelf: 'flex-start',
+        marginLeft: '10%',
+        fontWeight: 'bold',
+        marginTop: 5,
+        fontSize: 20,
+    },
+buttonLoginDefault: {
     backgroundColor: '#309797',
     width: '80%',
-    padding: 15,
+    padding: 10,
     alignItems: 'center',
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: 20,
 },
-buttonText: {
+buttonLoginPressed: {
+    backgroundColor: '#309797',
+    width: '80%',
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginTop: 20,
+    opacity: 0.5,
+},
+buttonSignupDefault: {
+    backgroundColor: '#F2FFE9',
+    borderWidth: 2,
+    borderColor: '#309797',
+    width: '80%',
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginTop: 20,
+},
+buttonSignupPressed: {
+    backgroundColor: '#F2FFE9',
+    borderWidth: 2,
+    borderColor: '#309797',
+    width: '80%',
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginTop: 20,
+    opacity: 0.5,
+},
+buttonLoginText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 20,
+},
+buttonSignupText: {
+    color: '#309797',
+    fontWeight: 'bold',
+    fontSize: 20,
 },
 });

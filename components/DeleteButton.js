@@ -3,6 +3,12 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import PressableButton from './PressableButton';
 import { deleteFromDB } from '../firebase/firebaseHelper';
+import { deleteObject, ref } from "firebase/storage"; 
+import { storage } from "../firebase/firebaseSetup";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { firestore } from "../firebase/firebaseSetup";
+
+
 
 const DeleteButton = ({ entryId, onDeleteSuccess }) => {
     const handleDelete = () => {
@@ -29,6 +35,7 @@ const DeleteButton = ({ entryId, onDeleteSuccess }) => {
         { cancelable: false }
       );
     };
+
   
     return (
       <PressableButton

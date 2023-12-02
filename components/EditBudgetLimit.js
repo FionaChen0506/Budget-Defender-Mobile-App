@@ -1,81 +1,74 @@
-
-import { View, Text, TextInput, Button, Modal } from 'react-native';
+import { View, Text, TextInput, Button, Modal,StyleSheet } from 'react-native';
 import { database,auth } from "../firebase/firebaseSetup";
-import { updateBudgetForUser } from '../firebase/firebaseHelper';
-import { writeToBudgetsDB } from '../firebase/firebaseHelper';
 import { useEffect } from 'react';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import React, { useLayoutEffect,useState } from 'react'
 
-//NOT DONE
-const EditBudgetLimit = ({route}) => {
-    const userUid = auth.currentUser.uid;
-    const { entryId, budget} = route.params;
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [budgetLimit, setBudgetLimit] = useState(''); // Using string for TextInput value
-  
-    useEffect(() => {
-        const unsubscribe = onSnapshot(
-            query(collection(database, 'Budgets'), where('user', '==', userUid)),
-            (querySnapshot) => {
-              querySnapshot.forEach((doc) => {
-                const userBudget = doc.data().budget || 0;
-                setBudgetLimit(userBudget.toString());
-              });
-            }
-          );
-      
-          // Clean up the subscription when the component unmounts
-          return () => {
-            unsubscribe();
-          };
-    }, [userUid]);
-  
-    const toggleModal = () => {
-      setIsModalVisible(!isModalVisible);
-    };
-  
-    const handleSave = () => {
-      // Call updateBudgetForUser to update the budget
-    
-      console.log('New Budget Limit:', parseFloat(budgetLimit));
-      const updatedEntry = {
-        budget: parseFloat(),
-        category:editedCategory,
-        description: editedDescription,
-        date: editedDate,
-      };
+const EditBudgetLimit = ({ isVisible, onClose, onSave }) => {
+  const [newBudgetLimit, setNewBudgetLimit] = useState('');
 
-      // Call the updateInDB function to update the entry
-      updateInDB(entryId, updatedEntry);
-  
-      // Close the modal
-      toggleModal();
-    };
+  const handleUpdate = () => {
+    // Validate the new budget limit
+    if (!newBudgetLimit || isNaN(parseFloat(newBudgetLimit)) || parseFloat(newBudgetLimit) <= 0) {
+      alert('Please enter a valid budget limit greater than 0.');
+      return;
+    }
+
+    // Call the onSave function to update the budget limit
+    onSave(parseFloat(newBudgetLimit));
+
+    // Close the modal
+    onClose();
+  };
+
   return (
-    <View>
-      <Text onPress={toggleModal}>Budget: $500</Text>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={toggleModal}
-      >
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ width: 300, padding: 20, backgroundColor: 'white', borderRadius: 10 }}>
-            <Text>Set Your Budget Limit</Text>
-            <TextInput
-              placeholder="Enter your budget"
-              keyboardType="numeric"
-              value={budgetLimit}
-              onChangeText={(text) => setBudgetLimit(text)}
-            />
-            <Button title="OK" onPress={handleSave} />
-          </View>
+    <Modal
+      visible={isVisible}
+      animationType="slide"
+      transparent={true}
+    >
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.title}>Set Your Budget Limit:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter new budget limit"
+            keyboardType="numeric"
+            value={newBudgetLimit}
+            onChangeText={setNewBudgetLimit}
+          />
+          <Button title="OK" onPress={handleUpdate} />
+          <Button title="Cancel" onPress={onClose} />
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+    width: '80%',
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+});
 
 export default EditBudgetLimit;

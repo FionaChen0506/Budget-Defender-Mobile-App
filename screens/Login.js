@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseSetup';
 import PressableButton from '../components/PressableButton';
+import * as Animatable from 'react-native-animatable';
+import { FontAwesome5 } from '@expo/vector-icons';
+
 
 export default function Login({navigation}) {
     const [email, setEmail] = useState("");
@@ -37,6 +40,15 @@ export default function Login({navigation}) {
     
   return (
     <View style = {styles.container}>
+        <View style={styles.header}>
+        <FontAwesome5 name="laugh-beam" size={30} color="white" />
+            <Text style={styles.text_header}>Welcome!</Text>
+        </View>
+        <Animatable.View 
+            animation="fadeInUpBig"
+            style={styles.footer}
+        >
+
             <Text style={styles.label}>Email</Text>
             <TextInput 
                 style={styles.input}
@@ -45,6 +57,7 @@ export default function Login({navigation}) {
                 placeholder='Email'
                 placeholderTextColor="#aaa"
             />
+            
             <Text style={styles.label}>Password</Text>
             <TextInput 
                 style={styles.input}   
@@ -57,29 +70,50 @@ export default function Login({navigation}) {
 
             <PressableButton
                 pressedFunction={loginHandler}
-                pressedStyle={styles.button}
-                defaultStyle={styles.button}
+                pressedStyle={styles.buttonLoginPressed}
+                defaultStyle={styles.buttonLoginDefault}
                 >
-                <Text style={styles.buttonText}>Login</Text>
+                <Text style={styles.buttonLoginText}>Log In</Text>
             </PressableButton>
 
             <PressableButton
                 pressedFunction={() => navigation.navigate('Signup')}
-                pressedStyle={styles.button}
-                defaultStyle={styles.button}
+                pressedStyle={styles.buttonSignupPressed}
+                defaultStyle={styles.buttonSignupDefault}
                 >
-                <Text style={styles.buttonText}>New user? Create an account</Text>
+                <Text style={styles.buttonSignupText}>New user? Create an account</Text>
             </PressableButton>
+        </Animatable.View>
         </View>
   )
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1, 
+        backgroundColor: '#309797'
+      },
+      header: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
+        paddingHorizontal: 20,
+        paddingBottom: 50,
         alignItems: 'center',
-        backgroundColor: '#f5f5f5', 
+    },
+    footer: {
+        flex: 3,
+        backgroundColor: '#F2FFE9',
+        alignItems: 'center',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        paddingHorizontal: 10,
+        paddingVertical: 30
+    },
+    text_header: {
+        marginLeft: '5%',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 30
     },
     input: {
         height: 50,
@@ -91,22 +125,59 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     label: {
-        color: '#333',
+        color: '#2B2A4C',
         alignSelf: 'flex-start',
         marginLeft: '10%',
         fontWeight: 'bold',
         marginTop: 10,
+        fontSize: 20,
     },
-    button: {
+    buttonLoginDefault: {
         backgroundColor: '#309797',
         width: '80%',
-        padding: 15,
+        padding: 10,
         alignItems: 'center',
         borderRadius: 5,
-        marginTop: 15,
+        marginTop: 30,
     },
-    buttonText: {
+    buttonLoginPressed: {
+        backgroundColor: '#309797',
+        width: '80%',
+        padding: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 30,
+        opacity: 0.5,
+    },
+    buttonSignupDefault: {
+        backgroundColor: '#F2FFE9',
+        borderWidth: 2,
+        borderColor: '#309797',
+        width: '80%',
+        padding: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 30,
+    },
+    buttonSignupPressed: {
+        backgroundColor: '#F2FFE9',
+        borderWidth: 2,
+        borderColor: '#309797',
+        width: '80%',
+        padding: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 30,
+        opacity: 0.5,
+    },
+    buttonLoginText: {
         color: '#fff',
         fontWeight: 'bold',
+        fontSize: 20,
+    },
+    buttonSignupText: {
+        color: '#309797',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
 });

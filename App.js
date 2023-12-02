@@ -19,6 +19,8 @@ import AddAnExpense from './screens/AddAnExpense';
 import EditAnExpense from './screens/EditAnExpense';
 import ExportReports from './screens/ExportReports';
 import EditProfile from './screens/EditProfile';
+import SelectLocation from './screens/SelectLocation';
+import CurrencyExchangeTool from './screens/CurrencyExchangeTool';
 
 import BottomTabBar from './components/BottomTabBar';
 import Colors from './styles/Colors';
@@ -116,6 +118,21 @@ function TabNavigator() {
         })}
       />
 
+<Tab.Screen 
+        name="Currency Exchange Tool" 
+        component={CurrencyExchangeTool}
+        options={({ navigation }) => ({
+          headerStyle: {
+            backgroundColor: Colors.header,
+          },
+          headerTintColor: Colors.headerText,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          }
+        })}
+      />
+
       <Tab.Screen 
         name="Profile" 
         component={Profile}
@@ -146,6 +163,7 @@ function TabNavigator() {
           }
         })}
       />
+      
     </Tab.Navigator>
   );
 }
@@ -174,6 +192,17 @@ const AppStack =
         }} 
     />
 
+    <Stack.Screen 
+      name="Location" 
+      component={SelectLocation} 
+      options={{ 
+        headerShown: true,
+        // don't show the header back button's text
+        headerBackTitleVisible: false,
+
+        }} 
+      />
+
     <Stack.Screen
       name="Export Reports"
       component={ExportReports}
@@ -185,6 +214,14 @@ const AppStack =
     <Stack.Screen
       name="Edit Profile"
       component={EditProfile}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
+    <Stack.Screen
+      name="Currency Exchange Tool"
+      component={CurrencyExchangeTool}
       options={{ 
         headerShown: true,
         }}

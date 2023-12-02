@@ -13,83 +13,57 @@ import { auth, database, storage } from "../firebase/firebaseSetup"
 import { ref, uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import defaultCategories from './DefaultCategories';
 import getIconName from './CategoryIcons';
+import SaveCancelButtons from '../components/SaveCancelButtons';
+import { deletePhotoFromExpense } from '../firebase/firebaseHelper';
+import LocationManager from './LocationManager';
+
 
 const ExpenseForm = ({
-    amount,
-    category,
-    description,
-    location,
-    date,
-    //selectedPhoto,
-    onAmountChange,
-    onCategoryChange,
-    onDescriptionChange,
-    onLocationChange,
-    onDateChange,
-    //onSelectPhoto,
-  }) => {
+  initialAmount = '',
+    initialCategory = '',
+    initialDescription = '',
+    initialLocation = '',
+    initialDate = new Date(),
+    initialImageUri = null,
+    categories = defaultCategories,
+    onSave,
+    onCancel,
+    onImageTaken,
+}) => {
+  const [amount, setAmount] = useState(initialAmount);
+  const [category, setCategory] = useState(initialCategory);
+  const [description, setDescription] = useState(initialDescription);
+  const [location, setLocation] = useState(initialLocation);
+  const [date, setDate] = useState(initialDate);
+  const [imageUri, setImageUri] = useState(initialImageUri);
 
+    
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
-    // Use the provided date if available, otherwise default to a new Date()
     const [selectedDate, setSelectedDate] = useState(date || new Date()); 
-    //const [takenImageUri, setTakenImageUri] = useState("");
-    const [selectedPhoto, setSelectedPhoto] = useState(null);
 
-    // const handleImageTaken = (uri) => {
-    //     setSelectedPhoto(uri);
-    //     console.log('Image URI in ExpenseForm:', uri);
-    // };
-  
-    const handleImageTaken = async (uri) => {
-        try {
-          setSelectedPhoto(uri);
-          console.log('Image URI in ExpenseForm:', uri);
-    
-          if (uri) {
-            // If a photo is selected, upload it to storage and get the download URL
-            const photoURL = await uploadImageToStorage(uri);
-            console.log('Download URL:', photoURL);
-          }
-        } catch (error) {
-          console.error('Error handling image:', error);
-        }
-      };
-    
-    //   async function uploadImageToStorage(uri) {
-    //     try {
-    //       const response = await fetch(uri);
-    //       const imageBlob = await response.blob();
-    //       const imageName = uri.substring(uri.lastIndexOf('/') + 1);
-    //       const imageRef = storage.ref().child(`images/${imageName}`);
-    
-    //       // Upload the image
-    //       await imageRef.put(imageBlob);
-    
-    //       // Get the URL of the uploaded image
-    //       const downloadURL = await imageRef.getDownloadURL();
-    
-    //       return downloadURL;
-    //     } catch (error) {
-    //       console.error('Error uploading image:', error);
-    //       throw error;
-    //     }
-    //   }
-    async function uploadImageToStorage(uri) {
-        try {
-          const response = await fetch(uri);
-          const imageBlob = await response.blob();
-          const imageName = uri.substring(uri.lastIndexOf("/") + 1);
-          const imageRef = await ref(storage, `images/${imageName}`);
-          const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
-          const downloadURL = await imageRef.getDownloadURL();
-          //return uploadResult.metadata.fullPath;
-          return downloadURL
-        } catch (err) {
-          console.log(err);
-        }
-      }
+
+    function onAmountChange(inputAmount) {
+        setAmount(inputAmount);
+    }
+
+    function onCategoryChange(inputCategory) {
+        setCategory(inputCategory);
+    }
+
+    function onDescriptionChange(inputDescription) {
+        setDescription(inputDescription);
+    }
+
+    function onLocationChange(inputLocation) {
+
+        setLocation(inputLocation);
+    }
+
+    function onDateChange(inputDate) {
+        setDate(inputDate);
+    }
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -98,8 +72,10 @@ const ExpenseForm = ({
       const hideDatePicker = () => {
         setDatePickerVisibility(false);
       };
+
+
     
-      const handleConfirm = (selectedDate) => {
+      const confirmDate = (selectedDate) => {
         const currentDate = new Date();
         // Check if the selected date is not after today
         if (selectedDate.getTime() > currentDate.getTime()) {
@@ -107,10 +83,26 @@ const ExpenseForm = ({
           return;
         }
         hideDatePicker();
-        onDateChange(selectedDate);
         setSelectedDate(selectedDate);
+        onDateChange(selectedDate);
       };      
-    
+
+      // function confirmHandler() {
+      //   changeHandler({amount: amount, category: category, description: description, location: location, date: date, uri: imageUri});
+      // } 
+      function confirmHandler() {
+        onSave({ amount, category, description, location, date, uri: imageUri });
+      }
+      
+      function getImageUri(uri) {
+        setImageUri(uri);
+        onImageTaken && onImageTaken(uri);
+      }
+
+      function cancelHandler() {
+        onCancel(); 
+    }
+
 
     return (
       <View style={styles.container}>
@@ -130,7 +122,6 @@ const ExpenseForm = ({
             placeholder={category}
             open={open}
             value={value}
-            // items={categories.map((val) => ({ label: val, value: val }))}
             items={defaultCategories.map((val) => ({ label: val, value: val, icon: () => getIconName(val) }))} 
             setOpen={setOpen}
             setValue={(val) => {
@@ -153,11 +144,14 @@ const ExpenseForm = ({
 
         <View style={styles.formField}>
           <Text style={styles.labelText}>Location</Text>
+          <View style={styles.rowContainer}>
           <TextInput
             style={styles.inputField}
             onChangeText={onLocationChange}
             value={location}
           />
+          <LocationManager />
+          </View>
         </View>
 
         <View style={styles.formField}>
@@ -175,7 +169,7 @@ const ExpenseForm = ({
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
-            onConfirm={handleConfirm}
+            onConfirm={confirmDate}
             onCancel={hideDatePicker}
             date={date}
             /* IOS14 picker style */
@@ -187,9 +181,10 @@ const ExpenseForm = ({
         <View style={styles.formField}>
             <Text style={styles.labelText}>Upload a receipt</Text>
             
-            {/* <ImageManager onImageTaken={handleImageTaken} /> */}
+            <ImageManager onImageTaken={getImageUri} initialPhotoUri={initialImageUri} />
         </View>
         
+        <SaveCancelButtons onCancel={cancelHandler} onSave={confirmHandler} />
         
       </View>
     );
