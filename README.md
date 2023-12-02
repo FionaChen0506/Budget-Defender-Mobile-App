@@ -73,6 +73,6 @@ The All Expense Screen currently shows all the expenses created by the logged in
 
 **Edit An Expense Screen**
 
-<img src="images/image-6.png" alt="Alt text" width="200"> <img src="images/image-9.png" alt="Alt text" width="200">
+<img src="images/edit.png" alt="Alt text" width="200"> <img src="images/delete.png" alt="Alt text" width="200">
 
 The Edit An Expense screen looks similar to the Add An Expense screen, the difference is that when users go into the screen, it is already filled with the information the users saved last time. After the user clicks Save, there will be a pop up alert to double confirm, then this expense will be updated and displayed on the Home screen and All Expense screen. And, in the upper right corner of the Edit An Expense screen, there is a trash can icon, when the user clicks on it, it will double confirm if the user wants to delete it, if yes, then the expense will be deleted.
