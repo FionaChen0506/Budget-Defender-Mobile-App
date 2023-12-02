@@ -51,6 +51,8 @@ The Auth Stack has three screens, including Welcome Screen, Sign Up Screen and L
 The Log In Screen and Sign Up Screen follow Admin Authentication API Errors of Firebase, and show alerts to the main errors like invalid email format, weak password, mismatch password, etc.
 
 #### App Stack Screens
+#### Iteration2 enables camera use of Add An Expense Screen and Edit An Expense Screen.
+
 **Home Screen**
 
 <img src="images/image-1.png" alt="Alt text" width="200">
@@ -59,9 +61,9 @@ On the home screen, the user can see all spending totals and can see the set bud
 
 **Add An Expense Screen**
 
-<img src="images/image-2.png" alt="Alt text" width="200"> <img src="images/image-7.png" alt="Alt text" width="200"> <img src="images/image-8.png" alt="Alt text" width="200">
-
-On the "Add An Expense" screen, users can enter the amount of money spent, select the category, enter a description (optional), a location (optional, to be implemented later), and a date. The amount spent must be a number with at most two decimals, the category cannot be empty, and the date must be today or earlier, or the APP will alert the users. Upon clicking Save, the expense will be upload to the database, and users can see that expense immediately on Home Screen and both All Expenses Screen.
+<img src="images/addanexpense.png" alt="Alt text" width="200"> <img src="images/category.png" alt="Alt text" width="200"> <img src="images/date.png" alt="Alt text" width="200"> <img src="images/camera.png" alt="Alt text" width="200">
+ 
+On the "Add An Expense" screen, users can enter the amount of money spent, select the category, enter a description (optional), a location (optional, to be implemented later), a date, and upload an image from either camera or album (optional). The amount spent must be a number with at most two decimals, the category cannot be empty, and the date must be today or earlier, or the APP will alert the users. Upon clicking Save, the expense will be upload to the database, and users can see that expense immediately on Home Screen and both All Expenses Screen.
 
 **All Expense Screen**
 
