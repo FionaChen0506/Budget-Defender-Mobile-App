@@ -65,6 +65,7 @@ On the home screen, the user can see all spending totals and can see the set bud
  
 On the "Add An Expense" screen, users can enter the amount of money spent, select the category, enter a description (optional), a location (optional, to be implemented later), a date, and upload an image from either camera or album (optional). The amount spent must be a number with at most two decimals, the category cannot be empty, and the date must be today or earlier, or the APP will alert the users. Upon clicking Save, the expense will be upload to the database, and users can see that expense immediately on Home Screen and both All Expenses Screen.
 
+
 **All Expense Screen**
 
 <img src="images/image-5.png" alt="Alt text" width="200">
@@ -76,3 +77,9 @@ The All Expense Screen currently shows all the expenses created by the logged in
 <img src="images/edit.png" alt="Alt text" width="200"> <img src="images/delete.png" alt="Alt text" width="200">
 
 The Edit An Expense screen looks similar to the Add An Expense screen, the difference is that when users go into the screen, it is already filled with the information the users saved last time. After the user clicks Save, there will be a pop up alert to double confirm, then this expense will be updated and displayed on the Home screen and All Expense screen. And, in the upper right corner of the Edit An Expense screen, there is a trash can icon, when the user clicks on it, it will double confirm if the user wants to delete it, if yes, then the expense will be deleted.
+
+**Location Screen (under implementation)**
+
+<img src="images/location.png" alt="Alt text" width="200"> <img src="images/autocomplete.png" alt="Alt text" width="200">
+
+When user clicks on the location icon of Add An Expense screen, the app will navigate to the Location screen with a map, and the marker shows the user's current location. This screen also includes a search box with google autocomplete. In next iteration, user will be able to select a location on the map and save/edit it with other fields of Expense Entry.
