@@ -89,7 +89,7 @@ const AddAnExpense = ({ navigation }) => {
   
 
   return (
-    <ScrollView>
+    // <ScrollView>
     
 
     <ExpenseForm
@@ -105,7 +105,7 @@ const AddAnExpense = ({ navigation }) => {
       />
 
 
-    </ScrollView>
+    // </ScrollView>
   );
 };
 

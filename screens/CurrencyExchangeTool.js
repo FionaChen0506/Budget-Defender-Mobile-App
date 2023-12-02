@@ -27,7 +27,7 @@ const CurrencyExchangeTool = () => {
         
         // Use backticks for template literals
         const response = await axios.get(`${apiUrl}/CAD`);
-        const currencies = Object.keys(response.data.rates);
+        const currencies = Object.keys(response.data.conversion_rates);
         setCurrencyList(currencies);
         } catch (error) {
           console.error('Error fetching currencies:', error);
@@ -52,7 +52,7 @@ const CurrencyExchangeTool = () => {
 
       try {
         const response = await axios.get(`${apiUrl}/${fromCurrency}`);
-        const exchangeRate = response.data.rates[toCurrency];
+        const exchangeRate = response.data.conversion_rates[toCurrency];
         const convertedAmount = (amount * exchangeRate).toFixed(2);
         setResult(`${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`);
       } catch (error) {
