@@ -46,7 +46,7 @@ export default function WelcomePage({ navigation }) {
 };
 
 const {height} = Dimensions.get("screen");
-const height_logo = height * 0.4;
+const height_logo = height * 0.3;
 
 const styles = StyleSheet.create({
   container: {
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   appName: {
+    // zIndex: 1,
     fontSize: 36,
     fontWeight: 'bold',
     color: 'white',
@@ -72,11 +73,11 @@ const styles = StyleSheet.create({
     // textShadowOffset: {width: 0, height: 0},
     // textShadowRadius: 10,
   },
-  logo: {
-    width: 250, 
-    height: 250, 
-    alignSelf: 'center',
-  },
+  // logo: {
+  //   width: 250, 
+  //   height: 250, 
+  //   alignSelf: 'center',
+  // },
   footer: {
       flex: 1,
       backgroundColor: '#F2FFE9',
@@ -89,7 +90,8 @@ const styles = StyleSheet.create({
       width: height_logo,
       height: height_logo,
       alignSelf: 'center',
-      marginRight: '5%'
+      // marginRight: '5%'
+      marginTop: '5%',
   },
   title: {
       color: '#435585',
