@@ -18,6 +18,7 @@ function BottomTabBar({ state, descriptors, navigation }) {
 
         const iconName = route.name === 'All Expenses' ? 'chart-bar' : 
                 route.name === 'Home' ? 'home' :
+                route.name === 'Currency Exchange Tool' ? 'exchange-alt' :
                 'user';
 
         const onPress = () => {

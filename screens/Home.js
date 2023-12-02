@@ -10,6 +10,7 @@ import SelectMonthForHome from '../components/SelectMonthForHome';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import CategoryChart from '../components/CategoryChart';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Home = () => {
   // const [categoryData, setCategoryData] = useState([]);
@@ -48,13 +49,16 @@ const Home = () => {
       <SelectMonthForHome onMonthChange={handleMonthChange} />
       <BudgetSummary selectedMonth={selectedMonth}/>
 
-      <PressableButton
-          pressedFunction={handleToolPress}
-          pressedStyle={styles.toolButtonPressed}
-          defaultStyle={styles.toolButtonDefault}
-        >
-          <Text style={styles.toolButtonText}>Need a currency conversion? Click here!</Text>
-        </PressableButton>
+      {/* <View style={styles.CurrencyExchangeContainer}>
+        <PressableButton
+            pressedFunction={handleToolPress}
+            pressedStyle={styles.toolButtonPressed}
+            defaultStyle={styles.toolButtonDefault}
+          >
+            <Text style={styles.toolButtonText}>Currency Exchange</Text>
+            <MaterialIcons name="attach-money" size={24} color="black" />
+          </PressableButton>
+        </View> */}
 
       <EntriesList navigation={navigation} />
       {/* <CategoryChart categoryData={categoryData} /> */}
@@ -101,22 +105,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  CurrencyExchangeContainer: {
+    flex:1,
+    justifyContent:'center',
+    flexDirection: 'row',
+  },
+
   toolButtonPressed: {
     backgroundColor: 'grey', 
     marginHorizontal: 10,
-    width:'60%',
+    //width:'60%',
     padding: 6,
     //alignItems: 'center',
   },
   toolButtonDefault: {
     backgroundColor: Colors.entryBackground,
     marginHorizontal: 10,
-    width:'60%',
+    //width:'60%',
     padding: 6,
     //alignItems: 'center',
   },
   toolButtonText: {
-    color:'blue',
-    fontSize: 16,
+    color:Colors.entryTextDark,
+    fontSize: 17,
   },
 })

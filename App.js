@@ -118,6 +118,21 @@ function TabNavigator() {
         })}
       />
 
+<Tab.Screen 
+        name="Currency Exchange Tool" 
+        component={CurrencyExchangeTool}
+        options={({ navigation }) => ({
+          headerStyle: {
+            backgroundColor: Colors.header,
+          },
+          headerTintColor: Colors.headerText,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          }
+        })}
+      />
+
       <Tab.Screen 
         name="Profile" 
         component={Profile}
@@ -148,6 +163,7 @@ function TabNavigator() {
           }
         })}
       />
+      
     </Tab.Navigator>
   );
 }
