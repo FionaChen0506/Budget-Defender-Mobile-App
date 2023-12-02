@@ -2,7 +2,8 @@
 ### Budget Defender is a financial management Cross-Platform Native Mobile Application. It delivers features for detailed expense tracking, budget oversight, and analytical financial reporting.
 ###    Authors: Shaoyujie(Fiona) Chen, Yunke Li
 
-##    Iteration1: overall stucture, navigation, and basis of CRUD operations to Firestore
+<!-- ##    Iteration1: overall stucture, navigation, and basis of CRUD operations to Firestore -->
+##    Iteration2: Authentication, Camera use, and External API use
 ###    Data Modal and Collections:
 ####   1. Users Collection:
 This is a top-level collection. Each document in the Users collection represents a user of our application. It has these fields:
@@ -39,11 +40,13 @@ Categories collection is a subcollection of the Users Collection. Each document 
 
 ### Screens
 #### Auth Stack Screens
-<img src="images/welcome-screen.png" alt="Alt text" width="200"> <img src="images/signup-screen.png" alt="Alt text" width="200"> <img src="images/login-screen.png" alt="Alt text" width="200">
+<img src="images/welcome-screen-iter2.png" alt="Alt text" width="200"> <img src="images/signup-screen-iter2.png" alt="Alt text" width="200"> <img src="images/login-screen-iter2.png" alt="Alt text" width="200">
+
+Iteration2 updates the overall UI design of Auth Stack Screens using Lottie an Animatable libraries.
 
 The Auth Stack has three screens, including Welcome Screen, Sign Up Screen and Log In Screen. The Welcome Screen will appear when the user first open this app, and allow users to either signup or login to the app. The Log In Screen and Sign Up Screen can navigate to each other through informative buttons.
 
-<img src="images/alert-invalid-email.png" alt="Alt text" height="200"> <img src="images/alert-weak-password.png" alt="Alt text" height="200"> <img src="images/alert-mismatch-password.png" alt="Alt text" height="200">
+<img src="images/alert-invalid-email-iter2.png" alt="Alt text" height="200"> <img src="images/alert-weak-password-iter2.png" alt="Alt text" height="200"> <img src="images/alert-mismatch-password-iter2.png" alt="Alt text" height="200">
 
 The Log In Screen and Sign Up Screen follow Admin Authentication API Errors of Firebase, and show alerts to the main errors like invalid email format, weak password, mismatch password, etc.
 
