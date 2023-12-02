@@ -81,6 +81,7 @@ The All Expense Screen currently shows all the expenses created by the logged in
 The Edit An Expense screen looks similar to the Add An Expense screen, the difference is that when users go into the screen, it is already filled with the information the users saved last time. After the user clicks Save, there will be a pop up alert to double confirm, then this expense will be updated and displayed on the Home screen and All Expense screen. And, in the upper right corner of the Edit An Expense screen, there is a trash can icon, when the user clicks on it, it will double confirm if the user wants to delete it, if yes, then the expense will be deleted.
 
 **Currency Exchange Tool Screen**
+
 <img src="images/currency-itr2-1.png" alt="Alt text" width="200">
 
 The Currency Exchange Tool screen allows the users to convert exchange rates by entering the amount to be converted, the currency to be converted and the wanted currency. After pressing the "Convert" button, the result of the exchange rate conversion will appear on the screen. This page uses the external API "exchange-api".
@@ -92,6 +93,7 @@ The Currency Exchange Tool screen allows the users to convert exchange rates by 
 When user clicks on the location icon of Add An Expense screen, the app will navigate to the Location screen with a map, and the marker shows the user's current location. This screen also includes a search box with google autocomplete. In next iteration, user will be able to select a location on the map and save/edit it with other fields of Expense Entry.
 
 **Profile Screen (under implementation)**
+
 <img src="images/profile-itr2-1.png" alt="Alt text" width="200"> <img src="images/profile-itr2-2.png" alt="Alt text" width="200">
 
 The Profile screen currently has "Edit My Budget Limit" function implemented. By clicking it, there will be a pop-up window for users to change their budget limit. Once the budget limit changed, the summary numbers on Home screen will also change accordingly.
