@@ -52,12 +52,14 @@ The Log In Screen and Sign Up Screen follow Admin Authentication API Errors of F
 
 #### App Stack Screens
 #### Iteration2 enables camera use of Add An Expense Screen and Edit An Expense Screen.
+#### Iteration2 enables external API use on Currency Exchange Tool Screen.
 
 **Home Screen**
 
-<img src="images/image-1.png" alt="Alt text" width="200">
+<img src="images/Home-itr2-1.png" alt="Alt text" width="200"> <img src="images/Home-itr2-2.png" alt="Alt text" width="200">
 
-On the home screen, the user can see all spending totals and can see the set budget limit and available balance (to be implemented later). The user can also see the entries of recently added expenses and can click on each entry. The spending entries are sorted by date in descending order and show the category, description, amount and date. At the bottom, there is an Add button, click on the button, users can jump to the "Add An Expense" screen.
+On the home screen, the user can see monthly spending totals, the set budget limit and available remaining money. The default month is the current month, and users can also select any of the past 12 months to view the summary.
+The user can also see the entries of recently added expenses and can click on each entry. At the bottom, there is an Add button, click on the button, users can go to the "Add An Expense" screen.
 
 **Add An Expense Screen**
 
@@ -70,7 +72,7 @@ On the "Add An Expense" screen, users can enter the amount of money spent, selec
 
 <img src="images/image-5.png" alt="Alt text" width="200">
 
-The All Expense Screen currently shows all the expenses created by the logged in user, we will implement more functions on this screen later. For now, users can click each entry, and go into "Edit An Expense" screen to edit that expense's information.
+The All Expense Screen currently shows all the expenses created by the logged in user, we will implement more functions on this screen later. For now, users can click each entry, and go into "Edit An Expense" screen to edit that expense's information. The spending entries are sorted by date in descending order and show the category, description, amount and date.
 
 **Edit An Expense Screen**
 
@@ -78,8 +80,18 @@ The All Expense Screen currently shows all the expenses created by the logged in
 
 The Edit An Expense screen looks similar to the Add An Expense screen, the difference is that when users go into the screen, it is already filled with the information the users saved last time. After the user clicks Save, there will be a pop up alert to double confirm, then this expense will be updated and displayed on the Home screen and All Expense screen. And, in the upper right corner of the Edit An Expense screen, there is a trash can icon, when the user clicks on it, it will double confirm if the user wants to delete it, if yes, then the expense will be deleted.
 
+**Currency Exchange Tool Screen**
+<img src="images/currency-itr2-1.png" alt="Alt text" width="200">
+
+The Currency Exchange Tool screen allows the users to convert exchange rates by entering the amount to be converted, the currency to be converted and the wanted currency. After pressing the "Convert" button, the result of the exchange rate conversion will appear on the screen. This page uses the external API "exchange-api".
+
 **Location Screen (under implementation)**
 
 <img src="images/location.png" alt="Alt text" width="200"> <img src="images/autocomplete.png" alt="Alt text" width="200">
 
 When user clicks on the location icon of Add An Expense screen, the app will navigate to the Location screen with a map, and the marker shows the user's current location. This screen also includes a search box with google autocomplete. In next iteration, user will be able to select a location on the map and save/edit it with other fields of Expense Entry.
+
+**Profile Screen (under implementation)**
+<img src="images/profile-itr2-1.png" alt="Alt text" width="200"> <img src="images/profile-itr2-2.png" alt="Alt text" width="200">
+
+The Profile screen currently has "Edit My Budget Limit" function implemented. By clicking it, there will be a pop-up window for users to change their budget limit. Once the budget limit changed, the summary numbers on Home screen will also change accordingly.
