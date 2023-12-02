@@ -94,7 +94,7 @@ export default function Signup({navigation}) {
             />
 
             <PressableButton
-                pressedFunction={loginHandler}
+                pressedFunction={signupHandler}
                 pressedStyle={styles.buttonLoginPressed}
                 defaultStyle={styles.buttonLoginDefault}
                 >
