@@ -131,7 +131,7 @@ export default function SelectLocation({route, navigation}) {
       </MapView>
 
 
-            {isButtonVisible && (
+            {selectedLocation && isButtonVisible && (
               <View style={styles.locationDetailsContainer}>
                 <View style={styles.textContainer}>
                   <Text style={styles.locationText}>
@@ -147,7 +147,7 @@ export default function SelectLocation({route, navigation}) {
                   pressedStyle={styles.buttonPressed}
                   defaultStyle={styles.buttonDefault}
                 >
-                    <Text style={styles.buttonText}>Confirm Location</Text>
+                    <Text style={styles.buttonText}>Add Location</Text>
                 </PressableButton>
             </View>
             )}
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5,
         marginTop: 30,
-        width: '80%',
+        width: '60%',
         alignSelf: 'center',
     },
     buttonPressed: {
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginTop: 30,
         opacity: 0.5,
-        width: '80%',
+        width: '60%',
         alignSelf: 'center',
     },
     buttonText: {
