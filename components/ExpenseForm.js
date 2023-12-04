@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Alert,StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextInput, Menu, Divider, Provider } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TouchableOpacity } from 'react-native';
@@ -30,12 +30,13 @@ const ExpenseForm = ({
     onCancel,
     onImageTaken,
 }) => {
-  const [amount, setAmount] = useState(initialAmount);
-  const [category, setCategory] = useState(initialCategory);
-  const [description, setDescription] = useState(initialDescription);
-  const [location, setLocation] = useState(initialLocation);
-  const [date, setDate] = useState(initialDate);
-  const [imageUri, setImageUri] = useState(initialImageUri);
+
+    const [amount, setAmount] = useState(initialAmount);
+    const [category, setCategory] = useState(initialCategory);
+    const [description, setDescription] = useState(initialDescription);
+    const [location, setLocation] = useState(initialLocation);
+    const [date, setDate] = useState(initialDate);
+    const [imageUri, setImageUri] = useState(initialImageUri);
 
     
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -43,6 +44,13 @@ const ExpenseForm = ({
     const [value, setValue] = useState(null);
     const [selectedDate, setSelectedDate] = useState(date || new Date()); 
 
+
+    useEffect(() => {
+      setLocation(initialLocation);
+    }, [initialLocation]);
+  
+    // only show the first 30 characters of the location name
+    const locationName = location ? location.name.substring(0, 30) : 'No location selected';
 
     function onAmountChange(inputAmount) {
         setAmount(inputAmount);
@@ -59,6 +67,7 @@ const ExpenseForm = ({
     function onLocationChange(inputLocation) {
 
         setLocation(inputLocation);
+        console.log("ExpenseForm: onLocationChange: ", location);
     }
 
     function onDateChange(inputDate) {
@@ -148,9 +157,9 @@ const ExpenseForm = ({
           <TextInput
             style={styles.inputField}
             onChangeText={onLocationChange}
-            value={location}
+            value={locationName}
           />
-          <LocationManager />
+          <LocationManager/>
           </View>
         </View>
 
