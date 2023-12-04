@@ -1,12 +1,12 @@
-import { View, Text, StyleSheet, Image, Dimensions, Input } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, Image, Dimensions, Input} from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
 import MapView from "react-native-maps";
 import { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
-import * as Location from "expo-location";
 import { MAPS_API_KEY, PLACES_API_KEY } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Ionicons } from '@expo/vector-icons';
+import PressableButton from '../components/PressableButton';
 
 // map view dimensions
 const windowWidth = Dimensions.get("window").width;
@@ -26,8 +26,19 @@ export default function SelectLocation({route, navigation}) {
 
     // get user's current location
     const {currentLatitude, currentLongitude} = route.params;
-    // console.log("currentLatitude: ", currentLatitude);
-    // console.log("currentLongitude: ", currentLongitude);
+
+    const [selectedLocation, setSelectedLocation] = useState(null);
+    const [isButtonVisible, setIsButtonVisible] = useState(false);
+    const mapRef = useRef(null);
+
+
+    const handleButtonPress = () => {
+      if (selectedLocation) {
+        navigation.navigate("Add An Expense", {
+          location: selectedLocation,
+        });
+      }
+    }
 
 
   return (
@@ -36,142 +47,176 @@ export default function SelectLocation({route, navigation}) {
       <View style={styles.searchBox}>
 
         <GooglePlacesAutocomplete
-        placeholder='Search a Place'
-        fetchDetails={true}
-        debounce={1000}
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          console.log(data, details);
+          placeholder='Search a Place'
+          fetchDetails={true}
+          debounce={1000}
+          onPress={(data, details = null) => {
+            if (details) {
+              const newLocation = {
+                name: details.name,
+                address: details.formatted_address,
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+              }
+
+              //show the button
+              setIsButtonVisible(true);
+
+          setSelectedLocation(newLocation);
+          console.log(newLocation);
+            
+          // animate map to the selected location
+          mapRef.current?.animateToRegion({
+            ...newLocation,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }, 1000);
+        }
         }}
+      
 
         query={{
           key: PLACES_API_KEY,
           language: 'en',
           // only show nearby results
-          // components: 'country:ca',
           location: `${currentLatitude},${currentLongitude}`,
           radius: 10000,
         }}
         
         onFail={(error) => console.error('Error using GooglePlacesAutocomplete: ', error)}
       />
-      <Ionicons name="search" size={24} color="gray" />
+      {/* <Ionicons name="search" size={24} color="gray" /> */}
     </View>
 
-    <MapView
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-        initialRegion={{
-            latitude: currentLatitude,
-            longitude: currentLongitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-        }}
-    >
-        <Marker 
-            coordinate={{
-                latitude: currentLatitude,
-                longitude: currentLongitude,
-            }}
-            // use balloon as icon and adjust size
-            icon={{
-                uri: Image.resolveAssetSource(balloonMarker).uri,
-                width: 4, 
-                height: 4, 
+    <View style={styles.map}>
+      <MapView
+          ref={mapRef}
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          initialRegion={{
+              latitude: currentLatitude,
+              longitude: currentLongitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+          }}
+      >
+
+          {/* current location marker */}
+          <Marker 
+              coordinate={{
+                  latitude: currentLatitude,
+                  longitude: currentLongitude,
+              }}
+              onPress={() => {console.log("You are here")}}
+          >
+
+        
+          </Marker>
+
+          {/* selected location marker */}
+          {selectedLocation && (
+            <Marker 
+              coordinate={{
+                  latitude: selectedLocation.latitude,
+                  longitude: selectedLocation.longitude,
               }}
 
-            title="This is a title"
-            description="This is a description"
-        >
-            
-            <Callout tooltip>
-              <View>
-                <View style={styles.bubble}>
-                  <Text style={styles.name}>Favourite Restaurant</Text>
-                  <Image 
-                    style={styles.image}
-                    source={require('../images/markers/heart.png')}
-                  />
+              title={selectedLocation.name}
+              description={selectedLocation.address}
+          >
+
+
+          </Marker>
+          )}
+      </MapView>
+
+
+            {isButtonVisible && (
+              <View style={styles.locationDetailsContainer}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.locationText}>
+                      {selectedLocation.name}
+                  </Text>
+                  <Text style={styles.locationText}>
+                      {selectedLocation.address}
+                  </Text>
                 </View>
-                <View style={styles.arrowBorder} />
-                <View style={styles.arrow} />
-              </View>
-            </Callout>
 
-        </Marker>
+                <PressableButton
+                  pressedFunction={handleButtonPress}
+                  pressedStyle={styles.buttonPressed}
+                  defaultStyle={styles.buttonDefault}
+                >
+                    <Text style={styles.buttonText}>Confirm Location</Text>
+                </PressableButton>
+            </View>
+            )}
 
-    </MapView>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
     container: {
-      // ...StyleSheet.absoluteFillObject,
       flex: 1,
-      // justifyContent: "center",
-      // alignItems: "center",
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
     },
     searchBox: {
       zIndex:1, 
       flex: 0.5,
-      // flexDirection: 'row',
-      // alignItems: 'center',
-      // justifyContent: 'center',
-      // position: 'absolute', 
-      // width: '90%',
-      // top: '5%', 
-      // paddingRight: 10, 
-      // height: 60, 
-      // backgroundColor: 'white',
-      // borderRadius: 10,
-      // borderWidth: 1.5,
-      // borderColor: 'gray',
     },
     map: {
       ...StyleSheet.absoluteFillObject,
       zIndex:0,
-      // height: '100%',
-      // width: '100%',
+      flex: 0.8,
     },
-
-    bubble: {
-      flexDirection: 'column',
-      alignSelf: 'flex-start',
+    locationDetailsContainer: {
+      position: 'absolute',
+      bottom: '20%',
+      alignSelf: 'center',
+      width: '80%',
+    },
+    textContainer: {
       backgroundColor: '#fff',
-      borderRadius: 6,
-      borderColor: '#ccc',
-      borderWidth: 0.5,
-      padding: 15,
-      width: 150,
+      padding: 10,
+      borderRadius: 5,
+      marginBottom: 10,
+      borderColor: '#2D9596',
+      borderWidth: 2,
+      opacity: 0.8,
     },
-
-    arrow: {
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-      borderTopColor: '#fff',
-      borderWidth: 16,
-      alignSelf: 'center',
-      marginTop: -32,
-    },
-
-    arrowBorder: {
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-      borderTopColor: '#007a87',
-      borderWidth: 16,
-      alignSelf: 'center',
-      marginTop: -0.5,
-
-    },
-
-    name: {
+    locationText: {
       fontSize: 16,
-      marginBottom: 5,
+      color: '#2D9596', 
+      fontWeight: 'bold',
+      textAlign: 'center',
+  },
+    buttonDefault: {
+      backgroundColor: '#309797',
+        padding: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 30,
+        width: '80%',
+        alignSelf: 'center',
+    },
+    buttonPressed: {
+      backgroundColor: '#309797',
+        padding: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 30,
+        opacity: 0.5,
+        width: '80%',
+        alignSelf: 'center',
+    },
+    buttonText: {
+      color: '#fff',
+        fontSize: 20,
+        fontWeight: 'bold',
     },
 
-    image: {
-      width: "100%",
-      height: 80,
-    },
+
   });

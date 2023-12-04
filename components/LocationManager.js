@@ -22,6 +22,7 @@ export default function LocationManager() {
     return response.granted;
   };
 
+  // get user's current location
   async function locateMeHandler() {
     try {
       const hasPermission = await verifyPermission();
@@ -29,14 +30,8 @@ export default function LocationManager() {
         Alert.alert("You need to give access to the location");
       }
       const locationObject = await Location.getCurrentPositionAsync();
-
-    //   setLocation({
-    //     latitude: locationObject.coords.latitude,
-    //     longitude: locationObject.coords.longitude,
-    //   });
-    //   console.log("locationObject: ", locationObject);
-    //   console.log("location: ", location);
-      // navigate to SelectLocation screen and pass the location object
+      
+        // navigate to the map screen with the current location
         navigation.navigate("Location", {
             currentLatitude: locationObject.coords.latitude,
             currentLongitude: locationObject.coords.longitude,
@@ -46,14 +41,9 @@ export default function LocationManager() {
     }
   }
 
-//   const chooseLocationHandler = () => {
-//     navigation.navigate("Location");
-//   };
 
   return (
     <View>
-      {/* <Button title="Locate Me!" onPress={locateMeHandler} /> */}
-
       <PressableButton
         pressedFunction={locateMeHandler}
         pressedStyle={{ backgroundColor: "#ccc" }}
@@ -61,20 +51,6 @@ export default function LocationManager() {
         >
             <Entypo name="location" size={24} color="black" />
         </PressableButton>
-
-      {/* <Button
-        title="Let me choose on the map"
-        onPress={chooseLocationHandler}
-      />
-
-      {location && (
-        <Image
-          source={{
-            uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${MAPS_API_KEY}`,
-          }}
-          style={styles.image}
-        />
-      )} */}
     </View>
   );
 }

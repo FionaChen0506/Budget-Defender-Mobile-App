@@ -14,7 +14,7 @@ const AddAnExpense = ({ navigation }) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState(null);
   const [date, setDate] = useState(new Date());
   const [imageUri, setImageUri] = useState(null);
 
