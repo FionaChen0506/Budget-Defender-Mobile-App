@@ -82,7 +82,7 @@ const getBudgetEntryId = async (userUid) => {
         <TouchableOpacity 
         onPress={() => handleEditProfilePress()} 
         style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>Edit My Profile</Text>
+          <Text style={styles.EditLimitText}>Edit Profile</Text>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>
@@ -91,7 +91,7 @@ const getBudgetEntryId = async (userUid) => {
         <TouchableOpacity 
         onPress={() => handleChangePasswordPress()} 
         style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>Change My Password</Text>
+          <Text style={styles.EditLimitText}>Change Password</Text>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>
@@ -100,7 +100,7 @@ const getBudgetEntryId = async (userUid) => {
         <TouchableOpacity 
         onPress={() => setIsModalVisible(true)} 
         style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>Edit My Budget Limit</Text>
+          <Text style={styles.EditLimitText}>Edit Budget Limit</Text>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>

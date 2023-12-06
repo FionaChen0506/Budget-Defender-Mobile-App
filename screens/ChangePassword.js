@@ -10,12 +10,15 @@ const ChangePassword = ({navigation}) => {
     const user = auth.currentUser;
 
     const handleChangePassword = async () => {
-        try {
+        if (!password || !confirmPassword) {
+            Alert.alert('Error', 'Please fill out all fields');
+            return;
+          }
           if (password !== confirmPassword) {
             Alert.alert('Error', 'Passwords do not match');
             return;
           }
-    
+        try {
           // Call authentication module to update the password
           await updatePassword(user, password);
     
@@ -29,7 +32,11 @@ const ChangePassword = ({navigation}) => {
                 'Error',
                 'For security reasons, you need to log in again before changing the password.'
               );
-          } else {
+          } 
+          else if (error.code === "auth/weak-password") {
+            alert("Password must be at least 6 characters");
+        }
+          else {
           Alert.alert('Error', 'Failed to update password. Please try again.');
         }
         }
@@ -60,8 +67,7 @@ const ChangePassword = ({navigation}) => {
                     placeholderTextColor="#aaa"
                 />
             </View>
-      <SaveCancelButtons style={styles.buttons}
-        onCancel={cancelHandler} onSave={handleChangePassword} />
+      <SaveCancelButtons onCancel={cancelHandler} onSave={handleChangePassword} />
     </View>
   )
 }

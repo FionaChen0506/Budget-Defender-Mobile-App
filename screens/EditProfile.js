@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { auth, firestore } from '../firebase/firebaseSetup';
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import SaveCancelButtons from '../components/SaveCancelButtons';
 
 
 const EditProfile = ({navigation}) => {
@@ -43,18 +44,25 @@ const EditProfile = ({navigation}) => {
       console.error('Error updating username:', error);
     }
   };
+
+  function cancelHandler() {
+    navigation.goBack(); 
+}
   
 
   return (
     <View>
-      <Text>Email: {email}</Text>
-      <Text>Current Username: {auth.currentUser.displayName}</Text>
-      <TextInput
-        placeholder="Enter new username"
-        value={newUsername}
-        onChangeText={(text) => setNewUsername(text)}
-      />
-      <Button title="Save" onPress={handleSave} />
+      <View style={styles.container}>
+        <Text style={styles.label}>Email: {email}</Text>
+        <Text style={styles.label}>Username: {auth.currentUser.displayName}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter New Username"
+          value={newUsername}
+          onChangeText={(text) => setNewUsername(text)}
+        />
+      </View>
+      <SaveCancelButtons onCancel={cancelHandler} onSave={handleSave} />
     </View>
   );
 };
@@ -62,4 +70,27 @@ const EditProfile = ({navigation}) => {
 
 export default EditProfile
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container:{
+    marginBottom: "10%",
+    alignItems:'center'
+},
+      input: {
+        height: 50,
+        width: '80%',
+        margin: 12,
+        borderWidth: 1,
+        borderColor: '#309797',
+        borderRadius: 5,
+        padding: 10,
+        //marginLeft: '5%',
+    },
+    label: {
+        color: '#2B2A4C',
+        alignSelf: 'flex-start',
+        marginLeft: '10%',
+        fontWeight: 'bold',
+        marginTop: "5%",
+        fontSize: 18,
+    },
+})
