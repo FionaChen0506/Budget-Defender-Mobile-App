@@ -19,6 +19,7 @@ import LocationManager from './LocationManager';
 
 
 const ExpenseForm = ({
+  originScreen,
   initialAmount = '',
     initialCategory = '',
     initialDescription = '',
@@ -50,7 +51,9 @@ const ExpenseForm = ({
     }, [initialLocation]);
   
     // only show the first 30 characters of the location name
-    const locationName = location ? location.name.substring(0, 30) : 'No location selected';
+    const locationName = (location && typeof location.name === 'string') ? location.name.substring(0, 30) : 'No location selected';
+
+    // const locationName = location ? location.name.substring(0, 30) : 'No location selected';
 
     function onAmountChange(inputAmount) {
         setAmount(inputAmount);
@@ -159,7 +162,7 @@ const ExpenseForm = ({
             onChangeText={onLocationChange}
             value={locationName}
           />
-          <LocationManager/>
+          <LocationManager originScreen = {originScreen}/>
           </View>
         </View>
 

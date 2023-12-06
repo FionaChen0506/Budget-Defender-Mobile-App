@@ -25,7 +25,7 @@ export default function SelectLocation({route, navigation}) {
     const redMarker = require('../images/markers/red.png');
 
     // get user's current location
-    const {currentLatitude, currentLongitude} = route.params;
+    const {originScreen, currentLatitude, currentLongitude} = route.params;
 
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [isButtonVisible, setIsButtonVisible] = useState(false);
@@ -34,8 +34,8 @@ export default function SelectLocation({route, navigation}) {
 
     const handleButtonPress = () => {
       if (selectedLocation) {
-        navigation.navigate("Add An Expense", {
-          location: selectedLocation,
+        navigation.navigate(originScreen, {
+          userSelectedLocation: selectedLocation,
         });
       }
     }

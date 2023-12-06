@@ -10,18 +10,38 @@ import { deletePhotoFromExpense, updateInDB } from '../firebase/firebaseHelper';
 import { uploadBytes} from "firebase/storage";
 
 
-
-
-
 const EditAnExpense = ({ route,navigation }) => {
-  const { entryId, amount, category, description, date, location, photo } = route.params
+  const { entryId, amount, category, description, date, location, photo } = route.params;
 
-  const [formAmount, setFormAmount] = useState(amount.toString());
+  // save the entryId in a state variable
+  const [userId, setUserId] = useState(entryId);
+
+  // const [formAmount, setFormAmount] = useState(amount.toString());
+  const [formAmount, setFormAmount] = useState(amount ? amount.toString() : '');
+
   const [formCategory, setFormCategory] = useState(category);
   const [formDescription, setFormDescription] = useState(description);
   const [formLocation, setFormLocation] = useState(location);
   const [formDate, setFormDate] = useState(new Date(date));
   const [formImageUri, setFormImageUri] = useState(photo);
+
+
+  // keep the userId unchanged
+  useEffect(() => {
+    setUserId(entryId);
+  }, []);
+
+
+  // manage the user selected new location
+  useEffect(() => {
+    // Check for parameters passed from SelectLocation screen
+    if (route.params?.userSelectedLocation) {
+      const selectedLocation = route.params.userSelectedLocation;
+      // Update the location state and console log
+      setFormLocation(selectedLocation);
+      console.log("Form Location:", formLocation);
+    }
+  }, [route.params?.userSelectedLocation]);
 
 
 
@@ -45,6 +65,9 @@ const EditAnExpense = ({ route,navigation }) => {
 
   }
   
+
+  
+
   const onSave = async(data) => {
     if (!isDataValid(data.amount, data.category, data.description, data.date)) {
       return;
@@ -72,18 +95,23 @@ const EditAnExpense = ({ route,navigation }) => {
                   deletePhotoFromExpense(photo);
                 }
               }
-          
+
+            
+  
+
             const updatedExpense = {
               amount: parseFloat(data.amount),
               category: data.category,
               description: data.description,
-              location: data.location,
+              location: formLocation,
               date: data.date,
               photo: newPhoto || formImageUri,
             };
 
+            console.log('updatedExpense: ', updatedExpense);
+            console.log('entryId: ', entryId);
             
-            await updateInDB(entryId, updatedExpense);
+            await updateInDB(userId, updatedExpense);
   
             navigation.goBack();
           }
@@ -138,13 +166,13 @@ const EditAnExpense = ({ route,navigation }) => {
       });
     }, [navigation, onDeleteSuccess, photo]); 
     
-
-
+  
 
 
     return (
       <ScrollView>
       <ExpenseForm
+        originScreen="Edit An Expense"
         initialAmount={formAmount}
         initialCategory={formCategory}
         initialDescription={formDescription}

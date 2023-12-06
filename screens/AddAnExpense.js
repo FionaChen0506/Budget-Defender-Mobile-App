@@ -20,13 +20,12 @@ const AddAnExpense = ({ navigation, route }) => {
 
   useEffect(() => {
     // Check if location is passed from SelectLocation screen
-    if (route.params?.location) {
-      const selectedLocation = route.params.location;
+    if (route.params?.userSelectedLocation) {
+      const selectedLocation = route.params.userSelectedLocation;
       // Update the location state and console log
       setLocation(selectedLocation);
-      console.log("Selected Location:", selectedLocation);
     }
-  }, [route.params?.location]);
+  }, [route.params?.userSelectedLocation]);
 
 
 
@@ -80,19 +79,6 @@ const AddAnExpense = ({ navigation, route }) => {
   writeToDB(newExpenseEntry);
   navigation.goBack();
 
-    // let imageRef = null;
-    // if (data.uri) {
-    //   imageRef = await fetchImage(data.uri);
-    // }
-
-    // if (imageRef) {
-    //   newExpenseEntry.photo = imageRef;
-    //   writeToDB(newExpenseEntry);
-    // }
-    // else {
-    //   writeToDB(newExpenseEntry);
-    // }
-    // navigation.goBack();
   }
   
 
@@ -123,7 +109,7 @@ const AddAnExpense = ({ navigation, route }) => {
     
 
     <ExpenseForm
-        origin='Add An Expense'
+        originScreen='Add An Expense'
         initialAmount={amount}
         initialCategory={category}
         initialDescription={description}

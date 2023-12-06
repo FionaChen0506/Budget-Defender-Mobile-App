@@ -9,7 +9,7 @@ import { Entypo } from '@expo/vector-icons';
 
 const windowWidth = Dimensions.get("window").width;
 
-export default function LocationManager() {
+export default function LocationManager({originScreen}) {
   const navigation = useNavigation();
   const [status, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
@@ -32,7 +32,8 @@ export default function LocationManager() {
       const locationObject = await Location.getCurrentPositionAsync();
       
         // navigate to the map screen with the current location
-        navigation.navigate("Location", {
+        navigation.navigate('Location', {
+            originScreen: originScreen,
             currentLatitude: locationObject.coords.latitude,
             currentLongitude: locationObject.coords.longitude,
         });
