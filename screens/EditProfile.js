@@ -34,13 +34,11 @@ const EditProfile = ({navigation}) => {
 
       // Update the local state
       setUsername(newUsername);
-  
       // Reset the newUsername state
       setNewUsername('');
-      //auth.currentUser.reload()
       alert('Username updated successfully!');
-      //navigation.goBack();
-      //navigation.goBack({ updatedUsername: newUsername });
+      navigation.goBack();
+      navigation.navigate('Profile', { updateProfile: true });
     } catch (error) {
       console.error('Error updating username:', error);
     }

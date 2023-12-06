@@ -6,25 +6,24 @@ import { database,auth } from "../firebase/firebaseSetup";
 import { updateInBudgetsDB } from '../firebase/firebaseHelper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../styles/Colors';
-import PressableButton from '../components/PressableButton';
-import { onAuthStateChanged } from 'firebase/auth';
 
-const Profile = ({navigation}) => {
+const Profile = ({navigation,route}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const userUid = auth.currentUser.uid;
   const [user, setUser] = useState(auth.currentUser);
+  const [updatedUsername, setUpdatedUsername] = useState(null);
 
-  // Use useEffect to update the user object when it changes
+  // set updated user name every time the user updates the profile
   useEffect(() => {
-    // Listen for changes in the authentication state
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // Update the local state with the new user object
-      setUser(user);
-    });
-
-    // Clean up the subscription when the component unmounts
-    return () => unsubscribe();
-  }, []);
+    if (route.params?.updateProfile) {
+      console.log("profile is updated");
+      setUpdatedUsername(user.displayName);
+  
+      // Set the update flag to false after handling the update
+      navigation.setParams({ updateProfile: false });
+    }
+  }, [route.params?.updateProfile]);
+  
   
   // Function to fetch the entryId based on userUid
 const getBudgetEntryId = async (userUid) => {
@@ -72,7 +71,7 @@ const getBudgetEntryId = async (userUid) => {
   return (
     <View>
       <Text> Hi {auth.currentUser.email}</Text>
-      <Text> Hi {user.displayName}</Text>
+      <Text> Hi {user.displayName || updatedUsername}</Text>
       <Text>{userUid}</Text>
 
       <View>
