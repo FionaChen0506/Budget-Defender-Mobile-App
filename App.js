@@ -27,6 +27,7 @@ import Colors from './styles/Colors';
 import PressableButton from './components/PressableButton';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
+import ChangePassword from './screens/ChangePassword';
 
 
 const Tab = createBottomTabNavigator();
@@ -118,7 +119,7 @@ function TabNavigator() {
         })}
       />
 
-<Tab.Screen 
+      <Tab.Screen 
         name="Currency Exchange Tool" 
         component={CurrencyExchangeTool}
         options={({ navigation }) => ({
@@ -214,6 +215,14 @@ const AppStack =
     <Stack.Screen
       name="Edit Profile"
       component={EditProfile}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
+    <Stack.Screen
+      name="Change Password"
+      component={ChangePassword}
       options={{ 
         headerShown: true,
         }}

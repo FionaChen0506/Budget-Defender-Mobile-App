@@ -68,17 +68,30 @@ const getBudgetEntryId = async (userUid) => {
     navigation.navigate('Edit Profile');
   };
 
+  const handleChangePasswordPress = () => {
+    // Navigate to the "Edit Profile" screen
+    navigation.navigate('Change Password');
+  };
+
   return (
     <View>
       <Text> Hi {auth.currentUser.email}</Text>
       <Text> Hi {user.displayName || updatedUsername}</Text>
-      <Text>{userUid}</Text>
 
       <View>
         <TouchableOpacity 
         onPress={() => handleEditProfilePress()} 
         style={styles.EditLimitContainer}>
           <Text style={styles.EditLimitText}>Edit My Profile</Text>
+          <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
+        </TouchableOpacity>
+      </View>
+
+      <View>
+        <TouchableOpacity 
+        onPress={() => handleChangePasswordPress()} 
+        style={styles.EditLimitContainer}>
+          <Text style={styles.EditLimitText}>Change My Password</Text>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>
