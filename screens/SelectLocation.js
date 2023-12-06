@@ -63,7 +63,6 @@ export default function SelectLocation({route, navigation}) {
               setIsButtonVisible(true);
 
           setSelectedLocation(newLocation);
-          console.log(newLocation);
             
           // animate map to the selected location
           mapRef.current?.animateToRegion({

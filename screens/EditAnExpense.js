@@ -39,7 +39,6 @@ const EditAnExpense = ({ route,navigation }) => {
       const selectedLocation = route.params.userSelectedLocation;
       // Update the location state and console log
       setFormLocation(selectedLocation);
-      console.log("Form Location:", formLocation);
     }
   }, [route.params?.userSelectedLocation]);
 
@@ -108,8 +107,6 @@ const EditAnExpense = ({ route,navigation }) => {
               photo: newPhoto || formImageUri,
             };
 
-            console.log('updatedExpense: ', updatedExpense);
-            console.log('entryId: ', entryId);
             
             await updateInDB(userId, updatedExpense);
   
