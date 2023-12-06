@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import EditBudgetLimit from '../components/EditBudgetLimit'
-import { View, Text, TouchableOpacity,StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity,StyleSheet, Image } from 'react-native';
 import { query,collection,where, getDocs } from 'firebase/firestore';
 import { database,auth } from "../firebase/firebaseSetup";
 import { updateInBudgetsDB } from '../firebase/firebaseHelper';
@@ -77,7 +77,14 @@ const getBudgetEntryId = async (userUid) => {
     <View>
       <Text> Hi {auth.currentUser.email}</Text>
       <Text> Hi {user.displayName || updatedUsername}</Text>
-
+      
+      <View style={styles.avatarContainer}>
+        {auth.currentUser.photoURL ? (
+          <Image source={{ uri: auth.currentUser.photoURL }} style={styles.avatarImage} />
+        ) : (
+          <Text>No Avatar</Text>
+        )}
+      </View>
       <View>
         <TouchableOpacity 
         onPress={() => handleEditProfilePress()} 
@@ -118,6 +125,31 @@ export default Profile;
 
 
 const styles = StyleSheet.create({
+  showImage: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+    alignSelf: 'center',  
+},
+avatarContainer: {
+  width: 120,
+  height: 120,
+  borderRadius: 60, // half of the width and height to make it a circle
+  overflow: 'hidden', // hides the content outside the borderRadius
+  marginBottom: 10,
+  alignSelf: 'center',
+  backgroundColor: 'lightgray', // background color or shades
+  elevation: 5, // for Android shadows
+  shadowColor: 'black', // for iOS shadows
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.5,
+  shadowRadius: 5,
+},
+avatarImage: {
+  width: '100%',
+  height: '100%',
+  resizeMode: 'cover', // maintains aspect ratio while covering the container
+},
   EditLimitContainer: {
     flexDirection: 'row',
     backgroundColor: Colors.entryBackground, 

@@ -1,8 +1,12 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { auth, firestore } from '../firebase/firebaseSetup';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import SaveCancelButtons from '../components/SaveCancelButtons';
+import ImageManager from '../components/ImageManager';
+import { ref, uploadBytesResumable, uploadBytes } from "firebase/storage";
+import { getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase/firebaseSetup";
 
 
 const EditProfile = ({navigation}) => {
@@ -10,6 +14,10 @@ const EditProfile = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [newUsername, setNewUsername] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const initialImageUri=null;
+  const [imageUri, setImageUri] = useState(initialImageUri);
+  const [avatarUri, setavatarUri] = useState(null);
 
   useEffect(() => {
     // Fetch the current user's information when the component mounts
@@ -17,6 +25,9 @@ const EditProfile = ({navigation}) => {
       try {
         setEmail(user.email);
         setUsername(user.displayName);
+        //
+        console.log("avatar url", user.photoURL)
+        setAvatarUrl(user.photoURL);
 
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -37,22 +48,58 @@ const EditProfile = ({navigation}) => {
       setUsername(newUsername);
       // Reset the newUsername state
       setNewUsername('');
-      alert('Username updated successfully!');
+
+      // Handle image uploading
+      if (imageUri) {
+        const imageRef = await fetchImage(imageUri,);
+        if (imageRef) {
+          // update user's profile photo
+          await updateProfile(user, {
+            photoURL: imageRef,
+          });
+        }
+      }
+
+      alert('Profile updated successfully!');
       navigation.goBack();
       navigation.navigate('Profile', { updateProfile: true });
     } catch (error) {
-      console.error('Error updating username:', error);
+      console.error('Error updating profile:', error);
     }
   };
 
+  async function fetchImage(uri) {
+    try{
+    const response = await fetch(uri);
+    const imageBlob = await response.blob();
+    const imageName = uri.substring(uri.lastIndexOf('/') + 1);
+    const imageRef = await ref(storage, `images/${imageName}`);
+    const uploadResult = await uploadBytesResumable(imageRef, imageBlob);
+    const downloadURL = await getDownloadURL(uploadResult.ref);
+    return(downloadURL);
+    }
+    catch(err) {
+      console.log(err);
+    }
+  }
+
+  function getImageUri(uri) {
+    setImageUri(uri);
+    onImageTaken && onImageTaken(uri);
+  }
+
+
   function cancelHandler() {
     navigation.goBack(); 
-}
+  }
+
   
 
   return (
     <View>
       <View style={styles.container}>
+      <ImageManager onImageTaken={getImageUri} initialPhotoUri={initialImageUri} />
+
         <Text style={styles.label}>Email: {email}</Text>
         <Text style={styles.label}>Username: {auth.currentUser.displayName}</Text>
         <TextInput
