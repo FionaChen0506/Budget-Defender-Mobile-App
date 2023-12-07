@@ -75,11 +75,11 @@ export default function VisitedPlaces() {
               coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
               title={marker.name}
             >
-              <Callout>
-                <View>
-                  <Text>{marker.name}</Text>
-                  <Text>{marker.address}</Text>
-                </View>
+              <Callout tooltip style={styles.callout}>
+              <View style={styles.calloutView}>
+              <Text style={styles.calloutTitle}>{marker.name}</Text>
+              <Text style={styles.calloutDescription}>{marker.address}</Text>
+            </View>
               </Callout>
             </Marker>
           ))}
@@ -97,6 +97,34 @@ export default function VisitedPlaces() {
     map: {
       ...StyleSheet.absoluteFillObject,
     },
+    callout: {
+        borderRadius: 6,
+        flex: 1,
+        width: 200,
+        borderWidth: 2,
+        borderColor: '#309797',
+        backgroundColor: '#F2FFE9',
+      },
+      calloutView: {
+        padding: 10,
+        borderRadius: 6,
+        backgroundColor: '#F2FFE9',
+        shadowColor: '#000000',
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+          height: 1,
+          width: 1
+        }
+      },
+      calloutTitle: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginBottom: 5
+      },
+      calloutDescription: {
+        fontSize: 14
+      },
   });
 
 
