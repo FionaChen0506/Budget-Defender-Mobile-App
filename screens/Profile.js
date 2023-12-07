@@ -6,6 +6,7 @@ import { database,auth } from "../firebase/firebaseSetup";
 import { updateInBudgetsDB } from '../firebase/firebaseHelper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../styles/Colors';
+import { Entypo } from '@expo/vector-icons';
 
 const Profile = ({navigation,route}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -81,17 +82,39 @@ const getBudgetEntryId = async (userUid) => {
 
   return (
     <View>
-      <Text> Hi {auth.currentUser.email}</Text>
-      <Text> Hi {user.displayName || updatedUsername}</Text>
-      
-      <View style={styles.avatarContainer}>
-        {auth.currentUser.photoURL ? (
-          <Image source={{ uri: auth.currentUser.photoURL }} style={styles.avatarImage} />
-        ) : (
-          // <Text style={styles.noAvatarText}>No Avatar</Text>
-          <Image source={require('../assets/default-avatar.jpg')} style={styles.avatarImage} />
-        )}
+        <View style={styles.userInfoContainer}>
+        {/* Left side: Display name and visited places*/}
+          {/* <View style={styles.displayNameContainer}>
+            <Text style={styles.displayNameText}>
+              Welcome, {user.displayName || updatedUsername}
+            </Text>
+          </View> */}
+
+        <View style={styles.leftContent}>
+          <View style={styles.displayNameContainer}>
+              <Text style={styles.displayNameText}>
+                    Welcome, {user.displayName || updatedUsername}
+              </Text>
+          </View>
+          <View>
+            <TouchableOpacity style={styles.visitedContainer}
+            onPress={() => handleMyVisitedPlacesPress()}>
+            <Entypo name="star-outlined" size={24} color="#EAD33A" />
+            <Text style={styles.myVisitedPlacesText}>My Visited Places</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+          {/* Right side: Avatar */}
+          <View style={styles.avatarContainer}>
+            {auth.currentUser.photoURL ? (
+              <Image source={{ uri: auth.currentUser.photoURL }} style={styles.avatarImage} />
+            ) : (
+              <Image source={require('../assets/default-avatar.jpg')} style={styles.avatarImage} />
+            )}
+          </View>
       </View>
+
       <View>
         <TouchableOpacity 
         onPress={() => handleEditProfilePress()} 
@@ -141,27 +164,65 @@ export default Profile;
 
 
 const styles = StyleSheet.create({
-  showImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
-    alignSelf: 'center',  
-},
+  userInfoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width:"95%",
+    marginTop: "5%",
+    marginBottom: "1%",
+    alignSelf:'center',
+    backgroundColor: Colors.entryBackground, 
+    borderRadius: 8,
+    shadowColor: 'gray',
+    shadowOffset: { width: 0, height: 1 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 3, 
+    elevation: 4,
+  },
+  leftContent: {
+    flex: 1,
+  },
+  displayNameContainer: {
+    flex: 1, // Takes 1/2 of the available space when name is too long
+  },
+  displayNameText: {
+    marginTop: '8%',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginLeft: '5%',
+  },
+  visitedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 0.5,
+    borderColor: 'lightgray',
+    marginBottom: '10%',
+    width:"80%",
+    borderRadius: 8,
+    padding:5,
+    marginLeft: '5%',
+  },
+  myVisitedPlacesText: {
+    fontSize: 16,
+    marginLeft: '2%',
+  },
+
 avatarContainer: {
   width: 120,
   height: 120,
   borderRadius: 60, // half of the width and height to make it a circle
   overflow: 'hidden', // hides the content outside the borderRadius
-  marginBottom: 10,
-  alignSelf: 'center',
-  backgroundColor: 'lightgray', // background color or shades
+  marginVertical: '3%',
+  marginRight: '2%',
+  //alignSelf: 'center',
+  backgroundColor: 'gray',
   elevation: 5, // for Android shadows
   shadowColor: 'black', // for iOS shadows
-  shadowOffset: { width: 0, height: 2 },
+  shadowOffset: { width: 1, height: 2 },
   shadowOpacity: 0.5,
   shadowRadius: 5,
 },
-
 
 avatarImage: {
   width: '100%',
@@ -170,7 +231,7 @@ avatarImage: {
 },
   EditLimitContainer: {
     flexDirection: 'row',
-    backgroundColor: Colors.entryBackground, 
+    //backgroundColor: Colors.entryBackground, 
     padding: 5,
     width: "95%",
     justifyContent: 'space-between',
@@ -178,9 +239,14 @@ avatarImage: {
     shadowColor: 'gray',
     shadowOffset: { width: 0, height: 1 }, 
     shadowOpacity: 0.3, 
-    shadowRadius: 3, 
+    shadowRadius: 10, 
     elevation: 4,
     marginVertical: "1%",
+    marginHorizontal:"2%",
+    borderWidth: 0.5,  // Add border
+    borderColor: 'lightgray',
+
+    
   },
   EditLimitText: {
     color: 'black',
