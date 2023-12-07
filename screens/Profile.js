@@ -133,6 +133,15 @@ const getBudgetEntryId = async (userUid) => {
 
       <View>
         <TouchableOpacity 
+        onPress={() => setIsModalVisible(true)} 
+        style={styles.EditLimitContainer}>
+          <Text style={styles.EditLimitText}>Edit Budget Limit</Text>
+          <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
+        </TouchableOpacity>
+      </View>
+
+      <View>
+        <TouchableOpacity 
         onPress={() => handleChangePasswordPress()} 
         style={styles.EditLimitContainer}>
           <Text style={styles.EditLimitText}>Change Password</Text>
@@ -140,14 +149,6 @@ const getBudgetEntryId = async (userUid) => {
         </TouchableOpacity>
       </View>
 
-      <View>
-        <TouchableOpacity 
-        onPress={() => setIsModalVisible(true)} 
-        style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>Edit Budget Limit</Text>
-          <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
-        </TouchableOpacity>
-      </View>
 
       <EditBudgetLimit
         isVisible={isModalVisible}
@@ -159,7 +160,7 @@ const getBudgetEntryId = async (userUid) => {
         <TouchableOpacity 
         onPress={() => handleMyVisitedPlacesPress()} 
         style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>My Visited Places</Text>
+          <Text style={styles.EditLimitText}>Notification Setting</Text>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>

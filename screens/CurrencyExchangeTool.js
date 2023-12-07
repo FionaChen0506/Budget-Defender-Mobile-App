@@ -5,11 +5,13 @@ import RNPickerSelect from 'react-native-picker-select';
 import PressableButton from '../components/PressableButton';
 import{REACT_APP_BASE_API_URL,} from "@env";
 import Colors from '../styles/Colors';
+import { Octicons } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 
 const CurrencyExchangeTool = () => {
     const [amount, setAmount] = useState('');
-    const [fromCurrency, setFromCurrency] = useState('CAD');
-    const [toCurrency, setToCurrency] = useState('CAD');
+    const [fromCurrency, setFromCurrency] = useState(null);
+    const [toCurrency, setToCurrency] = useState(null);
     const [result, setResult] = useState('');
 
     // Fetch list of currencies
@@ -59,6 +61,13 @@ const CurrencyExchangeTool = () => {
         console.error('Error fetching exchange rates:', error);
       }
     };
+
+    const handleClear = () => {
+      setAmount('');
+      setResult('');
+      setFromCurrency(null); 
+      setToCurrency(null);   
+    };
   
     return (
       <View style={styles.container}>
@@ -75,6 +84,8 @@ const CurrencyExchangeTool = () => {
           onValueChange={(value) => setFromCurrency(value)}
           items={currencyList.map((currency) => ({ label: currency, value: currency }))}
         />
+        <Octicons name="arrow-switch" style={styles.swapIcon} size={45} color={Colors.buttonBackground}/>
+        {/* 5<Fontisto name="arrow-swap" style={styles.swapIcon} size={40} color={Colors.buttonBackground} /> */}
         <RNPickerSelect
           style={pickerSelectStyles}
           placeholder={{ label: 'Select to currency', value: null }}
@@ -82,6 +93,13 @@ const CurrencyExchangeTool = () => {
           items={currencyList.map((currency) => ({ label: currency, value: currency }))}
         />
         <View style={styles.buttonContainer}>
+        <PressableButton
+            pressedFunction={handleClear}
+            pressedStyle={styles.buttonPressed}
+            defaultStyle={styles.buttonDefault}
+          >
+            <Text style={styles.buttonText}>Clear</Text>
+          </PressableButton>
           <PressableButton
             pressedFunction={convertCurrency}
             pressedStyle={styles.buttonPressed}
@@ -102,16 +120,20 @@ const styles = StyleSheet.create({
       padding: 20,
     },
     input: {
-      height: 40,
+      height: 45,
       borderColor: 'gray',
       borderWidth: 1,
-      marginBottom: 10,
+      marginBottom: 15,
       paddingHorizontal: 10,
+      fontSize: 18,
+      borderRadius: 4,
+      backgroundColor: 'white',
     },
     buttonContainer: {
       flexDirection: 'row',
-      justifyContent: 'center',
-      marginVertical: '5%',
+      justifyContent: 'space-evenly',
+      marginVertical: '10%',
+      alignItems:'center',
     },
     buttonDefault: {
       backgroundColor: Colors.buttonBackground,
@@ -133,16 +155,24 @@ const styles = StyleSheet.create({
     },
     buttonText: {
       color: 'white', 
-      fontSize: 17,
+      fontSize: 20,
     },
     resultText: {
-      fontSize: 17,
+      fontSize: 22,
+      fontWeight: 'bold',
+      color: Colors.labelText,
+      alignSelf: 'center',
     },
+    swapIcon:{
+      alignSelf:'center',
+      marginVertical: 13,
+      transform: [{ rotate: '90deg' }],
+    }
   });
   
   const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-      fontSize: 16,
+      fontSize: 18,
       paddingVertical: 12,
       paddingHorizontal: 10,
       borderWidth: 1,
@@ -154,7 +184,7 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
     inputAndroid: {
-      fontSize: 16,
+      fontSize: 18,
       paddingHorizontal: 10,
       paddingVertical: 8,
       borderWidth: 0.5,
