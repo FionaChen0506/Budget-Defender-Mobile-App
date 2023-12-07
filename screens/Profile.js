@@ -73,6 +73,12 @@ const getBudgetEntryId = async (userUid) => {
     navigation.navigate('Change Password');
   };
 
+
+  const handleMyVisitedPlacesPress = () => {
+    // Navigate to the "Visited Places" screen
+    navigation.navigate('Visited Places');
+  }
+
   return (
     <View>
       <Text> Hi {auth.currentUser.email}</Text>
@@ -117,6 +123,15 @@ const getBudgetEntryId = async (userUid) => {
         onClose={() => setIsModalVisible(false)}
         onSave={handleSaveBudgetLimit}
       />
+
+      <View>
+        <TouchableOpacity 
+        onPress={() => handleMyVisitedPlacesPress()} 
+        style={styles.EditLimitContainer}>
+          <Text style={styles.EditLimitText}>My Visited Places</Text>
+          <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

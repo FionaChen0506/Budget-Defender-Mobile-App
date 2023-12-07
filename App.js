@@ -21,6 +21,7 @@ import ExportReports from './screens/ExportReports';
 import EditProfile from './screens/EditProfile';
 import SelectLocation from './screens/SelectLocation';
 import CurrencyExchangeTool from './screens/CurrencyExchangeTool';
+import VisitedPlaces from './screens/VisitedPlaces';
 
 import BottomTabBar from './components/BottomTabBar';
 import Colors from './styles/Colors';
@@ -28,6 +29,7 @@ import PressableButton from './components/PressableButton';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import ChangePassword from './screens/ChangePassword';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -231,6 +233,14 @@ const AppStack =
     <Stack.Screen
       name="Currency Exchange Tool"
       component={CurrencyExchangeTool}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
+  <Stack.Screen
+      name="Visited Places"
+      component={VisitedPlaces}
       options={{ 
         headerShown: true,
         }}
