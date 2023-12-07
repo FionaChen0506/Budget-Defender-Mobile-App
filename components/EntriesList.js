@@ -66,7 +66,8 @@ const EntriesList = ({navigation }) => {
     return (
         <View style={styles.container}>
           {entries.length === 0 ? (
-            <Text>No expenses found for this user.</Text>
+            <Text style={styles.noExpensesText}>
+              There are no expenses record. Start today!</Text>
           ) : (
             <FlatList
               data={entries}
@@ -165,6 +166,13 @@ const styles = StyleSheet.create({
     dateText: {
         fontSize: 14,
         color: '#888',
+    },
+
+    noExpensesText:{
+      textAlign:'center',
+      fontSize: 18,
+      fontWeight: 'bold',
+      color:Colors.entryTextDark,
     },
 
 })

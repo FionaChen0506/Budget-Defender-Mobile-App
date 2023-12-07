@@ -98,8 +98,6 @@ const EditProfile = ({navigation}) => {
   return (
     <View>
       <View style={styles.container}>
-      <ImageManager onImageTaken={getImageUri} initialPhotoUri={initialImageUri} />
-
         <Text style={styles.label}>Email: {email}</Text>
         <Text style={styles.label}>Username: {auth.currentUser.displayName}</Text>
         <TextInput
@@ -108,6 +106,8 @@ const EditProfile = ({navigation}) => {
           value={newUsername}
           onChangeText={(text) => setNewUsername(text)}
         />
+        <Text style={styles.label}>Upload New Avatar: </Text>
+        <ImageManager onImageTaken={getImageUri} initialPhotoUri={initialImageUri} />
       </View>
       <SaveCancelButtons onCancel={cancelHandler} onSave={handleSave} />
     </View>
@@ -139,5 +139,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: "5%",
         fontSize: 18,
+        marginBottom: "2%",
     },
 })

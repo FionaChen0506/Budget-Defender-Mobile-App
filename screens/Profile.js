@@ -88,7 +88,8 @@ const getBudgetEntryId = async (userUid) => {
         {auth.currentUser.photoURL ? (
           <Image source={{ uri: auth.currentUser.photoURL }} style={styles.avatarImage} />
         ) : (
-          <Text>No Avatar</Text>
+          // <Text style={styles.noAvatarText}>No Avatar</Text>
+          <Image source={require('../assets/default-avatar.jpg')} style={styles.avatarImage} />
         )}
       </View>
       <View>
@@ -160,6 +161,8 @@ avatarContainer: {
   shadowOpacity: 0.5,
   shadowRadius: 5,
 },
+
+
 avatarImage: {
   width: '100%',
   height: '100%',
