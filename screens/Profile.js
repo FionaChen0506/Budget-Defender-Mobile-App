@@ -96,13 +96,20 @@ const getBudgetEntryId = async (userUid) => {
                     Welcome, {user.displayName || updatedUsername}
               </Text>
           </View>
-          <View>
-            <TouchableOpacity style={styles.visitedContainer}
+          <View style={styles.visitedContainer}>
+            <TouchableOpacity style={styles.visitedButton}
             onPress={() => handleMyVisitedPlacesPress()}>
             <Entypo name="star-outlined" size={24} color="#EAD33A" />
             <Text style={styles.myVisitedPlacesText}>My Visited Places</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity style={styles.visitedButton}
+            onPress={() => handleMyVisitedPlacesPress()}>
+            <Entypo name="star-outlined" size={24} color="#EAD33A" />
+            <Text style={styles.myVisitedPlacesText}>My Receipts</Text>
+            </TouchableOpacity>
           </View>
+
         </View>
 
           {/* Right side: Avatar */}
@@ -192,14 +199,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: '5%',
   },
-  visitedContainer: {
+  visitedContainer:{
+    marginBottom: '3%',
+  },
+  visitedButton: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 0.5,
     borderColor: 'lightgray',
-    marginBottom: '10%',
-    width:"80%",
-    borderRadius: 8,
+    //marginBottom: '10%',
+    width:"70%",
+    borderRadius: 5,
     padding:5,
     marginLeft: '5%',
   },
@@ -213,13 +223,13 @@ avatarContainer: {
   height: 120,
   borderRadius: 60, // half of the width and height to make it a circle
   overflow: 'hidden', // hides the content outside the borderRadius
-  marginVertical: '3%',
+  marginVertical: '6%',
   marginRight: '2%',
   //alignSelf: 'center',
   backgroundColor: 'gray',
   elevation: 5, // for Android shadows
   shadowColor: 'black', // for iOS shadows
-  shadowOffset: { width: 1, height: 2 },
+  shadowOffset: { width: 0, height: 2 },
   shadowOpacity: 0.5,
   shadowRadius: 5,
 },
@@ -231,27 +241,21 @@ avatarImage: {
 },
   EditLimitContainer: {
     flexDirection: 'row',
-    //backgroundColor: Colors.entryBackground, 
-    padding: 5,
+    backgroundColor: 'transparent', 
+    padding: 6,
     width: "95%",
     justifyContent: 'space-between',
     borderRadius: 8,
-    shadowColor: 'gray',
-    shadowOffset: { width: 0, height: 1 }, 
-    shadowOpacity: 0.3, 
-    shadowRadius: 10, 
     elevation: 4,
     marginVertical: "1%",
     marginHorizontal:"2%",
     borderWidth: 0.5,  // Add border
     borderColor: 'lightgray',
 
-    
   },
   EditLimitText: {
     color: 'black',
-    fontSize: 20,
-    //fontWeight: 'bold',
-    //marginBottom: 10,
+    fontSize: 18,
+    padding: 3,
   },
 });

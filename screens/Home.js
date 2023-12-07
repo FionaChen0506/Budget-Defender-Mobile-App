@@ -13,17 +13,18 @@ import CategoryChart from '../components/CategoryChart';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const Home = () => {
-  // const [categoryData, setCategoryData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
 
-  // useEffect(() => {
-  //   // Fetch categoryData example
-  //   const sampleCategoryData = [
-  //     { name: 'Food', spending: 200 },
-  //     { name: 'Transportation', spending: 50 },
-  //     { name: 'Entertainment', spending: 100 },
-  //   ];
-  //   setCategoryData(sampleCategoryData);
-  // }, []);
+  useEffect(() => {
+    // Fetch categoryData EXAMPLE
+    const sampleCategoryData = [
+      { name: 'Food', spending: 200 },
+      { name: 'Transportation', spending: 50 },
+      { name: 'Entertainment', spending: 100 },
+    ];
+    setCategoryData(sampleCategoryData);
+  }, []);
+
   const navigation = useNavigation();
   //const [selectedMonth, setSelectedMonth] = useState('');
   const currentMonth = new Date().toISOString().slice(0, 7);
@@ -49,20 +50,10 @@ const Home = () => {
       <SelectMonthForHome onMonthChange={handleMonthChange} />
       <BudgetSummary selectedMonth={selectedMonth}/>
 
-      {/* <View style={styles.CurrencyExchangeContainer}>
-        <PressableButton
-            pressedFunction={handleToolPress}
-            pressedStyle={styles.toolButtonPressed}
-            defaultStyle={styles.toolButtonDefault}
-          >
-            <Text style={styles.toolButtonText}>Currency Exchange</Text>
-            <MaterialIcons name="attach-money" size={24} color="black" />
-          </PressableButton>
-        </View> */}
-
-      <EntriesList navigation={navigation} />
-      {/* <CategoryChart categoryData={categoryData} /> */}
-
+      {/* <EntriesList navigation={navigation} /> */}
+      
+      {/* category chart example */}
+      <CategoryChart categoryData={categoryData} selectedMonth={selectedMonth} />
 
       <View style={styles.addButtonContainer}>
         <PressableButton
