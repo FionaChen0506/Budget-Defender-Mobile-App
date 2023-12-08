@@ -120,24 +120,24 @@ return (
         sortKey="y"
         sortOrder="descending"
         width={windowWidth * 0.6}
-        height={windowWidth * 0.5}
+        height={windowWidth * 0.45}
         colorScale={colorScale}
-        labelRadius={({ innerRadius }) => innerRadius + 35 }
+        labelRadius={({ innerRadius }) => innerRadius + 30 }
         labelPosition="centroid"
         style={{
           labels: styles.legendLabels,
         }}
-        innerRadius={15}
+        innerRadius={12}
       />
     </View>
     <View style={styles.legendContainer}>
       <VictoryLegend
         width={windowWidth * 0.4}
-        height={windowWidth * 0.5}
+        height={windowWidth * 0.45}
         title="Category"
         centerTitle
         orientation="horizontal"
-        style={{ title: styles.legendTitle }} 
+        style={{ title: styles.legendTitle, labels: styles.legendLabels }} 
         data={legendData}
         itemsPerRow={1}
         rowGutter={-10}
