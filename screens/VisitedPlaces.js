@@ -47,9 +47,11 @@ export default function VisitedPlaces() {
         let fetchedMarkers = [];
         let counts = {};
         querySnapshot.docs.forEach(doc => {
-            const location = doc.data().location;
-            const key = location.address; 
-  
+          const data = doc.data();
+          if (data.location) {  // Check if the location field exists
+              const location = data.location;
+              const key = location.address; 
+          
             // Increment count for each location
             counts[key] = counts[key] ? counts[key] + 1 : 1;
   
@@ -59,6 +61,7 @@ export default function VisitedPlaces() {
               name: location.name,
               address: location.address
             });
+          }
           });
   
           setMarkers(fetchedMarkers);
