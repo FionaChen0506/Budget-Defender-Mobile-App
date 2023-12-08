@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable,StyleSheet } from 'react-native';
+import { View, Text, Pressable,StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
 import PressableButton from '../components/PressableButton';
@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import CategoryChart from '../components/CategoryChart';
 import { MaterialIcons } from '@expo/vector-icons';
+import PieChartManager from '../components/PieChartManager';
 
 const Home = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -53,8 +54,8 @@ const Home = () => {
       {/* <EntriesList navigation={navigation} /> */}
       
       {/* category chart example */}
-      <CategoryChart categoryData={categoryData} selectedMonth={selectedMonth} />
-
+      {/* <CategoryChart categoryData={categoryData} selectedMonth={selectedMonth} /> */}
+      <PieChartManager selectedMonth={selectedMonth} />
       <View style={styles.addButtonContainer}>
         <PressableButton
           pressedFunction={handleAddPress}
@@ -74,7 +75,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    justifyContent: 'center', 
+    // justifyContent: 'center', 
     //alignItems: 'center'
 },
   addButtonContainer: {
