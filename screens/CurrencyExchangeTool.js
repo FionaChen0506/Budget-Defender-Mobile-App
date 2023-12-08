@@ -13,6 +13,7 @@ const CurrencyExchangeTool = () => {
     const [fromCurrency, setFromCurrency] = useState(null);
     const [toCurrency, setToCurrency] = useState(null);
     const [result, setResult] = useState('');
+    const [resetKey, setResetKey] = useState(0);
 
     // Fetch list of currencies
     const [currencyList, setCurrencyList] = useState([]);
@@ -23,11 +24,6 @@ const CurrencyExchangeTool = () => {
     useEffect(() => {
       const fetchCurrencies = async () => {
         try {
-        //   const response = await axios.get('https://open.er-api.com/v6/latest/USD');
-        //   const currencies = Object.keys(response.data.rates);
-        //   setCurrencyList(currencies);
-        
-        // Use backticks for template literals
         const response = await axios.get(`${apiUrl}/CAD`);
         const currencies = Object.keys(response.data.conversion_rates);
         setCurrencyList(currencies);
@@ -66,7 +62,8 @@ const CurrencyExchangeTool = () => {
       setAmount('');
       setResult('');
       setFromCurrency(null); 
-      setToCurrency(null);   
+      setToCurrency(null);  
+      setResetKey(prevKey => prevKey + 1); 
     };
   
     return (
@@ -79,6 +76,7 @@ const CurrencyExchangeTool = () => {
           onChangeText={(text) => setAmount(text)}
         />
         <RNPickerSelect
+          key={`from-picker-${resetKey}`}
           style={pickerSelectStyles}
           placeholder={{ label: 'Select from currency', value: null }}
           onValueChange={(value) => setFromCurrency(value)}
@@ -87,6 +85,7 @@ const CurrencyExchangeTool = () => {
         <Octicons name="arrow-switch" style={styles.swapIcon} size={45} color={Colors.buttonBackground}/>
         {/* 5<Fontisto name="arrow-swap" style={styles.swapIcon} size={40} color={Colors.buttonBackground} /> */}
         <RNPickerSelect
+          key={`to-picker-${resetKey}`}
           style={pickerSelectStyles}
           placeholder={{ label: 'Select to currency', value: null }}
           onValueChange={(value) => setToCurrency(value)}
