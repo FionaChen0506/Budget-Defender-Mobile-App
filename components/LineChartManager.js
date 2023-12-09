@@ -106,7 +106,7 @@ export default function LineChartManager({ selectedMonth }) {
         // legend data
         const legendData = [
           { name: "Budget", symbol: { fill: "tomato", type: "star" }, labels: { fill: "tomato" } },
-          { name: "Daily Expense", symbol: { fill: "#4c97ff", type: "round" }, labels: { fill: "#4c97ff" } },
+          { name: "Daily Expense", symbol: { fill: "#4c97ff", type: "circle" }, labels: { fill: "#4c97ff" } },
           { name: "Accumulated Expense", symbol: { fill: "#008170", type: "square" }, labels: { fill: "#008170" } },
         ];
 
