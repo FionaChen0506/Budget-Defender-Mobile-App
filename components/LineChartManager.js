@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
         borderRadius: 18,
         width: '95%', 
         alignSelf: "center",
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#FFFBF5',
         padding: 10,
       },
       legendContainer: {

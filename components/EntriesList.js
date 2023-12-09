@@ -13,8 +13,16 @@ import { getDocs } from 'firebase/firestore';
 import getIconName from './CategoryIcons';
 
 
-const EntriesList = ({navigation }) => {
+const EntriesList = ({navigation, selectedMonth }) => {
     const [entries, setEntries] = useState([]);
+    const [userUid, setUserUid] = useState(null);
+
+    // listen for changes to selected month
+  useEffect(() => {
+    if (userUid) {
+      fetchCategorySpendingData(userUid, selectedMonth);
+    }
+  }, [userUid, selectedMonth]);
   
     useEffect(() => {
         onSnapshot(query(collection(database, "Expenses"), 
@@ -22,7 +30,10 @@ const EntriesList = ({navigation }) => {
           if (!querySnapshot.empty) {
             let newArray = [];
             querySnapshot.forEach((docSnap) => {
-              newArray.push({...docSnap.data(), id: docSnap.id});
+              const entryData = {...docSnap.data(), id: docSnap.id};
+              if (isWithinSelectedMonth(entryData.date, selectedMonth)) {
+                newArray.push(entryData);
+              }
             });
             setEntries(newArray);
           } else {
@@ -36,8 +47,20 @@ const EntriesList = ({navigation }) => {
             }
           };
         });
-      }, []);
+      }, [selectedMonth]);
     
+
+      // check if expense is within selected month
+    const isWithinSelectedMonth = (firebaseTimestamp, selectedMonth) => {
+      const date = firebaseTimestamp.toDate();
+
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; 
+      const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+      const dateMonthYear = `${year}-${formattedMonth}`;
+
+      return dateMonthYear === selectedMonth;
+    };
 
     // Format the date to display in the list
     function formatDate(date) {

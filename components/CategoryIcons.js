@@ -31,7 +31,7 @@ function getIconName(category) {
         return <Entypo name="open-book" size={26} color="black" />;
       case 'Miscellaneous':
         return <MaterialIcons name="miscellaneous-services" size={26} color="black" />;
-      case 'Gift and Celebration':
+      case 'Gifts and Celebrations':
         return <Feather name="gift" size={26} color="black" />;
       default:
         return <FontAwesome name="money" size={26} color="black" />;

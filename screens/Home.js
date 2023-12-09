@@ -13,6 +13,10 @@ import CategoryChart from '../components/CategoryChart';
 import { MaterialIcons } from '@expo/vector-icons';
 import PieChartManager from '../components/PieChartManager';
 import LineChartManager from '../components/LineChartManager';
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const Home = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -57,7 +61,7 @@ const Home = () => {
       {/* category chart example */}
       {/* <CategoryChart categoryData={categoryData} selectedMonth={selectedMonth} /> */}
       <LineChartManager selectedMonth={selectedMonth} />
-      <PieChartManager selectedMonth={selectedMonth} />
+      {/* <PieChartManager selectedMonth={selectedMonth} /> */}
       <View style={styles.addButtonContainer}>
         <PressableButton
           pressedFunction={handleAddPress}
@@ -76,26 +80,27 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    // justifyContent: 'center', 
-    //alignItems: 'center'
-},
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
   addButtonContainer: {
     alignItems: 'center',
-    marginVertical:'5%',
+    marginVertical: '5%',
   },
   addButtonPressed: {
     backgroundColor: 'grey', 
-    marginHorizontal: 30,
-    width:'25%',
-    padding: 10,
+    marginHorizontal: '5%',
+    width: windowWidth * 0.25,
+    padding: windowHeight * 0.01,
     alignItems: 'center',
   },
   addButtonDefault: {
     backgroundColor: Colors.buttonBackground,
-    marginHorizontal: 30,
-    width:'25%',
-    padding: 10,
+    marginHorizontal: '5%',
+    width: windowWidth * 0.25, 
+    padding: windowHeight * 0.01,
     alignItems: 'center',
   },
 

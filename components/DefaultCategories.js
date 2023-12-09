@@ -10,7 +10,7 @@ const defaultCategories = [
     'Housing',
     'Education',
     'Miscellaneous',
-    'Gift and Celebration',
+    'Gifts and Celebrations',
   ];
   
 export default defaultCategories;

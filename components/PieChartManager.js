@@ -134,13 +134,13 @@ return (
       <VictoryLegend
         width={windowWidth * 0.4}
         height={windowWidth * 0.45}
-        title="Category"
+        // title="Category"
         centerTitle
         orientation="horizontal"
-        style={{ title: styles.legendTitle, labels: styles.legendLabels }} 
+        style={{ title: styles.legendTitle, labels: styles.legendLabels, }} 
         data={legendData}
         itemsPerRow={1}
-        rowGutter={-10}
+        rowGutter={1}
       />
     </View>
   </View>
