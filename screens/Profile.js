@@ -7,6 +7,11 @@ import { updateInBudgetsDB } from '../firebase/firebaseHelper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../styles/Colors';
 import { Entypo } from '@expo/vector-icons';
+import LottieView from "lottie-react-native";
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const Profile = ({navigation,route}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -164,6 +169,15 @@ const getBudgetEntryId = async (userUid) => {
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>
+
+
+        <LottieView
+              source={require('../images/analysis-lottie.json')}
+              autoPlay
+              loop
+              style={styles.analysisLottie}
+            />
+
     </View>
   );
 };
@@ -258,5 +272,11 @@ avatarImage: {
     color: 'black',
     fontSize: 18,
     padding: 3,
+  },
+
+  analysisLottie: {
+    alignSelf: 'center',
+    width: windowWidth,
+    height: windowHeight * 0.25,
   },
 });
