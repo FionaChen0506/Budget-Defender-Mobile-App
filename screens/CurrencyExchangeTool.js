@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
 import PressableButton from '../components/PressableButton';
@@ -70,6 +70,14 @@ const CurrencyExchangeTool = () => {
       setToCurrency(null);  
       setResetKey(prevKey => prevKey + 1); 
     };
+
+    const handleCurrencySwap = () => {
+      const tempCurrency = fromCurrency;
+      setFromCurrency(toCurrency);
+      setToCurrency(tempCurrency);
+      setResetKey(prevKey => prevKey + 1); 
+    };
+
   
     return (
       <View style={styles.container}>
@@ -91,15 +99,19 @@ const CurrencyExchangeTool = () => {
           style={pickerSelectStyles}
           placeholder={{ label: 'Select from currency', value: null }}
           onValueChange={(value) => setFromCurrency(value)}
+          value={fromCurrency}
           items={currencyList.map((currency) => ({ label: currency, value: currency }))}
         />
-        <Octicons name="arrow-switch" style={styles.swapIcon} size={45} color={Colors.buttonBackground}/>
+        <TouchableOpacity onPress={handleCurrencySwap}>
+            <Octicons name="arrow-switch" style={styles.swapIcon} size={45} color={Colors.buttonBackground}/>
+        </TouchableOpacity>
         {/* 5<Fontisto name="arrow-swap" style={styles.swapIcon} size={40} color={Colors.buttonBackground} /> */}
         <RNPickerSelect
           key={`to-picker-${resetKey}`}
           style={pickerSelectStyles}
           placeholder={{ label: 'Select to currency', value: null }}
           onValueChange={(value) => setToCurrency(value)}
+          value={toCurrency}
           items={currencyList.map((currency) => ({ label: currency, value: currency }))}
         />
         <View style={styles.buttonContainer}>
