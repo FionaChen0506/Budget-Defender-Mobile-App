@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import CategoryChart from '../components/CategoryChart';
 import { MaterialIcons } from '@expo/vector-icons';
 import PieChartManager from '../components/PieChartManager';
+import LineChartManager from '../components/LineChartManager';
 
 const Home = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -55,6 +56,7 @@ const Home = () => {
       
       {/* category chart example */}
       {/* <CategoryChart categoryData={categoryData} selectedMonth={selectedMonth} /> */}
+      <LineChartManager selectedMonth={selectedMonth} />
       <PieChartManager selectedMonth={selectedMonth} />
       <View style={styles.addButtonContainer}>
         <PressableButton

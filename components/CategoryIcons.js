@@ -15,8 +15,12 @@ function getIconName(category) {
         return <MaterialIcons name="local-grocery-store" size={26} color="black" />;
       case 'Travel':
         return <MaterialIcons name="card-travel" size={26} color="black" />;
+      case 'Clothing':
+        return <MaterialCommunityIcons name="tshirt-crew-outline" size={26} color="black" />;
       case 'Furniture':
         return <MaterialCommunityIcons name="table-furniture" size={26} color="black" />;
+      case 'Sport':
+        return <MaterialIcons name="sports-tennis" size={26} color="black" />;
       case 'Entertainment':
         return <Ionicons name="game-controller-outline" size={26} color="black" />;
       case 'Health and Wellness':
@@ -27,7 +31,7 @@ function getIconName(category) {
         return <Entypo name="open-book" size={26} color="black" />;
       case 'Miscellaneous':
         return <MaterialIcons name="miscellaneous-services" size={26} color="black" />;
-      case 'Gifts and Celebrations':
+      case 'Gift and Celebration':
         return <Feather name="gift" size={26} color="black" />;
       default:
         return <FontAwesome name="money" size={26} color="black" />;

@@ -9,7 +9,7 @@ import { Dimensions } from 'react-native';
 // get width of screen
 const windowWidth = Dimensions.get('window').width;
 
-
+// pie chart of category spending of selected month
 export default function PieChartManager({selectedMonth}) {
   const [userUid, setUserUid] = useState(null);
   const [categorySpendingData, setCategorySpendingData] = useState([]);
@@ -19,7 +19,6 @@ export default function PieChartManager({selectedMonth}) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserUid(user.uid);
-        fetchCategorySpendingData(user.uid);
       } else {
         setUserUid(null);
       }
@@ -105,7 +104,8 @@ export default function PieChartManager({selectedMonth}) {
   const legendData = categorySpendingData.map((item, index) => {
     return {
       name: item.categoryName,
-      symbol: { fill: colorScale[index % colorScale.length] }
+      symbol: { fill: colorScale[index % colorScale.length] },
+      labels: { fill: colorScale[index % colorScale.length] }
     };
 });
 
@@ -125,7 +125,7 @@ return (
         labelRadius={({ innerRadius }) => innerRadius + 30 }
         labelPosition="centroid"
         style={{
-          labels: styles.legendLabels,
+          labels: styles.dataLabels,
         }}
         innerRadius={12}
       />
@@ -160,13 +160,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFBF5',
   },
   pieChartContainer: {
-    flex: 0.55, 
+    flex: 0.5, 
     alignItems: 'center', 
     justifyContent: 'flex-start', 
     alignSelf: "center",
   },
   legendContainer: {
-    flex: 0.45, 
+    flex: 0.5, 
     alignItems: 'center', 
     justifyContent: 'center',
     alignSelf: "center",
@@ -178,6 +178,14 @@ const styles = StyleSheet.create({
   },
   legendLabels: {
     fill: "black", 
-    fontSize: 13
-  }
+    fontSize: 12,
+    fontFamily: "Helvetica Neue",
+    fontWeight: "bold",
+  },
+  dataLabels: {
+    fill: "black", 
+    fontSize: 12,
+    fontFamily: "Helvetica Neue",
+  },
+
 });
