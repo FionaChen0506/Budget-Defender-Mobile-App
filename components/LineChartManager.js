@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         },
       legendLabels: {
         fill: "black", 
-        fontSize: 10,
+        fontSize: 10.5,
         fontFamily: "Helvetica Neue",
         fontWeight: "bold",
       },

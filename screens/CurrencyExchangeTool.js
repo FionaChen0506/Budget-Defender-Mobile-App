@@ -7,6 +7,11 @@ import{REACT_APP_BASE_API_URL,} from "@env";
 import Colors from '../styles/Colors';
 import { Octicons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
+import LottieView from "lottie-react-native";
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const CurrencyExchangeTool = () => {
     const [amount, setAmount] = useState('');
@@ -68,6 +73,12 @@ const CurrencyExchangeTool = () => {
   
     return (
       <View style={styles.container}>
+        <LottieView
+            source={require('../images/moneydrop-lottie.json')}
+            autoPlay
+            loop
+            style={styles.moneydropLottie}
+          />
         <TextInput
           style={styles.input}
           placeholder="Enter amount"
@@ -127,6 +138,7 @@ const styles = StyleSheet.create({
       fontSize: 18,
       borderRadius: 4,
       backgroundColor: 'white',
+      marginTop: -40,
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -161,12 +173,19 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       color: Colors.labelText,
       alignSelf: 'center',
+      marginTop: -10,
     },
     swapIcon:{
       alignSelf:'center',
-      marginVertical: 13,
+      marginVertical: 10,
       transform: [{ rotate: '90deg' }],
-    }
+    },
+    moneydropLottie: {
+      alignSelf: 'center',
+      width: windowWidth*1.2,
+      height: windowHeight * 0.3,
+      marginTop: -25,
+    },
   });
   
   const pickerSelectStyles = StyleSheet.create({

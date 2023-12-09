@@ -3,6 +3,11 @@ import RNPickerSelect from 'react-native-picker-select';
 import { useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { View, StyleSheet, Text } from 'react-native';
+import LottieView from "lottie-react-native";
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const SelectMonthForHome = ({ onMonthChange }) => {
   //const [selectedMonth, setSelectedMonth] = useState('');
@@ -29,7 +34,7 @@ const SelectMonthForHome = ({ onMonthChange }) => {
       color: 'black',
       paddingRight: 20, 
       backgroundColor: '#FFFBF5',
-      width: 150,
+      width: windowWidth * 0.3,
       alignSelf: 'center',
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
@@ -37,7 +42,7 @@ const SelectMonthForHome = ({ onMonthChange }) => {
       shadowRadius: 4,
       marginTop: 10,
       marginBottom: 10,
-      // marginLeft: 30,
+      marginLeft: 15,
     },
     inputAndroid: {
       marginTop: 10,
@@ -60,6 +65,13 @@ const SelectMonthForHome = ({ onMonthChange }) => {
 
   return (
     <View style={styles.container}>
+      <LottieView
+            source={require('../images/calendar-lottie.json')}
+            autoPlay
+            loop
+            style={styles.calendarLottie}
+          />
+
     <Text style={{fontSize: 20, fontWeight: 'bold', color: '#309797', alignSelf: 'center', marginTop: 10, marginBottom: 10}}>Select Month</Text>
     <RNPickerSelect
     placeholder={{}}  
@@ -76,6 +88,7 @@ const SelectMonthForHome = ({ onMonthChange }) => {
       //   return <Ionicons name="md-arrow-down" size={24} color="#309797" />;
       // }}
     />
+      
     </View>
   );
 };
@@ -83,9 +96,17 @@ const SelectMonthForHome = ({ onMonthChange }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-around',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
 
+  },
+  calendarLottie: {
+    width: 80,
+    height: 80,
+    marginLeft:-16,
+    marginTop:-8,
+    // marginRight: 20,
   },
 });
 

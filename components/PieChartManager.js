@@ -81,23 +81,36 @@ export default function PieChartManager({selectedMonth}) {
 };
 
   // colors for pie chart
-  const colorScale = [
-    "#FF6384", // Vivid Pink
-    "#36A2EB", // Bright Blue
-    "#FFCE56", // Sunny Yellow
-    "#4BC0C0", // Sea Green
-    "#9966FF", // Soft Purple
-    "#FF9F40", // Tangerine Orange
-    "#7C4DFF", // Deep Indigo
-    "#66BB6A", // Apple Green
-    "#FF7043", // Coral Red
-    "#9CCC65", // Light Lime
-    "#26C6DA", // Sky Blue
-    "#FFCA28", // Amber
-    "#D4E157", // Light Olive
-    "#FFA726", // Orange Peel
-    "#EC407A", // Hot Pink
-    "#AB47BC"  // Lilac Purple
+//   const colorScale = [
+//     "#FF6384", // Vivid Pink
+//     "#36A2EB", // Bright Blue
+//     "#FFCE56", // Sunny Yellow
+//     "#4BC0C0", // Sea Green
+//     "#9966FF", // Soft Purple
+//     "#FF9F40", // Tangerine Orange
+//     "#7C4DFF", // Deep Indigo
+//     "#66BB6A", // Apple Green
+//     "#FF7043", // Coral Red
+//     "#9CCC65", // Light Lime
+//     "#26C6DA", // Sky Blue
+//     "#FFCA28", // Amber
+//     "#D4E157", // Light Olive
+//     "#FFA726", // Orange Peel
+//     "#EC407A", // Hot Pink
+//     "#AB47BC"  // Lilac Purple
+// ];
+const colorScale = [
+  "#4D8AF0", // Blue
+  "#F7B32B", // Yellow
+  "#F45B69", // Pink
+  "#6CCF8F", // Green
+  "#9B6EDE", // Purple
+  "#FFA07A", // Light Salmon
+  "#20B2AA", // Light Sea Green
+  "#FFD700", // Gold
+  "#C71585", // Medium Violet Red
+  "#48D1CC", // Medium Turquoise
+  // Add more colors as needed
 ];
 
   // legend data
@@ -115,7 +128,7 @@ export default function PieChartManager({selectedMonth}) {
 return (
   <View style={styles.container}>
     <View style={styles.pieChartContainer}>
-      <VictoryPie
+      {/* <VictoryPie
         animate={{ duration: 50 }}
         data={categorySpendingData}
         sortKey="y"
@@ -129,7 +142,24 @@ return (
           labels: styles.dataLabels,
         }}
         innerRadius={12}
+      /> */}
+      <VictoryPie
+        animate={{ duration: 50 }}
+        data={categorySpendingData}
+        sortKey="y"
+        sortOrder="descending"
+        width={windowWidth * 0.6}
+        height={windowWidth * 0.45}
+        colorScale={colorScale}
+        labelRadius={({ innerRadius }) => innerRadius + 30 }
+        labelPosition="centroid"
+        style={{
+          labels: { ...styles.dataLabels, fontSize: 10, fontFamily: "Roboto, sans-serif" },
+          data: { stroke: "#fff", strokeWidth: 2 },
+        }}
+        innerRadius={12}
       />
+
     </View>
     <View style={styles.legendContainer}>
       <VictoryLegend
@@ -179,7 +209,7 @@ const styles = StyleSheet.create({
   },
   legendLabels: {
     fill: "black", 
-    fontSize: 12,
+    fontSize: 11,
     fontFamily: "Helvetica Neue",
     fontWeight: "bold",
   },
