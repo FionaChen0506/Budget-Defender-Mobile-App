@@ -80,10 +80,10 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    // flexDirection: 'column',
+    // flex: 1,
+    // // justifyContent: 'flex-start',
+    // alignItems: 'center',
   },
   addButtonContainer: {
     alignItems: 'center',

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import RNPickerSelect from 'react-native-picker-select';
 import { useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 
 const SelectMonthForHome = ({ onMonthChange }) => {
   //const [selectedMonth, setSelectedMonth] = useState('');
@@ -27,9 +27,9 @@ const SelectMonthForHome = ({ onMonthChange }) => {
       borderColor: '#309797',
       borderRadius: 4,
       color: 'black',
-      paddingRight: 30, 
+      paddingRight: 20, 
       backgroundColor: '#FFFBF5',
-      width: '70%',
+      width: 150,
       alignSelf: 'center',
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
@@ -37,6 +37,7 @@ const SelectMonthForHome = ({ onMonthChange }) => {
       shadowRadius: 4,
       marginTop: 10,
       marginBottom: 10,
+      // marginLeft: 30,
     },
     inputAndroid: {
       marginTop: 10,
@@ -55,13 +56,11 @@ const SelectMonthForHome = ({ onMonthChange }) => {
     placeholder: {
       color: '#b3b3b3',
     },
-    iconContainer: {
-      top: 15,
-      right: 25,
-    },
   };
 
   return (
+    <View style={styles.container}>
+    <Text style={{fontSize: 20, fontWeight: 'bold', color: '#309797', alignSelf: 'center', marginTop: 10, marginBottom: 10}}>Select Month</Text>
     <RNPickerSelect
     placeholder={{}}  
     default={{ label: currentMonth, value: currentMonth }}
@@ -73,18 +72,19 @@ const SelectMonthForHome = ({ onMonthChange }) => {
       style={pickerSelectStyles}
       value={selectedMonth}
       useNativeAndroidPickerStyle={false}
-      Icon={() => {
-        return <Ionicons name="md-arrow-down" size={24} color="#309797" />;
-      }}
+      // Icon={() => {
+      //   return <Ionicons name="md-arrow-down" size={24} color="#309797" />;
+      // }}
     />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-around',
 
   },
 });
