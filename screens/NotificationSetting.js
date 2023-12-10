@@ -18,10 +18,22 @@ const NotificationSetting = () => {
     setDatePickerVisibility(false);
   };
 
-  const confirmTime = (selectedDate) => {
+  const confirmTime = (time) => {
     hideDatePicker();
-    setSelectedTime(selectedDate);
-    onDateChange(selectedDate);
+    setSelectedTime(time);
+
+    // Format the selected time without leading zero for single-digit hours and minutes
+    // const formattedHour = time.getHours().toString().padStart(2, '0');
+    // const formattedMinute = time.getMinutes().toString().padStart(2, '0');
+    const formattedHour = time.getHours().toString();
+    const formattedMinute = time.getMinutes().toString();
+    const formattedTime = `${formattedHour}:${formattedMinute}`;
+
+    // Pass the formatted time to NotificationManager 
+    console.log('Formatted Time:', formattedTime);
+    console.log('Formatted Hour:', formattedHour);
+    // NotificationManager(formattedHour,formattedMinute)
+
   };   
 
   const handleTimePicker = async () => {
@@ -50,16 +62,15 @@ const NotificationSetting = () => {
       <Button title="Allow Daily Notifications" onPress={showDatePicker} />
 
         <DateTimePickerModal
-          isVisible={isDatePickerVisible}
           testID="dateTimePicker"
+          isVisible={isDatePickerVisible}
           value={chosenTime}
           onCancel={hideDatePicker}
           mode="time"
           is24Hour={true}
-          display="default"
           onConfirm={confirmTime}
-        
         />
+
         <NotificationManager/>
         <Button title="Cancel Notifications" onPress={cancelNotification} />
         
