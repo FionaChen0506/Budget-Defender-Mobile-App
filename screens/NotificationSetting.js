@@ -7,6 +7,7 @@ import * as Notifications from "expo-notifications";
 const NotificationSetting = () => {
   return (
     <View>
+
       <NotificationManager />
     </View>
   )

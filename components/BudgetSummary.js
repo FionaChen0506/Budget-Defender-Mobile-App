@@ -31,8 +31,6 @@ const BudgetSummary = ({selectedMonth}) => {
     };
   }, [userUid]);
 
-  console.log("selected month in budget summary:", selectedMonth);
-
     // Assuming we only want the current month, format it to 'YYYY-MM' string
     const currentMonth = new Date().toISOString().slice(0, 7);
 

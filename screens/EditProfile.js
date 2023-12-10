@@ -25,8 +25,6 @@ const EditProfile = ({navigation}) => {
       try {
         setEmail(user.email);
         setUsername(user.displayName);
-        //
-        console.log("avatar url", user.photoURL)
         setAvatarUrl(user.photoURL);
 
       } catch (error) {

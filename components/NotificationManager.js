@@ -23,10 +23,13 @@ export default function NotificationManager() {
       }
       Notifications.scheduleNotificationAsync({
         content: {
-          title: "first notification",
-          body: "Hi! It is time to record your expenses!",
+          title: "Budget-Defender",
+          body: "Hi! It's time to record your expenses!",
         },
-        trigger: { seconds: 5 },
+        trigger: { 
+          seconds: 5 ,
+          repeats: false,
+        },
       });
     } catch (err) {
       console.log("schedule notification error ", err);
