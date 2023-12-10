@@ -3,7 +3,8 @@ import { View, Text, Button, Modal, TimePickerAndroid,StyleSheet } from 'react-n
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 //import {verifyPermission,NotificationManager  } from '../components/NotificationManager';
 import NotificationManager from '../components/NotificationManager';
-import { cancelNotification } from '../components/NotificationManager';
+import { scheduleDailyNotification, cancelNotification } from '../components/NotificationManager';
+
 
 const NotificationSetting = () => {
   const [chosenTime, setChosenTime] = useState(new Date());
@@ -25,42 +26,20 @@ const NotificationSetting = () => {
     // Format the selected time without leading zero for single-digit hours and minutes
     // const formattedHour = time.getHours().toString().padStart(2, '0');
     // const formattedMinute = time.getMinutes().toString().padStart(2, '0');
-    const formattedHour = time.getHours().toString();
-    const formattedMinute = time.getMinutes().toString();
+
+    const formattedHour = parseInt(time.getHours());
+    const formattedMinute = parseInt(time.getMinutes());
     const formattedTime = `${formattedHour}:${formattedMinute}`;
 
     // Pass the formatted time to NotificationManager 
-    console.log('Formatted Time:', formattedTime);
-    console.log('Formatted Hour:', formattedHour);
-    // NotificationManager(formattedHour,formattedMinute)
+    //console.log('Formatted Time:', formattedTime);
+    scheduleDailyNotification(formattedHour,formattedMinute)
 
   };   
 
-  const handleTimePicker = async () => {
-    try {
-      const { action, hour, minute } = await TimePickerAndroid.open({
-        hour: 12,
-        minute: 0,
-        is24Hour: false,
-      });
-
-      if (action !== TimePickerAndroid.dismissedAction) {
-        const formattedTime = `${hour}:${minute}`;
-        setSelectedTime(formattedTime);
-        setModalVisible(false);
-        //scheduleDailyNotification(hour, minute);
-        NotificationManager(hour,minute)
-      }
-    } catch (error) {
-      console.warn('Error opening time picker', error);
-    }
-  };
-
   return (
     <View>
-      <Text>Notification Settings</Text>
       <Button title="Allow Daily Notifications" onPress={showDatePicker} />
-
         <DateTimePickerModal
           testID="dateTimePicker"
           isVisible={isDatePickerVisible}

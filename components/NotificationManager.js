@@ -14,8 +14,8 @@ export const verifyPermission = async () => {
 };
 
 export default function NotificationManager() {
-  // const scheduleNotificationHandler = async (hour,minute) => {
-    const scheduleNotificationHandler = async () => {
+  const scheduleNotificationHandler = async (chosenHour, chosenMinute) => {
+    // const scheduleNotificationHandler = async () => {
     try {
       const hasPermission = await verifyPermission();
       if (!hasPermission) {
@@ -29,12 +29,13 @@ export default function NotificationManager() {
         },
         trigger: { 
           // seconds: 5 ,
-          hour: 23, // show this notification every day, 23:51
-          minute: 51,
+          hour: chosenHour,
+          minute: chosenMinute,
           //type:'daily',
           repeats: true
         },
       });
+      console.log("notification at:" ,chosenHour,chosenMinute)
     } catch (err) {
       console.log("schedule notification error ", err);
     }
@@ -51,6 +52,31 @@ export default function NotificationManager() {
     </View>
   );
 }
+
+export const scheduleDailyNotification = async (chosenHour, chosenMinute) => {
+    try {
+      const hasPermission = await verifyPermission();
+      if (!hasPermission) {
+        Alert.alert("You need to give permission to send notification");
+        return;
+      }
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Budget-Defender",
+          body: "Hi! It's time to record your expenses!",
+        },
+        trigger: { 
+          hour: chosenHour,
+          minute: chosenMinute,
+          //type:'daily',
+          repeats: true
+        },
+      });
+      console.log("notification at:" ,chosenHour,chosenMinute)
+    } catch (err) {
+      console.log("schedule notification error ", err);
+    }
+};
 
 export async function cancelNotification(){
   await Notifications.cancelAllScheduledNotificationsAsync();
