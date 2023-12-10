@@ -29,12 +29,23 @@ import PressableButton from './components/PressableButton';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import ChangePassword from './screens/ChangePassword';
+import NotificationSetting from './screens/NotificationSetting';
+import * as Notifications from "expo-notifications";
 
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+Notifications.setNotificationHandler({
+  handleNotification: async function (notification) {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: true,
+    };
+  },
+});
 
 // Auth Screens
 const AuthStack = <>
@@ -241,6 +252,14 @@ const AppStack =
   <Stack.Screen
       name="Visited Places"
       component={VisitedPlaces}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
+  <Stack.Screen
+      name="Notification Setting"
+      component={NotificationSetting}
       options={{ 
         headerShown: true,
         }}

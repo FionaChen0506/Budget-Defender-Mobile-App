@@ -85,6 +85,11 @@ const getBudgetEntryId = async (userUid) => {
     navigation.navigate('Visited Places');
   }
 
+  const handleNotificationSettingPress = () => {
+    // Navigate to the "Notification Setting" screen
+    navigation.navigate('Notification Setting');
+  }
+
   return (
     <View>
         <View style={styles.userInfoContainer}>
@@ -163,7 +168,7 @@ const getBudgetEntryId = async (userUid) => {
 
       <View>
         <TouchableOpacity 
-        onPress={() => handleMyVisitedPlacesPress()} 
+        onPress={() => handleNotificationSettingPress()} 
         style={styles.EditLimitContainer}>
           <Text style={styles.EditLimitText}>Notification Setting</Text>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
