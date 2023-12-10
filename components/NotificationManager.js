@@ -14,7 +14,8 @@ export const verifyPermission = async () => {
 };
 
 export default function NotificationManager() {
-  const scheduleNotificationHandler = async () => {
+  // const scheduleNotificationHandler = async (hour,minute) => {
+    const scheduleNotificationHandler = async () => {
     try {
       const hasPermission = await verifyPermission();
       if (!hasPermission) {
@@ -27,14 +28,20 @@ export default function NotificationManager() {
           body: "Hi! It's time to record your expenses!",
         },
         trigger: { 
-          seconds: 5 ,
-          repeats: false,
+          // seconds: 5 ,
+          hour: 23, // show this notification every day, 23:51
+          minute: 51,
+          //type:'daily',
+          repeats: true
         },
       });
     } catch (err) {
       console.log("schedule notification error ", err);
     }
   };
+
+
+  
   return (
     <View>
       <Button
@@ -43,4 +50,8 @@ export default function NotificationManager() {
       />
     </View>
   );
+}
+
+export async function cancelNotification(){
+  await Notifications.cancelAllScheduledNotificationsAsync();
 }
