@@ -97,15 +97,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     paddingHorizontal: 10,
 
   },
   calendarLottie: {
-    width: 80,
-    height: 80,
-    marginLeft:-16,
-    marginTop:-8,
+    width: 60,
+    height: 60,
     // marginRight: 20,
   },
 });

@@ -177,7 +177,7 @@ const getBudgetEntryId = async (userUid) => {
 
 
         <LottieView
-              source={require('../images/analysis-lottie.json')}
+              source={require('../images/saving-lottie.json')}
               autoPlay
               loop
               style={styles.analysisLottie}
@@ -282,6 +282,6 @@ avatarImage: {
   analysisLottie: {
     alignSelf: 'center',
     width: windowWidth,
-    height: windowHeight * 0.25,
+    paddingBottom: 100,
   },
 });
