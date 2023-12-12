@@ -9,6 +9,7 @@ import Colors from '../styles/Colors';
 import { Entypo } from '@expo/vector-icons';
 import LottieView from "lottie-react-native";
 import { Dimensions } from 'react-native';
+import LinearGradientComp from '../components/LinearGradient';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -91,6 +92,7 @@ const getBudgetEntryId = async (userUid) => {
   }
 
   return (
+    <LinearGradientComp>
     <View>
         <View style={styles.userInfoContainer}>
         {/* Left side: Display name and visited places*/}
@@ -184,6 +186,7 @@ const getBudgetEntryId = async (userUid) => {
             />
 
     </View>
+    </LinearGradientComp>
   );
 };
 

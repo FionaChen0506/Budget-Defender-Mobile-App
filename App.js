@@ -164,7 +164,8 @@ function TabNavigator() {
                 marginRight: 10,
               }}
             >
-              <Text>Log Out</Text>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', }}
+              >Log Out</Text>
             </PressableButton>
           ),
           headerStyle: {

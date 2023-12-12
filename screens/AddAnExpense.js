@@ -9,7 +9,6 @@ import { getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
 
 
-
 const AddAnExpense = ({ navigation, route }) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
@@ -107,7 +106,6 @@ const AddAnExpense = ({ navigation, route }) => {
   return (
     // <ScrollView>
     
-
     <ExpenseForm
         originScreen='Add An Expense'
         initialAmount={amount}

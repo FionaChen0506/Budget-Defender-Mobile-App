@@ -9,6 +9,7 @@ import { Octicons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import LottieView from "lottie-react-native";
 import { Dimensions } from 'react-native';
+import LinearGradientComp from '../components/LinearGradient';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -80,6 +81,7 @@ const CurrencyExchangeTool = () => {
 
   
     return (
+      <LinearGradientComp>
       <View style={styles.container}>
         <LottieView
             source={require('../images/moneydrop-lottie.json')}
@@ -132,6 +134,7 @@ const CurrencyExchangeTool = () => {
         </View>
         <Text style={styles.resultText}>{result}</Text>
       </View>
+      </LinearGradientComp>
     );
   };
   

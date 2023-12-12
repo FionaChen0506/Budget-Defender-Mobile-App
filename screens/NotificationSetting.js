@@ -4,6 +4,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 //import {verifyPermission,NotificationManager  } from '../components/NotificationManager';
 import NotificationManager from '../components/NotificationManager';
 import { scheduleDailyNotification, cancelNotification } from '../components/NotificationManager';
+import LinearGradientComp from '../components/LinearGradient';
 
 
 const NotificationSetting = () => {
@@ -38,6 +39,7 @@ const NotificationSetting = () => {
   };   
 
   return (
+    <LinearGradientComp>
     <View>
       <Button title="Allow Daily Notifications" onPress={showDatePicker} />
         <DateTimePickerModal
@@ -54,6 +56,7 @@ const NotificationSetting = () => {
         <Button title="Cancel Notifications" onPress={cancelNotification} />
         
     </View>
+    </LinearGradientComp>
   );
 };
 

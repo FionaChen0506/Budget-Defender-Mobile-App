@@ -3,6 +3,7 @@ import { View, TextInput, Button, Alert, StyleSheet, Text } from 'react-native';
 import { updatePassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseSetup';
 import SaveCancelButtons from '../components/SaveCancelButtons';
+import LinearGradientComp from '../components/LinearGradient';
 
 const ChangePassword = ({navigation}) => {
     const [password, setPassword] = useState("");
@@ -46,6 +47,7 @@ const ChangePassword = ({navigation}) => {
         navigation.goBack(); 
     }
   return (
+    <LinearGradientComp>
     <View>
             <View style={styles.container}>
                 <Text style={styles.label}>New Password</Text>
@@ -69,6 +71,7 @@ const ChangePassword = ({navigation}) => {
             </View>
       <SaveCancelButtons onCancel={cancelHandler} onSave={handleChangePassword} />
     </View>
+    </LinearGradientComp>
   )
 }
 

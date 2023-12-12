@@ -4,6 +4,7 @@ import EntriesList from '../components/EntriesList'
 import SelectMonthForHome from '../components/SelectMonthForHome';
 import PieChartManager from '../components/PieChartManager'
 import { useState } from 'react';
+import LinearGradientComp from '../components/LinearGradient';
 
 export default function AllExpenses({navigation}) {
 
@@ -17,10 +18,12 @@ export default function AllExpenses({navigation}) {
   };
 
   return (
+    <LinearGradientComp>
     <View>
       <SelectMonthForHome onMonthChange={handleMonthChange} />
       <PieChartManager selectedMonth={selectedMonth}/>
       <EntriesList navigation={navigation} selectedMonth={selectedMonth} />
     </View>
+    </LinearGradientComp>
   )
 }

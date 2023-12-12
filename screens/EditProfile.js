@@ -7,6 +7,7 @@ import ImageManager from '../components/ImageManager';
 import { ref, uploadBytesResumable, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
+import LinearGradientComp from '../components/LinearGradient';
 
 
 const EditProfile = ({navigation}) => {
@@ -94,6 +95,7 @@ const EditProfile = ({navigation}) => {
   
 
   return (
+    <LinearGradientComp>
     <View>
       <View style={styles.container}>
         <Text style={styles.label}>Email: {email}</Text>
@@ -109,6 +111,7 @@ const EditProfile = ({navigation}) => {
       </View>
       <SaveCancelButtons onCancel={cancelHandler} onSave={handleSave} />
     </View>
+    </LinearGradientComp>
   );
 };
 

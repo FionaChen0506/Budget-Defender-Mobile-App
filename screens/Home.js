@@ -14,6 +14,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import PieChartManager from '../components/PieChartManager';
 import LineChartManager from '../components/LineChartManager';
 import { Dimensions } from 'react-native';
+import LinearGradientComp from '../components/LinearGradient';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -52,6 +53,7 @@ const Home = () => {
   };
 
   return (
+    <LinearGradientComp>
     <View style={styles.container}>
       <SelectMonthForHome onMonthChange={handleMonthChange} />
       <BudgetSummary selectedMonth={selectedMonth}/>
@@ -73,6 +75,7 @@ const Home = () => {
       </View>
 
     </View>
+    </LinearGradientComp>
   );
 };
 

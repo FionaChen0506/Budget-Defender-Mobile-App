@@ -16,6 +16,7 @@ import getIconName from './CategoryIcons';
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { deletePhotoFromExpense } from '../firebase/firebaseHelper';
 import LocationManager from './LocationManager';
+import LinearGradientComp from './LinearGradient';
 
 
 const ExpenseForm = ({
@@ -117,6 +118,7 @@ const ExpenseForm = ({
 
 
     return (
+      <LinearGradientComp>
       <View style={styles.container}>
         <View style={styles.formField}>
           <Text style={styles.labelText}>Amount</Text>
@@ -199,6 +201,7 @@ const ExpenseForm = ({
         <SaveCancelButtons onCancel={cancelHandler} onSave={confirmHandler} />
         
       </View>
+      </LinearGradientComp>
     );
   };
 
