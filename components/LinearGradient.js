@@ -6,7 +6,7 @@ const LinearGradientComp = ({children}) => {
     return (
         <LinearGradient
             // Background Linear Gradient
-            colors={['#edfaf8', '#edfaf8', '#edfaf8']}
+            colors={['#edfaf8', '#e1f7f4', '#edfaf8']}
             style={StyleHelper.linearGradient}
         >
             {children}

@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     entryContainer: {
-        backgroundColor: '#96C291', 
+        backgroundColor: '#65c7b8', 
         padding: 10,
         alignItems:'center',
         flexDirection: 'row',
@@ -154,13 +154,13 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         shadowColor: 'gray',
         shadowOffset: { width: 0, height: 1 }, // Shadow offset
-        shadowOpacity: 0.3, // Shadow opacity
-        shadowRadius: 3, // Shadow radius
+        shadowOpacity: 0.8, // Shadow opacity
+        shadowRadius: 5, // Shadow radius
         elevation: 4, // Android shadow elevation
       },
       iconContainer: {
         marginLeft: 5,
-        marginRight: 10,
+        marginRight: 15,
     },
 
       categoryContainer:{
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         fontSize: 14,
-        color: '#FAEED1',
+        color: '#EEE7DA',
         fontWeight: 'bold',
     },
     priceDateContainer: {
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     },
     dateText: {
         fontSize: 14,
-        color: '#FAEED1',
+        color: '#EEE7DA',
         fontWeight: 'bold',
     },
 
