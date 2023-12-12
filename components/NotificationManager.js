@@ -14,8 +14,7 @@ export const verifyPermission = async () => {
 };
 
 export default function NotificationManager() {
-  const scheduleNotificationHandler = async (chosenHour, chosenMinute) => {
-    // const scheduleNotificationHandler = async () => {
+    const scheduleNotificationHandler = async () => {
     try {
       const hasPermission = await verifyPermission();
       if (!hasPermission) {
@@ -28,7 +27,6 @@ export default function NotificationManager() {
           body: "Hi! It's time to record your expenses!",
         },
         trigger: { 
-          // seconds: 5 ,
           hour: chosenHour,
           minute: chosenMinute,
           //type:'daily',
@@ -41,20 +39,12 @@ export default function NotificationManager() {
     }
   };
 
-
-  
-  return (
-    <View>
-      <Button
-        title="Remine me to record expenses daily"
-        onPress={scheduleNotificationHandler}
-      />
-    </View>
-  );
 }
 
 export const scheduleDailyNotification = async (chosenHour, chosenMinute) => {
-    try {
+  // delete old notifications before adding a new one
+  await Notifications.cancelAllScheduledNotificationsAsync();  
+  try {
       const hasPermission = await verifyPermission();
       if (!hasPermission) {
         Alert.alert("You need to give permission to send notification");

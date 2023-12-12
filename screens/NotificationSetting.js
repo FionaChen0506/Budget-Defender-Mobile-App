@@ -52,7 +52,6 @@ const NotificationSetting = () => {
           onConfirm={confirmTime}
         />
 
-        <NotificationManager/>
         <Button title="Cancel Notifications" onPress={cancelNotification} />
         
     </View>
