@@ -10,6 +10,8 @@ import { Fontisto } from '@expo/vector-icons';
 import LottieView from "lottie-react-native";
 import { Dimensions } from 'react-native';
 import LinearGradientComp from '../components/LinearGradient';
+import * as Animatable from 'react-native-animatable';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -104,9 +106,14 @@ const CurrencyExchangeTool = () => {
           value={fromCurrency}
           items={currencyList.map((currency) => ({ label: currency, value: currency }))}
         />
-        <TouchableOpacity onPress={handleCurrencySwap}>
-            <Octicons name="arrow-switch" style={styles.swapIcon} size={45} color={Colors.buttonBackground}/>
-        </TouchableOpacity>
+        <Animatable.View
+          animation="swing"
+          iterationCount="infinite"
+        >
+          <TouchableOpacity onPress={handleCurrencySwap}>
+          <Octicons name="arrow-switch" style={styles.swapIcon} size={45} color={Colors.buttonBackground}/>
+          </TouchableOpacity>
+        </Animatable.View>
         {/* 5<Fontisto name="arrow-swap" style={styles.swapIcon} size={40} color={Colors.buttonBackground} /> */}
         <RNPickerSelect
           key={`to-picker-${resetKey}`}
@@ -149,11 +156,16 @@ const styles = StyleSheet.create({
       borderColor: 'gray',
       borderWidth: 1,
       marginBottom: 15,
-      paddingHorizontal: 10,
+      paddingHorizontal: 15,
       fontSize: 18,
       borderRadius: 4,
-      backgroundColor: 'white',
+      backgroundColor: '#FFFBF5',
       marginTop: -40,
+      shadowColor: 'gray',
+      shadowOffset: { width: 0, height: 1 }, // Shadow offset
+      shadowOpacity: 0.5, // Shadow opacity
+      shadowRadius: 5, // Shadow radius
+      elevation: 4, // Android shadow elevation
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -167,6 +179,7 @@ const styles = StyleSheet.create({
       borderRadius: 4,
       padding: 5,
       width:'35%',
+      height: 45,
       justifyContent: 'center',
       alignItems:'center',
     },
@@ -182,6 +195,7 @@ const styles = StyleSheet.create({
     buttonText: {
       color: 'white', 
       fontSize: 20,
+      fontWeight: 'bold',
     },
     resultText: {
       fontSize: 22,
@@ -207,25 +221,34 @@ const styles = StyleSheet.create({
     inputIOS: {
       fontSize: 18,
       paddingVertical: 12,
-      paddingHorizontal: 10,
+      paddingHorizontal: 15,
       borderWidth: 1,
       borderColor: 'gray',
       borderRadius: 4,
-      color: 'black',
+      // color: 'black',
       paddingRight: 30,
-      backgroundColor: 'white',
+      backgroundColor: '#FFFBF5',
       marginBottom: 10,
+      shadowColor: 'gray',
+      shadowOffset: { width: 0, height: 1 }, // Shadow offset
+      shadowOpacity: 0.5, // Shadow opacity
+      shadowRadius: 5, // Shadow radius
     },
     inputAndroid: {
       fontSize: 18,
-      paddingHorizontal: 10,
+      paddingHorizontal: 15,
       paddingVertical: 8,
       borderWidth: 0.5,
       borderColor: 'gray',
       borderRadius: 8,
-      color: 'black',
+      // color: 'black',
       paddingRight: 30,
-      backgroundColor: 'white',
+      backgroundColor: '#FFFBF5',
       marginBottom: 10,
+      shadowColor: 'gray',
+      shadowOffset: { width: 0, height: 1 }, // Shadow offset
+      shadowOpacity: 0.5, // Shadow opacity
+      shadowRadius: 5, // Shadow radius
+      elevation: 10, // Android shadow elevation
     },
   });

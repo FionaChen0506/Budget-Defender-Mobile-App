@@ -11,6 +11,7 @@ import { where, query, orderBy} from 'firebase/firestore';
 import Colors from '../styles/Colors';
 import { getDocs } from 'firebase/firestore';
 import getIconName from './CategoryIcons';
+import * as Animatable from 'react-native-animatable';
 
 
 const EntriesList = ({navigation, selectedMonth }) => {
@@ -96,6 +97,10 @@ const EntriesList = ({navigation, selectedMonth }) => {
               data={entries}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
+                <Animatable.View
+                  animation="fadeInUp"
+                  duration={1000}
+                  >
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('Edit An Expense', {
@@ -126,6 +131,7 @@ const EntriesList = ({navigation, selectedMonth }) => {
                     
                  </View>
                 </TouchableOpacity>
+                </Animatable.View>
               )}
             />
           )}
@@ -142,7 +148,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     entryContainer: {
-        backgroundColor: '#65c7b8', 
+        backgroundColor: '#70b3a1', 
         padding: 10,
         alignItems:'center',
         flexDirection: 'row',
