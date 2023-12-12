@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingRight: 10,
     paddingTop: 10,
+    height: '90%',
   },
   legendTitle: {
     fontSize: 16
