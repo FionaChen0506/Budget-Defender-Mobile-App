@@ -6,10 +6,13 @@ import { database,auth } from "../firebase/firebaseSetup";
 import { updateInBudgetsDB } from '../firebase/firebaseHelper';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../styles/Colors';
-import { Entypo } from '@expo/vector-icons';
 import LottieView from "lottie-react-native";
 import { Dimensions } from 'react-native';
 import LinearGradientComp from '../components/LinearGradient';
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import * as Animatable from 'react-native-animatable';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -93,36 +96,32 @@ const getBudgetEntryId = async (userUid) => {
 
   return (
     <LinearGradientComp>
-    <View>
+    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
+      <Animatable.View
+        animation="fadeInDownBig"
+        >
         <View style={styles.userInfoContainer}>
-        {/* Left side: Display name and visited places*/}
-          {/* <View style={styles.displayNameContainer}>
-            <Text style={styles.displayNameText}>
-              Welcome, {user.displayName || updatedUsername}
-            </Text>
-          </View> */}
+          <View style={styles.leftContent}>
+            <View style={styles.displayNameContainer}>
+                <Text style={styles.displayNameText}>
+                      Welcome, {user.displayName || updatedUsername}
+                </Text>
+            </View>
+            <View style={styles.visitedContainer}>
+              <TouchableOpacity style={styles.visitedButton}
+              onPress={() => handleMyVisitedPlacesPress()}>
+              <AntDesign name="star" size={24} color="#EAD33A" />
+              <Text style={styles.myVisitedPlacesText}>My Visited Places</Text>
+              </TouchableOpacity>
 
-        <View style={styles.leftContent}>
-          <View style={styles.displayNameContainer}>
-              <Text style={styles.displayNameText}>
-                    Welcome, {user.displayName || updatedUsername}
-              </Text>
+              <TouchableOpacity style={styles.visitedButton}
+              onPress={() => handleMyVisitedPlacesPress()}>
+              <AntDesign name="star" size={24} color="#EAD33A" />
+              <Text style={styles.myVisitedPlacesText}>My Receipts</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
-          <View style={styles.visitedContainer}>
-            <TouchableOpacity style={styles.visitedButton}
-            onPress={() => handleMyVisitedPlacesPress()}>
-            <Entypo name="star-outlined" size={24} color="#EAD33A" />
-            <Text style={styles.myVisitedPlacesText}>My Visited Places</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.visitedButton}
-            onPress={() => handleMyVisitedPlacesPress()}>
-            <Entypo name="star-outlined" size={24} color="#EAD33A" />
-            <Text style={styles.myVisitedPlacesText}>My Receipts</Text>
-            </TouchableOpacity>
-          </View>
-
-        </View>
 
           {/* Right side: Avatar */}
           <View style={styles.avatarContainer}>
@@ -133,34 +132,44 @@ const getBudgetEntryId = async (userUid) => {
             )}
           </View>
       </View>
+      </Animatable.View>
 
-      <View>
+      
+      <View style={{flex:0.1, justifyContent:'space-between', width:'100%', alignSelf:'center'}}>
         <TouchableOpacity 
         onPress={() => handleEditProfilePress()} 
         style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>Edit Profile</Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+          <AntDesign name="edit" size={24} color="#163020" />
+          <Text style={styles.EditLimitText}> Edit Profile</Text>
+          </View>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>
 
-      <View>
+      <View style={{flex:0.1,justifyContent:'space-between', width:'100%', alignSelf:'center'}}>
         <TouchableOpacity 
         onPress={() => setIsModalVisible(true)} 
         style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>Edit Budget Limit</Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+          <Ionicons name="wallet-outline" size={24} color="#163020" />
+          <Text style={styles.EditLimitText}> Edit Budget Limit</Text>
+          </View>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>
 
-      <View>
+      <View style={{flex:0.1,justifyContent:'space-between', width:'100%', alignSelf:'center'}}>
         <TouchableOpacity 
         onPress={() => handleChangePasswordPress()} 
         style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>Change Password</Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+          <Ionicons name="key-outline" size={24} color="#163020" />
+          <Text style={styles.EditLimitText}> Change Password</Text>
+          </View>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>
-
 
       <EditBudgetLimit
         isVisible={isModalVisible}
@@ -168,24 +177,30 @@ const getBudgetEntryId = async (userUid) => {
         onSave={handleSaveBudgetLimit}
       />
 
-      <View>
+      <View style={{flex:0.1,justifyContent:'space-between', width:'100%', alignSelf:'center'}}>
         <TouchableOpacity 
         onPress={() => handleNotificationSettingPress()} 
         style={styles.EditLimitContainer}>
-          <Text style={styles.EditLimitText}>Notification Setting</Text>
+          <View style={{flexDirection:'row', alignItems:'center'}}>
+          <Ionicons name="notifications-outline" size={24} color="#163020" />
+          <Text style={styles.EditLimitText}> Notifications Setting</Text>
+          </View>
           <MaterialIcons name="keyboard-arrow-right" size={26} color="black" />
         </TouchableOpacity>
       </View>
 
-
+      <View style={{flex:0.3,justifyContent:'space-between', width:'100%', alignSelf:'center'}}>
         <LottieView
               source={require('../images/saving-lottie.json')}
               autoPlay
               loop
               style={styles.analysisLottie}
             />
-
+      </View>
+              
     </View>
+    
+
     </LinearGradientComp>
   );
 };
@@ -198,16 +213,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width:"95%",
-    marginTop: "5%",
-    marginBottom: "1%",
+    width:"90%",
+    padding: 8,
+    marginTop: "3%",
+    // marginBottom: "5%",
     alignSelf:'center',
-    backgroundColor: Colors.entryBackground, 
+    backgroundColor: '#309797', 
     borderRadius: 8,
     shadowColor: 'gray',
     shadowOffset: { width: 0, height: 1 }, 
-    shadowOpacity: 0.3, 
-    shadowRadius: 3, 
+    shadowOpacity: 0.8, 
+    shadowRadius: 8, 
     elevation: 4,
   },
   leftContent: {
@@ -221,6 +237,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginLeft: '5%',
+    color: 'white',
   },
   visitedContainer:{
     marginBottom: '3%',
@@ -228,26 +245,36 @@ const styles = StyleSheet.create({
   visitedButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderColor: 'lightgray',
     //marginBottom: '10%',
-    width:"70%",
+    width:"85%",
     borderRadius: 5,
     padding:5,
     marginLeft: '5%',
+    marginTop: '5%',
+    backgroundColor: '#acd5d5',
+    shadowColor: 'gray',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 4,
   },
   myVisitedPlacesText: {
     fontSize: 16,
     marginLeft: '2%',
+    color: '#163020',
   },
 
 avatarContainer: {
   width: 120,
   height: 120,
   borderRadius: 60, // half of the width and height to make it a circle
+  borderWidth: 3,
+  borderColor: 'white',
   overflow: 'hidden', // hides the content outside the borderRadius
   marginVertical: '6%',
-  marginRight: '2%',
+  marginRight: '3%',
   //alignSelf: 'center',
   backgroundColor: 'gray',
   elevation: 5, // for Android shadows
@@ -264,27 +291,31 @@ avatarImage: {
 },
   EditLimitContainer: {
     flexDirection: 'row',
-    backgroundColor: 'transparent', 
+    backgroundColor: '#83c1c1',
     padding: 6,
-    width: "95%",
+    width: "90%",
+    height: 50,
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
     borderRadius: 8,
     elevation: 4,
-    marginVertical: "1%",
-    marginHorizontal:"2%",
+    // marginVertical: "1%",
+    // marginHorizontal:"2%",
     borderWidth: 0.5,  // Add border
     borderColor: 'lightgray',
-
+    alignSelf:'center',
   },
   EditLimitText: {
-    color: 'black',
+    color: '#163020',
     fontSize: 18,
     padding: 3,
+    fontWeight: 'bold',
   },
 
   analysisLottie: {
+    position: 'absolute',
     alignSelf: 'center',
-    width: windowWidth,
-    paddingBottom: 100,
+    bottom: 0,
   },
 });

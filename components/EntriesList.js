@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     entryContainer: {
-        backgroundColor: '#70b3a1', 
+        backgroundColor: '#83c1c1',
         padding: 10,
         alignItems:'center',
         flexDirection: 'row',
