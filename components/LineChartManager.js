@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { VictoryLine, VictoryChart, VictoryAxis, VictoryLegend, VictoryTheme } from 'victory-native';
+import { VictoryLine, VictoryChart, VictoryAxis, VictoryLegend, VictoryTheme, VictoryLabel } from 'victory-native';
 import { Dimensions } from 'react-native';
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { auth, database } from '../firebase/firebaseSetup';
@@ -130,9 +130,24 @@ export default function LineChartManager({ selectedMonth }) {
                 theme={VictoryTheme.material}
                 width={windowWidth} 
                 height={windowWidth * 0.45} 
-                padding={{ top: 20, bottom: 50, left: 50, right: 20 }}
+                padding={{ top: 20, bottom: 30, left:60, right: 30 }}
                 // animate={{ duration: 50 }}
                 >
+
+          {/* X Axis */}
+        <VictoryAxis
+            tickLabelComponent={
+              <VictoryLabel style={{ fontSize: 12 }} />
+            }
+          />
+
+          {/* Y Axis */}
+          <VictoryAxis
+            dependentAxis
+            tickLabelComponent={
+              <VictoryLabel style={{ fontSize: 12 }} />
+            }
+          />
 
             {/* Accumulated Expense Line */}
             <VictoryLine
@@ -190,6 +205,11 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         backgroundColor: '#FFFBF5',
         padding: 10,
+        shadowColor: 'gray',
+        shadowOffset: { width: 5, height: 5 }, // Shadow offset
+        shadowOpacity: 0.8, // Shadow opacity
+        shadowRadius: 8, // Shadow radius
+        elevation: 10, // Android shadow elevation
       },
       legendContainer: {
         flex: 0.5, 

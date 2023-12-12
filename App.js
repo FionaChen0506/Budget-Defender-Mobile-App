@@ -106,21 +106,21 @@ function TabNavigator() {
         name="All Expenses" 
         component={AllExpenses}
         options={({ navigation }) => ({
-          headerRight: () => (
-            <PressableButton
-              pressedFunction={() => navigation.navigate('Export Reports')}
-              pressedStyle={{ 
-                backgroundColor: Colors.header,
-                marginRight: 10,
-              }}
-              defaultStyle={{ 
-                backgroundColor: Colors.header,
-                marginRight: 10,
-              }}
-            >
-              <Foundation name="page-export" size={24} color="white" />
-            </PressableButton>
-          ),
+          // headerRight: () => (
+          //   <PressableButton
+          //     pressedFunction={() => navigation.navigate('Export Reports')}
+          //     pressedStyle={{ 
+          //       backgroundColor: Colors.header,
+          //       marginRight: 10,
+          //     }}
+          //     defaultStyle={{ 
+          //       backgroundColor: Colors.header,
+          //       marginRight: 10,
+          //     }}
+          //   >
+          //     <Foundation name="page-export" size={24} color="white" />
+          //   </PressableButton>
+          // ),
           headerStyle: {
             backgroundColor: Colors.header,
           },

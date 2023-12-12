@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable,StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Pressable,StyleSheet, ScrollView, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
 import PressableButton from '../components/PressableButton';
@@ -9,12 +9,14 @@ import BudgetSummary from '../components/BudgetSummary';
 import SelectMonthForHome from '../components/SelectMonthForHome';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useRef } from 'react';
 import CategoryChart from '../components/CategoryChart';
 import { MaterialIcons } from '@expo/vector-icons';
 import PieChartManager from '../components/PieChartManager';
 import LineChartManager from '../components/LineChartManager';
 import { Dimensions } from 'react-native';
 import LinearGradientComp from '../components/LinearGradient';
+import * as Animatable from 'react-native-animatable';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -52,27 +54,58 @@ const Home = () => {
     navigation.navigate('Currency Exchange Tool');
   };
 
+
+  // const scaleAnim = useRef(new Animated.Value(1)).current; 
+
+  // useEffect(() => {
+  //   Animated.loop(
+  //     Animated.sequence([
+  //       Animated.timing(scaleAnim, {
+  //         toValue: 1.1, 
+  //         duration: 1000, 
+  //         useNativeDriver: true,
+  //       }),
+  //       Animated.timing(scaleAnim, {
+  //         toValue: 1,
+  //         duration: 1000,
+  //         useNativeDriver: true,
+  //       }),
+  //     ])
+  //   ).start();
+  // }, [scaleAnim]);
+
+  // // Animated style
+  // const animatedStyle = {
+  //   transform: [{ scale: scaleAnim }],
+  // };
+
   return (
     <LinearGradientComp>
     <View style={styles.container}>
-      <SelectMonthForHome onMonthChange={handleMonthChange} />
+      <View style={styles.selectContainer}>
+        <SelectMonthForHome onMonthChange={handleMonthChange} />
+      </View>
       <BudgetSummary selectedMonth={selectedMonth}/>
 
-      {/* <EntriesList navigation={navigation} /> */}
-      
-      {/* category chart example */}
-      {/* <CategoryChart categoryData={categoryData} selectedMonth={selectedMonth} /> */}
       <LineChartManager selectedMonth={selectedMonth} />
-      {/* <PieChartManager selectedMonth={selectedMonth} /> */}
-      <View style={styles.addButtonContainer}>
+
+      {/* <View style={styles.addButtonContainer}> */}
+        <Animatable.View 
+          style={styles.addButtonContainer}
+          animation="tada"
+          iterationCount="infinite"
+          // duration={1000}
+          // easing="ease-in-out"
+        >
         <PressableButton
           pressedFunction={handleAddPress}
           pressedStyle={styles.addButtonPressed}
           defaultStyle={styles.addButtonDefault}
         >
-          <Ionicons name="add" size={28} color="white" />
+          <Ionicons name="add" size={50} color="#309797" />
         </PressableButton>
-      </View>
+        </Animatable.View>
+      {/* </View> */}
 
     </View>
     </LinearGradientComp>
@@ -83,28 +116,60 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
-    // flexDirection: 'column',
-    // flex: 1,
-    // // justifyContent: 'flex-start',
-    // alignItems: 'center',
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  selectContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '5%',
   },
   addButtonContainer: {
     alignItems: 'center',
-    marginVertical: '5%',
+    marginVertical: '2%',
   },
   addButtonPressed: {
-    backgroundColor: 'grey', 
+    backgroundColor: "#309797",
     marginHorizontal: '5%',
-    width: windowWidth * 0.25,
-    padding: windowHeight * 0.01,
+    paddingBottom: '5%',
+    paddingLeft: '2%',
+    width: windowWidth * 0.18, 
+    height: windowWidth * 0.18,
+    // padding: windowHeight * 0.01,
+    opacity: 0.5,
     alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: windowWidth * 0.18 / 2,
+    borderWidth: 3,
+    borderColor: '#FFF78A',
+    shadowColor: '#FFF78A', 
+    // shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 15,
+
   },
   addButtonDefault: {
-    backgroundColor: Colors.buttonBackground,
+    backgroundColor: "#FFE382",
     marginHorizontal: '5%',
-    width: windowWidth * 0.25, 
-    padding: windowHeight * 0.01,
+    paddingBottom: '5%',
+    paddingLeft: '2%',
+    width: windowWidth * 0.18, 
+    height: windowWidth * 0.18,
+    // padding: windowHeight * 0.01,
     alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: windowWidth * 0.18 / 2,
+    borderWidth: 3,
+    borderColor: '#309797',
+    // shadowColor: '#309797', 
+    // // shadowOffset: { width: 5, height: 5 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 10,
+    // elevation: 15,
   },
 
   CurrencyExchangeContainer: {

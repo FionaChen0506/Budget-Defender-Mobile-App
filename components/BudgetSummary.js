@@ -5,6 +5,7 @@ import { database,auth } from "../firebase/firebaseSetup";
 import EditBudgetLimit from './EditBudgetLimit';
 import Colors from '../styles/Colors';
 import GetMonthSpending from './GetMonthSpending';
+import * as Animatable from 'react-native-animatable';
 
 const BudgetSummary = ({selectedMonth}) => {
   const userUid = auth.currentUser.uid;
@@ -40,7 +41,10 @@ const BudgetSummary = ({selectedMonth}) => {
     //const { spending, budgetLimit } = GetMonthSummary({ month: '2023-11' });
     
     return (
-        <View style={styles.container}>
+        <Animatable.View 
+          style={styles.container}
+          animation="flipInX"
+        >
             <View style={styles.row1Container}>
             {/* <Text style={styles.monthText}>{selectedMonth}</Text> */}
             </View>
@@ -61,7 +65,7 @@ const BudgetSummary = ({selectedMonth}) => {
               {budgetLimit - spending < 0 ? `($${Math.abs(budgetLimit - spending).toFixed(2)})` : `$${(budgetLimit - spending).toFixed(2)}`}
             </Text>
             </View>
-        </View>
+        </Animatable.View>
     );
   };
   
@@ -78,10 +82,10 @@ const styles = StyleSheet.create({
       margin: 10,
       justifyContent: 'center',
       shadowColor: 'gray',
-      shadowOffset: { width: 0, height: 1 }, // Shadow offset
-      shadowOpacity: 0.3, // Shadow opacity
-      shadowRadius: 3, // Shadow radius
-      elevation: 4, // Android shadow elevation
+        shadowOffset: { width: 5, height: 5 }, // Shadow offset
+        shadowOpacity: 0.8, // Shadow opacity
+        shadowRadius: 8, // Shadow radius
+        elevation: 10, // Android shadow elevation
   },
   row1Container: {
     flexDirection: 'row',

@@ -72,7 +72,7 @@ const SelectMonthForHome = ({ onMonthChange }) => {
             style={styles.calendarLottie}
           />
 
-    <Text style={{fontSize: 20, fontWeight: 'bold', color: '#309797', alignSelf: 'center', marginTop: 10, marginBottom: 10}}>Select Month</Text>
+    <Text style={{fontSize: 20, fontWeight: 'bold', color: '#309797', alignSelf: 'center', marginTop: 10, marginBottom: 10}}>    Select Month   </Text>
     <RNPickerSelect
     placeholder={{}}  
     default={{ label: currentMonth, value: currentMonth }}
