@@ -130,7 +130,7 @@ export default function LineChartManager({ selectedMonth }) {
                 theme={VictoryTheme.material}
                 width={windowWidth} 
                 height={windowWidth * 0.45} 
-                padding={{ top: 20, bottom: 30, left:60, right: 30 }}
+                padding={{ top: 20, bottom: 30, left:65, right: 40 }}
                 // animate={{ duration: 50 }}
                 >
 
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center', 
         borderRadius: 18,
-        width: '95%', 
+        width: '90%', 
         alignSelf: "center",
         backgroundColor: '#FFFBF5',
         padding: 10,

@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '5%',
+    marginTop: '2%',
   },
   addButtonContainer: {
     alignItems: 'center',

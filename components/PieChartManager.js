@@ -6,8 +6,9 @@ import { VictoryPie, VictoryLegend } from 'victory-native';
 import { auth, database } from '../firebase/firebaseSetup';
 import { Dimensions } from 'react-native';
 
-// get width of screen
+
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 // pie chart of category spending of selected month
 export default function PieChartManager({selectedMonth}) {
@@ -148,10 +149,10 @@ return (
         data={categorySpendingData}
         sortKey="y"
         sortOrder="descending"
-        width={windowWidth * 0.6}
-        height={windowWidth * 0.45}
+        width={windowWidth * 0.5}
+        height={windowWidth * 0.5}
         colorScale={colorScale}
-        labelRadius={({ innerRadius }) => innerRadius + 30 }
+        labelRadius={({ innerRadius }) => innerRadius + 40 }
         labelPosition="centroid"
         style={{
           labels: { ...styles.dataLabels, fontSize: 10, fontFamily: "Roboto, sans-serif" },
@@ -186,9 +187,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center', 
     borderRadius: 18,
-    width: '95%', 
+    width: '90%', 
+    height: windowHeight * 0.23,
     alignSelf: "center",
     backgroundColor: '#FFFBF5',
+    marginTop: 20,
+    shadowColor: 'gray',
+        shadowOffset: { width: 5, height: 5 }, // Shadow offset
+        shadowOpacity: 0.8, // Shadow opacity
+        shadowRadius: 8, // Shadow radius
+        elevation: 10, // Android shadow elevation
   },
   pieChartContainer: {
     flex: 0.5, 
@@ -209,13 +217,13 @@ const styles = StyleSheet.create({
   },
   legendLabels: {
     fill: "black", 
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: "Helvetica Neue",
     fontWeight: "bold",
   },
   dataLabels: {
     fill: "black", 
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: "Helvetica Neue",
   },
 

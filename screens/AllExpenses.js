@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import EntriesList from '../components/EntriesList'
 import SelectMonthForHome from '../components/SelectMonthForHome';
@@ -19,11 +19,44 @@ export default function AllExpenses({navigation}) {
 
   return (
     <LinearGradientComp>
-    <View>
-      <SelectMonthForHome onMonthChange={handleMonthChange} />
+    <View style={styles.container}>
+      <View style={styles.selectContainer}>
+          <SelectMonthForHome onMonthChange={handleMonthChange} />
+      </View>
+      
       <PieChartManager selectedMonth={selectedMonth}/>
-      <EntriesList navigation={navigation} selectedMonth={selectedMonth} />
+        
+      <View style={styles.listContainer}>
+        <EntriesList navigation={navigation} selectedMonth={selectedMonth} />
+      </View>
+
     </View>
     </LinearGradientComp>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  selectContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '5%',
+  },
+  listContainer: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    // alignItems: 'center',
+  },
+})
+
+
+
+  
+

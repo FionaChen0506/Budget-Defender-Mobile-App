@@ -6,6 +6,10 @@ import EditBudgetLimit from './EditBudgetLimit';
 import Colors from '../styles/Colors';
 import GetMonthSpending from './GetMonthSpending';
 import * as Animatable from 'react-native-animatable';
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const BudgetSummary = ({selectedMonth}) => {
   const userUid = auth.currentUser.uid;
@@ -75,11 +79,12 @@ const styles = StyleSheet.create({
     container: {
       //flex: 1, 
       alignItems:'center',
-      width:'95%',
+      width:'90%',
+      height: windowHeight * 0.23,
       backgroundColor: Colors.summaryBackground,
       borderRadius: 18,
       padding: 15,
-      margin: 10,
+      // margin: 10,
       justifyContent: 'center',
       shadowColor: 'gray',
         shadowOffset: { width: 5, height: 5 }, // Shadow offset

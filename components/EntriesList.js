@@ -142,10 +142,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     entryContainer: {
-        backgroundColor: Colors.entryBackground, 
-        padding: 5,
+        backgroundColor: '#96C291', 
+        padding: 10,
         alignItems:'center',
         flexDirection: 'row',
+        height: 60,
         // justifyContent: 'left',
         justifyContent: 'space-between',
         marginVertical:8,
@@ -174,7 +175,8 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         fontSize: 14,
-        color: '#888',
+        color: '#FAEED1',
+        fontWeight: 'bold',
     },
     priceDateContainer: {
         alignItems: 'center',
@@ -188,7 +190,8 @@ const styles = StyleSheet.create({
     },
     dateText: {
         fontSize: 14,
-        color: '#888',
+        color: '#FAEED1',
+        fontWeight: 'bold',
     },
 
     noExpensesText:{
