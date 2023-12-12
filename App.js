@@ -22,6 +22,7 @@ import EditProfile from './screens/EditProfile';
 import SelectLocation from './screens/SelectLocation';
 import CurrencyExchangeTool from './screens/CurrencyExchangeTool';
 import VisitedPlaces from './screens/VisitedPlaces';
+import MyReceipts from './screens/MyReceipts';
 
 import BottomTabBar from './components/BottomTabBar';
 import Colors from './styles/Colors';
@@ -265,6 +266,15 @@ const AppStack =
         headerShown: true,
         }}
     />
+
+  <Stack.Screen
+      name="My Receipts"
+      component={MyReceipts}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
   </>
 
 

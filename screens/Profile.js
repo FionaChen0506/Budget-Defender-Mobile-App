@@ -89,6 +89,11 @@ const getBudgetEntryId = async (userUid) => {
     navigation.navigate('Visited Places');
   }
 
+  const handleMyReceiptsPress = () => {
+    // Navigate to the "My Receipts" screen
+    navigation.navigate('My Receipts');
+  }
+
   const handleNotificationSettingPress = () => {
     // Navigate to the "Notification Setting" screen
     navigation.navigate('Notification Setting');
@@ -115,7 +120,7 @@ const getBudgetEntryId = async (userUid) => {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.visitedButton}
-              onPress={() => handleMyVisitedPlacesPress()}>
+              onPress={() => handleMyReceiptsPress()}>
               <AntDesign name="star" size={24} color="#EAD33A" />
               <Text style={styles.myVisitedPlacesText}>My Receipts</Text>
               </TouchableOpacity>
@@ -261,7 +266,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   myVisitedPlacesText: {
-    fontSize: 16,
+    fontSize: 14,
     marginLeft: '2%',
     color: '#163020',
   },
