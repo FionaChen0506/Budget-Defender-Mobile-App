@@ -167,7 +167,7 @@ const EditAnExpense = ({ route,navigation }) => {
 
 
     return (
-      <ScrollView>
+
       <ExpenseForm
         originScreen="Edit An Expense"
         initialAmount={formAmount}
@@ -181,8 +181,6 @@ const EditAnExpense = ({ route,navigation }) => {
         onImageTaken={onImageTaken}
       />
 
-      
-      </ScrollView>
     );
   };
   
