@@ -5,7 +5,7 @@ const Colors = {
     'entry':'#7895CB',
     'entryPressed': '#4A55A2',
     'entryText':'white',
-    'iconFocused': '#F1C93B',
+    'iconFocused': '#FFF78A',
     'iconDefault': 'white',
     'entryItemText': 'white',
     'entryQuantityText': '#4A55A2',
