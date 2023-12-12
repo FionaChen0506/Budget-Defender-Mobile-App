@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         padding: 5,
         width:'35%',
+        height: 45,
         justifyContent: 'center',
         alignItems:'center',
       },
@@ -57,5 +58,6 @@ const styles = StyleSheet.create({
       buttonText: {
         color: 'white', 
         fontSize: 17,
+        fontWeight:'bold',
       },
 })

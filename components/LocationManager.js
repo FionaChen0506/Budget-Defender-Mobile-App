@@ -47,10 +47,10 @@ export default function LocationManager({originScreen}) {
     <View>
       <PressableButton
         pressedFunction={locateMeHandler}
-        pressedStyle={{ backgroundColor: "#ccc" }}
-        defaultStyle={{ backgroundColor: "#eee" }}
+        pressedStyle={{ backgroundColor: "#e1f7f4", opacity: 0.5 }}
+        defaultStyle={{ backgroundColor: "#e1f7f4" }}
         >
-            <Entypo name="location" size={24} color="black" />
+            <Entypo name="location" size={26} color="#B31312" />
         </PressableButton>
     </View>
   );
