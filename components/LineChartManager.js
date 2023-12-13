@@ -10,120 +10,83 @@ import { onSnapshot } from "firebase/firestore";
 
 const windowWidth = Dimensions.get('window').width;
 
-// yearly change
 export default function LineChartManager({ selectedMonth }) {
-  const [userUid, setUserUid] = useState(null);
+
   const [expenseData, setExpenseData] = useState({});
   const [accumulatedExpenseData, setAccumulatedExpenseData] = useState({});
   const [budgetData, setBudgetData] = useState(null);
 
-  // listen for auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserUid(user.uid);
+
+  const userUid = auth.currentUser.uid;
+
+   // Get budgetLimit
+   useEffect(() => {
+    const budgetsQuery = query(
+      collection(database, 'Budgets'),
+      where('user', '==', userUid)
+    );
+
+    const unsubscribeBudgets = onSnapshot(budgetsQuery, (budgetSnapshot) => {
+      if (!budgetSnapshot.empty) {
+        const latestBudget = budgetSnapshot.docs[budgetSnapshot.docs.length - 1].data();
+        setBudgetData(latestBudget.limit || 0);
       } else {
-        setUserUid(null);
+        setBudgetData(0);
       }
     });
 
-    return () => unsubscribe();
-  }, []);
-
-    // listen for changes to selected month
-  useEffect(() => {
-    if (userUid) {
-      fetchBudgetData(userUid);
-      fetchExpenseData(userUid, selectedMonth);
-    }
-  }, [userUid, selectedMonth]);
-
-
-
-    const fetchBudgetData = (userId) => {
-      const qb = query(collection(database, "Budgets"), where("user", "==", userId));
-  
-      // Subscribe to Firestore and return the unsubscribe function
-      return onSnapshot(qb, (querySnapshotBudget) => {
-          let budget = null;
-          if (!querySnapshotBudget.empty) {
-              budget = querySnapshotBudget.docs[0].data().limit;
-          }
-          setBudgetData(budget);
-      }, (error) => {
-          console.error("Error fetching Firestore documents for user (budget):", error);
-      });
-  };
-  
-
-
-    // fetch expense data from Firestore and listen for real-time updates
-    const fetchExpenseData = async(userId, selectedMonth) => {
-      const qe = query(collection(database, "Expenses"), where("user", "==", userId));
-
-      return onSnapshot(qe, (querySnapshotExpense) => {
-          let expenseData = {};
-          let accumulatedExpenseData = {};
-          let sortedExpenses = [];
-
-          querySnapshotExpense.docs.forEach(doc => {
-              const data = doc.data();
-              if (data.amount && isWithinSelectedMonth(data.date, selectedMonth)) {
-                  sortedExpenses.push({ date: data.date.toDate(), amount: data.amount });
-              }
-          });
-
-          sortedExpenses.sort((a, b) => a.date - b.date);
-
-          let accumulatedExpense = 0;
-          sortedExpenses.forEach(({ date, amount }) => {
-              accumulatedExpense += amount;
-              const key = date.toISOString().slice(5, 10);
-              expenseData[key] = amount;
-              accumulatedExpenseData[key] = accumulatedExpense;
-          });
-
-          setExpenseData(expenseData);
-          setAccumulatedExpenseData(accumulatedExpenseData);
-      }, (error) => {
-          console.error("Error fetching Firestore documents for user (expense):", error);
-      });
-
+    return () => {
+      unsubscribeBudgets();
     };
-
-    useEffect(() => {
-      let unsubscribeExpense;
-      if (userUid) {
-          unsubscribeExpense = fetchExpenseData(userUid, selectedMonth);
-      }
-      return () => {
-          if (unsubscribeExpense) {
-              unsubscribeExpense();
-          }
-      };
   }, [userUid, selectedMonth]);
 
-  useEffect(() => {
-    let unsubscribeBudget;
-    let unsubscribeExpense;
 
-    if (userUid) {
-        unsubscribeBudget = fetchBudgetData(userUid);
-        unsubscribeExpense = fetchExpenseData(userUid, selectedMonth);
+  useEffect(() => {
+    const expensesQuery = query(
+      collection(database, 'Expenses'),
+      where('user', '==', userUid)
+    );
+
+    const unsubscribeExpenses = onSnapshot(expensesQuery, (expenseSnapshot) => {
+      if (!expenseSnapshot.empty) {
+
+      let expenseData = {};
+      let accumulatedExpenseData = {};
+      let sortedExpenses = [];
+
+      expenseSnapshot.docs.forEach(doc => {
+          const data = doc.data();
+          if (data.amount && isWithinSelectedMonth(data.date, selectedMonth)) {
+              sortedExpenses.push({ date: data.date.toDate(), amount: data.amount });
+          }
+      });
+
+      sortedExpenses.sort((a, b) => a.date - b.date); 
+
+      let accumulatedExpense = 0;
+      sortedExpenses.forEach(({ date, amount }) => {
+
+          accumulatedExpense += amount;
+          const key = date.toISOString().slice(5, 10);
+          expenseData[key] = amount;
+          accumulatedExpenseData[key] = accumulatedExpense;
+      });
+
+      setExpenseData(expenseData);
+      setAccumulatedExpenseData(accumulatedExpenseData);
+    } else {
+      setExpenseData({});
+      setAccumulatedExpenseData({});
     }
+    }, (error) => {
+      console.error("Error fetching Firestore documents for user (expense):", error);
+    });
 
     return () => {
-        if (unsubscribeBudget) {
-            unsubscribeBudget();
-        }
-        if (unsubscribeExpense) {
-            unsubscribeExpense();
-        }
+      unsubscribeExpenses();
     };
-}, [userUid, selectedMonth]);
+  }, [userUid, selectedMonth]);
 
-  
-      
     
     // check if expense is within selected month
     const isWithinSelectedMonth = (firebaseTimestamp, selectedMonth) => {

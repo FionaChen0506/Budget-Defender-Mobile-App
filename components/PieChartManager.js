@@ -13,37 +13,19 @@ const windowHeight = Dimensions.get('window').height;
 
 // pie chart of category spending of selected month
 export default function PieChartManager({selectedMonth}) {
-  const [userUid, setUserUid] = useState(null);
+  const userUid = auth.currentUser.uid;
   const [categorySpendingData, setCategorySpendingData] = useState([]);
 
-  // listen for auth state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserUid(user.uid);
-      } else {
-        setUserUid(null);
-      }
-    });
+    const expensesQuery = query(
+      collection(database, 'Expenses'),
+      where('user', '==', userUid)
+    );
 
-    return () => unsubscribe();
-  }, []);
-
-  // listen for changes to selected month
-  useEffect(() => {
-    if (userUid) {
-      fetchCategorySpendingData(userUid, selectedMonth);
-    }
-  }, [userUid, selectedMonth]);
-
- 
-  const fetchCategorySpendingData = (userId, selectedMonth) => {
-    const q = query(collection(database, "Expenses"), where("user", "==", userId));
-
-    // Subscribe to Firestore and return the unsubscribe function
-    return onSnapshot(q, (querySnapshot) => {
+    const unsubscribeExpenses = onSnapshot(expensesQuery, (expenseSnapshot) => {
+      if (!expenseSnapshot.empty) {
         let spendingData = {};
-        querySnapshot.docs.forEach(doc => {
+        expenseSnapshot.docs.forEach(doc => {
             const data = doc.data();
             if (data.category && isWithinSelectedMonth(data.date, selectedMonth)) {
                 const key = data.category;
@@ -52,24 +34,16 @@ export default function PieChartManager({selectedMonth}) {
         });
 
         setCategorySpendingData(formatDataForPieChart(spendingData));
-    }, (error) => {
-        console.error("Error fetching Firestore documents for user (category spending):", error);
-    });
-};
-
-useEffect(() => {
-  let unsubscribeCategorySpending;
-
-  if (userUid) {
-      unsubscribeCategorySpending = fetchCategorySpendingData(userUid, selectedMonth);
-  }
-
-  return () => {
-      if (unsubscribeCategorySpending) {
-          unsubscribeCategorySpending();
+      } else {
+        setCategorySpendingData([]);
       }
-  };
-}, [userUid, selectedMonth]);
+    });
+
+    return () => {
+      unsubscribeExpenses();
+    };
+  }, [userUid, selectedMonth]);
+        
 
 
 
@@ -216,13 +190,13 @@ const styles = StyleSheet.create({
   },
   legendLabels: {
     fill: "black", 
-    fontSize: 12,
+    fontSize: 11,
     // fontFamily: 'Roboto',
     fontWeight: "bold",
   },
   dataLabels: {
     fill: "black", 
-    fontSize: 13,
+    fontSize: 12,
     // fontFamily: 'Roboto',
   },
   noDataContainer: {
