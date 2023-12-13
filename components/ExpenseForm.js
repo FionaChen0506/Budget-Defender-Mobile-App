@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
   },
     formField: {
       flex: 0.12,
+      width:'80%',
     },
     dateField: {
       flex: 0.12,
@@ -239,7 +240,6 @@ const styles = StyleSheet.create({
     },
     locationField: {
       flex: 0.12,
-
     },
     categoryField: {
       backgroundColor:'#FFFBF5',
