@@ -94,3 +94,22 @@ export async function deletePhotoFromExpense(url, entryId) {
     console.log('Error in deleting photo from expense: ', err);
   }
 }
+
+export async function writeToUsersDB(info) {
+  try {
+    const docRef = await addDoc(collection(database, "Users"), expense= {...info, user:auth.currentUser.uid});
+    console.log("Document written with ID: ", docRef.id);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function updateInUsersDB(entryId, updateEntry) {
+  try {
+      const entryRef = doc(database, 'Users', entryId);
+      await setDoc(entryRef, updateEntry,  { merge: true });
+      console.log('Updated');
+  } catch (err) {
+      console.log('error in updateInUsersDB: ', err);
+  }
+}

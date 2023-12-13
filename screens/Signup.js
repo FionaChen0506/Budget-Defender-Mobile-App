@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseSetup';
 import PressableButton from '../components/PressableButton';
-import { writeToBudgetsDB } from '../firebase/firebaseHelper';
+import { writeToBudgetsDB, writeToUsersDB } from '../firebase/firebaseHelper';
 import * as Animatable from 'react-native-animatable';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -36,7 +36,17 @@ export default function Signup({navigation}) {
         
             // Write the new budget entry to the Budgets collection
             await writeToBudgetsDB(newBudgetEntry);
+
+            // Create a new notification entry for the user
+            const newInfoEntry = {
+                isNotification: false, // Set the default notification to false
+            };
+        
+            // Write the new budget entry to the Budgets collection
+            await writeToUsersDB(newInfoEntry);
             console.log(userCred);
+
+
         } catch (error) {
             if (error.code === "auth/invalid-email") {
                 alert("Invalid email");
