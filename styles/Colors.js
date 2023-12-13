@@ -18,6 +18,7 @@ const Colors = {
     'summaryBackground':'#419898',
 
     'labelText':'#0F4457',
+    'settingText': '#163020',
 
     'entryBackground':'#EAE9E9',
     'entryTextDark':'#0C3D4F',

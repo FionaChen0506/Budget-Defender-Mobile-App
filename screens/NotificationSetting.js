@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Switch,StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { scheduleDailyNotification, cancelNotification } from '../components/NotificationManager';
 import LinearGradientComp from '../components/LinearGradient';
@@ -8,6 +8,8 @@ import { database, auth } from '../firebase/firebaseSetup';
 import { collection,  getDocs, query, where,doc, onSnapshot } from "firebase/firestore";
 import { updateInUsersDB } from '../firebase/firebaseHelper';
 import { isTimestamp } from 'firebase/firestore';
+import PressableButton from '../components/PressableButton';
+import Colors from '../styles/Colors';
 
 
 const NotificationSetting = () => {
@@ -34,7 +36,7 @@ const NotificationSetting = () => {
           setIsNotification(userData.isNotification || false);
           setNotificationTime(userData.notificationTime || new Date());
         } else {
-          console.log('User document not found.');
+          // console.log('User document not found.');
         }
       },
       (err) => {
@@ -48,9 +50,6 @@ const NotificationSetting = () => {
     return () => unsubscribe(); // Cleanup the listener when the component is unmounted
   }, [notificationTime]);
   
-
-
-
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -98,9 +97,16 @@ const NotificationSetting = () => {
   }
   return (
     <LinearGradientComp>
-    <View>
+    <View style={styles.container}>
       {!isNotification&&
-        <Button title="Set Daily Notifications" onPress={showDatePicker} />}
+        <PressableButton
+          pressedFunction={showDatePicker}
+          pressedStyle={styles.buttonPressed}
+          defaultStyle={styles.buttonDefault}
+        >
+          <Text style={styles.buttonText}>Set Daily Notifications</Text>
+        </PressableButton>
+}
         <DateTimePickerModal
           testID="dateTimePicker"
           isVisible={isDatePickerVisible}
@@ -111,12 +117,16 @@ const NotificationSetting = () => {
           onConfirm={confirmTime}
         />
 
-        {/* {isNotification &&
-        <Button title="Cancel Notifications" onPress={cancelNotificationHandler} />} */}
         {isNotification && (
-          <View>
-            <Text>Your Daily Notification is at: {formatTime(notificationTime)}</Text>
-            <Button title="Cancel Notifications" onPress={cancelNotificationHandler} />
+          <View style={styles.notificationTimeContainer}>
+            <Text style={styles.notificationText}>Your Daily Notification is at: {formatTime(notificationTime)}</Text>
+            <PressableButton
+                pressedFunction={cancelNotificationHandler}
+                pressedStyle={styles.buttonPressed}
+                defaultStyle={styles.buttonDefault}
+              >
+                <Text style={styles.buttonText}>Cancel Notification</Text>
+            </PressableButton>
           </View>
       )}
     </View>
@@ -125,3 +135,49 @@ const NotificationSetting = () => {
 };
 
 export default NotificationSetting;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop:'10%',
+    marginBottom: '10%',
+    width:'90%',
+    alignSelf:'center',
+  },
+  notificationTimeContainer: {
+    justifyContent: 'center',
+    alignItems:'center',
+  },
+  buttonDefault: {
+    backgroundColor: Colors.buttonBackground,
+    opacity: 1,
+    borderRadius: 4,
+    padding: 5,
+    width:'90%',
+    //height: '35%',
+    //justifyContent: 'center',
+    alignItems:'center',
+  },
+  buttonPressed: {
+    backgroundColor: '#aaa',
+    opacity: 0.5,
+    borderRadius: 4,
+    padding: 5,
+    width:'90%',
+    justifyContent: 'center',
+    alignItems:'center',
+  },
+  buttonText: {
+    color: 'white', 
+    fontSize: 22,
+    fontWeight:'bold',
+  },
+  notificationText:{
+    fontSize: 22,
+    marginBottom: "5%",
+    textAlign:'center',
+    color: Colors.settingText,
+    fontWeight:'bold',
+  },
+});
