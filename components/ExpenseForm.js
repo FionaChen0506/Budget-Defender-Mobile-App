@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
       backgroundColor:'#FFFBF5',
     },
     buttonField: {
-      flex:0.1,
+      flex:0.2,
     },
     labelText: {
       fontSize: 20,
