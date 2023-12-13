@@ -33,7 +33,7 @@ export default function NotificationManager() {
           repeats: true
         },
       });
-      console.log("notification at:" ,chosenHour,chosenMinute)
+      // console.log("notification at:" ,chosenHour,chosenMinute)
     } catch (err) {
       console.log("schedule notification error ", err);
     }

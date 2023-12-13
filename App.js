@@ -76,21 +76,6 @@ function TabNavigator() {
         name="Home" 
         component={Home}
         options={({ navigation }) => ({
-          headerRight: () => (
-            <PressableButton
-              pressedFunction={() => navigation.navigate('Profile')}
-              pressedStyle={{ 
-                backgroundColor: Colors.header,
-                marginRight: 10,
-              }}
-              defaultStyle={{ 
-                backgroundColor: Colors.header,
-                marginRight: 10,
-              }}
-            >
-              <Ionicons name="person-circle" size={24} color="white" />
-            </PressableButton>
-          ),
           headerStyle: {
             backgroundColor: Colors.header,
           },
