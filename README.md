@@ -38,6 +38,12 @@ Budgets collection is a subcollection of the Users Collection. Each document in 
 -   "limit": 3000.0,
 -   "user": "user_unique_id",
 
+###  4. Users Collection (notifications)
+Users Collection (notifications) is a subcollection of the Users Collection. Each document in this collection represents the notification preference of a user. It has these fields:
+
+-   "isNotification": true/false,
+-   "notificationTime": Timestamp,
+-   "user": "user_unique_id",
 
 
 ## Screens
@@ -105,13 +111,13 @@ The Profile screen includes a user profile box and four setting options. The pro
 
 The four setting options are as follows:
 
-<img src="images/final-ui/edit-profile.png" alt="Alt text" width="200"> <img src="images/final-ui/edit-budget.png" alt="Alt text" width="200"> <img src="images/final-ui/edit-password.png" alt="Alt text" width="200"> <img src="images/final-ui/profile.png" alt="Alt text" width="200">
+<img src="images/final-ui/edit-profile.png" alt="Alt text" width="200"> <img src="images/final-ui/edit-budget.png" alt="Alt text" width="200"> <img src="images/final-ui/edit-password.png" alt="Alt text" width="200"> <img src="images/final-ui/notification-select.png" alt="Alt text" width="200"> <img src="images/final-ui/notification-badge.png" alt="Alt text" width="200">
 
 
 - Edit Profile: let user change username and avatar
 - Edit Budget Limit: let user change monthly budget limit
 - Change Password: let user change and confirm new password
-- Notifications Setting: let user choose to receive notifications
+- Notifications Setting: let user choose the time to receive daily notifications
 
 #### Visited Places Screen
 <img src="images/final-ui/visited-places.png" alt="Alt text" width="200"> <img src="images/final-ui/visited-places2.png" alt="Alt text" width="200"> <img src="images/final-ui/visited-places3.png" alt="Alt text" width="200"> <img src="images/final-ui/visited-places-info.png" alt="Alt text" width="200">
