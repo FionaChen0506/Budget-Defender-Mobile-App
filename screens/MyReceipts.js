@@ -61,6 +61,9 @@ export default function MyReceipts() {
                 }
             }
             );
+
+            // Sort the receipts by date
+            fetchedReceipts.sort((a, b) => b.date - a.date);
             setReceipts(fetchedReceipts);
         } catch (error) {
             console.log("Error getting receipts: ", error);
@@ -109,12 +112,14 @@ export default function MyReceipts() {
     receiptsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
         // marginTop: 10,
     },
     receiptImage: {
         width: windowWidth / 3,
         height: windowWidth /3,
+        borderWidth:0.5,
+        borderColor:'gray',
         // margin: 5,
     },
     dateText: {
@@ -123,10 +128,10 @@ export default function MyReceipts() {
         textAlign: 'center',
         alignSelf: 'center',
         backgroundColor: 'white',
-        opacity: 0.7,
+        opacity: 0.5,
         color: 'black',
         padding: 2,
-        bottom: 2,
+        bottom: 5,
     },
     locationText: {
         position: 'absolute',
@@ -134,10 +139,10 @@ export default function MyReceipts() {
         textAlign: 'center',
         alignSelf: 'center',
         backgroundColor: 'white',
-        opacity: 0.7,
+        opacity: 0.5,
         color: 'black',
         padding: 2,
-        top: 2,
+        top: 5,
     },
   });
 
