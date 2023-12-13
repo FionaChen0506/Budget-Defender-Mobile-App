@@ -5,6 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { VictoryPie, VictoryLegend } from 'victory-native'; 
 import { auth, database } from '../firebase/firebaseSetup';
 import { Dimensions } from 'react-native';
+import { onSnapshot } from 'firebase/firestore';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -35,25 +36,42 @@ export default function PieChartManager({selectedMonth}) {
     }
   }, [userUid, selectedMonth]);
 
-  // fetch category spending data from Firestore
-  const fetchCategorySpendingData = async (userId) => {
+ 
+  const fetchCategorySpendingData = (userId, selectedMonth) => {
     const q = query(collection(database, "Expenses"), where("user", "==", userId));
-    try {
-      const querySnapshot = await getDocs(q);
-      let spendingData = {};
-      querySnapshot.docs.forEach(doc => {
-        const data = doc.data();
-        if (data.category && isWithinSelectedMonth(data.date, selectedMonth)) {
-          const key = data.category;
-          spendingData[key] = spendingData[key] ? spendingData[key] + data.amount : data.amount;
-        }
-      });
 
-      setCategorySpendingData(formatDataForPieChart(spendingData));
-    } catch (error) {
-      console.error("Error fetching Firestore documents for user (category spending):", error);
-    }
+    // Subscribe to Firestore and return the unsubscribe function
+    return onSnapshot(q, (querySnapshot) => {
+        let spendingData = {};
+        querySnapshot.docs.forEach(doc => {
+            const data = doc.data();
+            if (data.category && isWithinSelectedMonth(data.date, selectedMonth)) {
+                const key = data.category;
+                spendingData[key] = spendingData[key] ? spendingData[key] + data.amount : data.amount;
+            }
+        });
+
+        setCategorySpendingData(formatDataForPieChart(spendingData));
+    }, (error) => {
+        console.error("Error fetching Firestore documents for user (category spending):", error);
+    });
+};
+
+useEffect(() => {
+  let unsubscribeCategorySpending;
+
+  if (userUid) {
+      unsubscribeCategorySpending = fetchCategorySpendingData(userUid, selectedMonth);
+  }
+
+  return () => {
+      if (unsubscribeCategorySpending) {
+          unsubscribeCategorySpending();
+      }
   };
+}, [userUid, selectedMonth]);
+
+
 
   // check if expense is within selected month
   const isWithinSelectedMonth = (firebaseTimestamp, selectedMonth) => {
@@ -82,24 +100,6 @@ export default function PieChartManager({selectedMonth}) {
 };
 
   // colors for pie chart
-//   const colorScale = [
-//     "#FF6384", // Vivid Pink
-//     "#36A2EB", // Bright Blue
-//     "#FFCE56", // Sunny Yellow
-//     "#4BC0C0", // Sea Green
-//     "#9966FF", // Soft Purple
-//     "#FF9F40", // Tangerine Orange
-//     "#7C4DFF", // Deep Indigo
-//     "#66BB6A", // Apple Green
-//     "#FF7043", // Coral Red
-//     "#9CCC65", // Light Lime
-//     "#26C6DA", // Sky Blue
-//     "#FFCA28", // Amber
-//     "#D4E157", // Light Olive
-//     "#FFA726", // Orange Peel
-//     "#EC407A", // Hot Pink
-//     "#AB47BC"  // Lilac Purple
-// ];
 const colorScale = [
   "#4D8AF0", // Blue
   "#F7B32B", // Yellow
@@ -128,56 +128,54 @@ const colorScale = [
 
 return (
   <View style={styles.container}>
-    <View style={styles.pieChartContainer}>
-      {/* <VictoryPie
-        animate={{ duration: 50 }}
-        data={categorySpendingData}
-        sortKey="y"
-        sortOrder="descending"
-        width={windowWidth * 0.6}
-        height={windowWidth * 0.45}
-        colorScale={colorScale}
-        labelRadius={({ innerRadius }) => innerRadius + 30 }
-        labelPosition="centroid"
-        style={{
-          labels: styles.dataLabels,
-        }}
-        innerRadius={12}
-      /> */}
-      <VictoryPie
-        animate={{ duration: 50 }}
-        data={categorySpendingData}
-        sortKey="y"
-        sortOrder="descending"
-        width={windowWidth * 0.5}
-        height={windowWidth * 0.5}
-        colorScale={colorScale}
-        labelRadius={({ innerRadius }) => innerRadius + 40 }
-        labelPosition="centroid"
-        style={{
-          labels: { ...styles.dataLabels, fontSize: 10, fontFamily: "Roboto, sans-serif" },
-          data: { stroke: "#fff", strokeWidth: 2 },
-        }}
-        innerRadius={12}
-      />
+   
+   {categorySpendingData.length > 0 ? (
+    <>
+      <View style={styles.pieChartContainer}>
+        {/* Pie Chart */}
+        <VictoryPie
+          animate={{ duration: 50 }}
+          data={categorySpendingData}
+          sortKey="y"
+          sortOrder="descending"
+          width={windowWidth * 0.5}
+          height={windowWidth * 0.5}
+          colorScale={colorScale}
+          labelRadius={({ innerRadius }) => innerRadius + 40 }
+          labelPosition="centroid"
+          style={{
+            labels: { ...styles.dataLabels, fontSize: 10, fontFamily: "Roboto, sans-serif" },
+            data: { stroke: "#fff", strokeWidth: 2 },
+          }}
+          innerRadius={12}
+        />
+      </View>
+     
+        {/* Legend */}
+        <View style={styles.legendContainer}>
+          <VictoryLegend
+            width={windowWidth * 0.4}
+            height={windowWidth * 0.45}
+            centerTitle
+            orientation="horizontal"
+            style={{ title: styles.legendTitle, labels: styles.legendLabels }} 
+            data={legendData}
+            itemsPerRow={1}
+            rowGutter={1}
+          />
+        </View>
+    </>
+      
+    ) : (
+      <View style={styles.noDataContainer}>
+        <Text style={styles.noDataText}>No expenses for this month</Text>
+      </View>
+    )}
 
-    </View>
-    <View style={styles.legendContainer}>
-      <VictoryLegend
-        width={windowWidth * 0.4}
-        height={windowWidth * 0.45}
-        // title="Category"
-        centerTitle
-        orientation="horizontal"
-        style={{ title: styles.legendTitle, labels: styles.legendLabels, }} 
-        data={legendData}
-        itemsPerRow={1}
-        rowGutter={1}
-      />
-    </View>
   </View>
 );
 
+  
 }
 
 
@@ -219,13 +217,23 @@ const styles = StyleSheet.create({
   legendLabels: {
     fill: "black", 
     fontSize: 12,
-    fontFamily: "Helvetica Neue",
+    // fontFamily: 'Roboto',
     fontWeight: "bold",
   },
   dataLabels: {
     fill: "black", 
     fontSize: 13,
-    fontFamily: "Helvetica Neue",
+    // fontFamily: 'Roboto',
+  },
+  noDataContainer: {
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },  
+  noDataText: {
+    fontSize: 16,
+    // fontFamily: 'Roboto',
+    fontWeight: "bold",
   },
 
 });

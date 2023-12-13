@@ -5,6 +5,7 @@ import { Dimensions } from 'react-native';
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { auth, database } from '../firebase/firebaseSetup';
 import { onAuthStateChanged } from 'firebase/auth';
+import { onSnapshot } from "firebase/firestore";
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -29,7 +30,7 @@ export default function LineChartManager({ selectedMonth }) {
     return () => unsubscribe();
   }, []);
 
-    // listen for changes to selected month and budget
+    // listen for changes to selected month
   useEffect(() => {
     if (userUid) {
       fetchBudgetData(userUid);
@@ -37,57 +38,91 @@ export default function LineChartManager({ selectedMonth }) {
     }
   }, [userUid, selectedMonth]);
 
-    // fetch budget data from Firestore
-    const fetchBudgetData = async (userId) => {
-        const qb = query(collection(database, "Budgets"), where("user", "==", userId));
-        try {
-            const querySnapshotBudget = await getDocs(qb);
-            let budget = null;
+
+
+    const fetchBudgetData = (userId) => {
+      const qb = query(collection(database, "Budgets"), where("user", "==", userId));
+  
+      // Subscribe to Firestore and return the unsubscribe function
+      return onSnapshot(qb, (querySnapshotBudget) => {
+          let budget = null;
           if (!querySnapshotBudget.empty) {
-            budget = querySnapshotBudget.docs[0].data().limit;
+              budget = querySnapshotBudget.docs[0].data().limit;
           }
-            setBudgetData(budget);
-        } catch (error) {
-            console.error("Error fetching Firestore documents for user (budget):", error);
-        }
+          setBudgetData(budget);
+      }, (error) => {
+          console.error("Error fetching Firestore documents for user (budget):", error);
+      });
+  };
+  
+
+
+    // fetch expense data from Firestore and listen for real-time updates
+    const fetchExpenseData = async(userId, selectedMonth) => {
+      const qe = query(collection(database, "Expenses"), where("user", "==", userId));
+
+      return onSnapshot(qe, (querySnapshotExpense) => {
+          let expenseData = {};
+          let accumulatedExpenseData = {};
+          let sortedExpenses = [];
+
+          querySnapshotExpense.docs.forEach(doc => {
+              const data = doc.data();
+              if (data.amount && isWithinSelectedMonth(data.date, selectedMonth)) {
+                  sortedExpenses.push({ date: data.date.toDate(), amount: data.amount });
+              }
+          });
+
+          sortedExpenses.sort((a, b) => a.date - b.date);
+
+          let accumulatedExpense = 0;
+          sortedExpenses.forEach(({ date, amount }) => {
+              accumulatedExpense += amount;
+              const key = date.toISOString().slice(5, 10);
+              expenseData[key] = amount;
+              accumulatedExpenseData[key] = accumulatedExpense;
+          });
+
+          setExpenseData(expenseData);
+          setAccumulatedExpenseData(accumulatedExpenseData);
+      }, (error) => {
+          console.error("Error fetching Firestore documents for user (expense):", error);
+      });
+
+    };
+
+    useEffect(() => {
+      let unsubscribeExpense;
+      if (userUid) {
+          unsubscribeExpense = fetchExpenseData(userUid, selectedMonth);
+      }
+      return () => {
+          if (unsubscribeExpense) {
+              unsubscribeExpense();
+          }
+      };
+  }, [userUid, selectedMonth]);
+
+  useEffect(() => {
+    let unsubscribeBudget;
+    let unsubscribeExpense;
+
+    if (userUid) {
+        unsubscribeBudget = fetchBudgetData(userUid);
+        unsubscribeExpense = fetchExpenseData(userUid, selectedMonth);
     }
 
-    // fetch expense data from Firestore
-    // key is date, value is accumulated expense
-    const fetchExpenseData = async (userId, selectedMonth) => {
-        const qe = query(collection(database, "Expenses"), where("user", "==", userId));
-      
-        try {
-          const querySnapshotExpense = await getDocs(qe);
-            let expenseData = {};
-            let accumulatedExpenseData = {};
-            let sortedExpenses = [];
-
-            querySnapshotExpense.docs.forEach(doc => {
-            const data = doc.data();
-            if (data.amount && isWithinSelectedMonth(data.date, selectedMonth)) {
-                sortedExpenses.push({ date: data.date.toDate(), amount: data.amount });
-            }
-            });
-
-            sortedExpenses.sort((a, b) => a.date - b.date);
-
-
-
-            let accumulatedExpense = 0;
-            sortedExpenses.forEach(({ date, amount }) => {
-            accumulatedExpense += amount;
-            const key = date.toISOString().slice(5, 10);
-            expenseData[key] = amount;
-            accumulatedExpenseData[key] = accumulatedExpense;
-            });
-
-            setExpenseData(expenseData);
-            setAccumulatedExpenseData(accumulatedExpenseData);
-        } catch (error) {
-          console.error("Error fetching Firestore documents for user (expense):", error);
+    return () => {
+        if (unsubscribeBudget) {
+            unsubscribeBudget();
         }
-      };
+        if (unsubscribeExpense) {
+            unsubscribeExpense();
+        }
+    };
+}, [userUid, selectedMonth]);
+
+  
       
     
     // check if expense is within selected month
@@ -142,12 +177,14 @@ export default function LineChartManager({ selectedMonth }) {
           />
 
           {/* Y Axis */}
+          { Object.keys(expenseData).length > 1 && (
           <VictoryAxis
             dependentAxis
             tickLabelComponent={
               <VictoryLabel style={{ fontSize: 12 }} />
             }
           />
+          )}
 
             {/* Accumulated Expense Line */}
             <VictoryLine
@@ -170,7 +207,7 @@ export default function LineChartManager({ selectedMonth }) {
             />
 
             {/* Budget Line */}
-            {budgetData && Object.keys(expenseData).length > 0 && (
+            {budgetData!=0 && Object.keys(expenseData).length > 0 && (
                 (() => {
                 const sortedDates = Object.keys(expenseData).sort();
                 return (
@@ -221,7 +258,7 @@ const styles = StyleSheet.create({
       legendLabels: {
         fill: "black", 
         fontSize: 10.5,
-        fontFamily: "Helvetica Neue",
+        // fontFamily: "Roboto",
         fontWeight: "bold",
       },
 });

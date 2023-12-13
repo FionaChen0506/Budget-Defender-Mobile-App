@@ -92,7 +92,7 @@ const Home = () => {
       {/* <View style={styles.addButtonContainer}> */}
         <Animatable.View 
           style={styles.addButtonContainer}
-          animation="tada"
+          animation="pulse"
           iterationCount="infinite"
           // duration={1000}
           // easing="ease-in-out"
