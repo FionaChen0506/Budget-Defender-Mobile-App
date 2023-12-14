@@ -1,5 +1,5 @@
 #   APP Name: Budget-Defender
-### Budget Defender is a financial management Cross-Platform Native Mobile Application. It delivers features for detailed expense tracking, budget oversight, and analytical financial reporting.
+### Budget Defender is a financial management Cross-Platform Native Mobile Application. It delivers features for detailed expense tracking, budget oversight, currency converter, and receipts management.
 ###    Authors: Shaoyujie(Fiona) Chen, Yunke Li
 
 <!-- ##    Iteration1: overall stucture, navigation, and basis of CRUD operations to Firestore -->
