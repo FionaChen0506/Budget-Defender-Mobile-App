@@ -27,7 +27,7 @@ const DeleteButton = ({ entryId, onDeleteSuccess }) => {
                 await deleteFromDB(entryId);
                 onDeleteSuccess(); // A callback to update the UI after deletion
               } catch (error) {
-                console.log(error);
+                console.log('Error in DeleteButton: ', error);
               }
             },
           },

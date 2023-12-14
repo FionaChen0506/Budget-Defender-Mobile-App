@@ -15,8 +15,12 @@ function getIconName(category) {
         return <MaterialIcons name="local-grocery-store" size={26} color="black" />;
       case 'Travel':
         return <MaterialIcons name="card-travel" size={26} color="black" />;
+      case 'Clothing':
+        return <MaterialCommunityIcons name="tshirt-crew-outline" size={26} color="black" />;
       case 'Furniture':
         return <MaterialCommunityIcons name="table-furniture" size={26} color="black" />;
+      case 'Sport':
+        return <MaterialIcons name="sports-tennis" size={26} color="black" />;
       case 'Entertainment':
         return <Ionicons name="game-controller-outline" size={26} color="black" />;
       case 'Health and Wellness':

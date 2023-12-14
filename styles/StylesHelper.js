@@ -186,6 +186,12 @@ export default GlobalStyles = StyleSheet.create({
     },
 
 
+    linearGradient: {
+        flex: 1,
+        width: '100%',
+    },
+
+
    
     
 });

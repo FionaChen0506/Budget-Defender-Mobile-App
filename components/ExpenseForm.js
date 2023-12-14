@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Alert,StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextInput, Menu, Divider, Provider } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TouchableOpacity } from 'react-native';
@@ -16,9 +16,11 @@ import getIconName from './CategoryIcons';
 import SaveCancelButtons from '../components/SaveCancelButtons';
 import { deletePhotoFromExpense } from '../firebase/firebaseHelper';
 import LocationManager from './LocationManager';
+import LinearGradientComp from './LinearGradient';
 
 
 const ExpenseForm = ({
+  originScreen,
   initialAmount = '',
     initialCategory = '',
     initialDescription = '',
@@ -30,12 +32,13 @@ const ExpenseForm = ({
     onCancel,
     onImageTaken,
 }) => {
-  const [amount, setAmount] = useState(initialAmount);
-  const [category, setCategory] = useState(initialCategory);
-  const [description, setDescription] = useState(initialDescription);
-  const [location, setLocation] = useState(initialLocation);
-  const [date, setDate] = useState(initialDate);
-  const [imageUri, setImageUri] = useState(initialImageUri);
+
+    const [amount, setAmount] = useState(initialAmount);
+    const [category, setCategory] = useState(initialCategory);
+    const [description, setDescription] = useState(initialDescription);
+    const [location, setLocation] = useState(initialLocation);
+    const [date, setDate] = useState(initialDate);
+    const [imageUri, setImageUri] = useState(initialImageUri);
 
     
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -43,6 +46,15 @@ const ExpenseForm = ({
     const [value, setValue] = useState(null);
     const [selectedDate, setSelectedDate] = useState(date || new Date()); 
 
+
+    useEffect(() => {
+      setLocation(initialLocation);
+    }, [initialLocation]);
+  
+    // only show the first 30 characters of the location name
+    const locationName = (location && typeof location.name === 'string') ? location.name.substring(0, 30) : 'No location selected';
+
+    // const locationName = location ? location.name.substring(0, 30) : 'No location selected';
 
     function onAmountChange(inputAmount) {
         setAmount(inputAmount);
@@ -59,6 +71,7 @@ const ExpenseForm = ({
     function onLocationChange(inputLocation) {
 
         setLocation(inputLocation);
+        console.log("ExpenseForm: onLocationChange: ", location);
     }
 
     function onDateChange(inputDate) {
@@ -105,6 +118,7 @@ const ExpenseForm = ({
 
 
     return (
+      <LinearGradientComp>
       <View style={styles.container}>
         <View style={styles.formField}>
           <Text style={styles.labelText}>Amount</Text>
@@ -128,7 +142,7 @@ const ExpenseForm = ({
                 setValue(val);
                 onCategoryChange(val);
             }}
-            style={styles.inputField}
+            style={styles.categoryField}
             autoScroll={true}
             />
         </View>
@@ -142,51 +156,60 @@ const ExpenseForm = ({
           />
         </View>
 
-        <View style={styles.formField}>
+        <View style={styles.locationField}>
           <Text style={styles.labelText}>Location</Text>
           <View style={styles.rowContainer}>
-          <TextInput
-            style={styles.inputField}
-            onChangeText={onLocationChange}
-            value={location}
-          />
-          <LocationManager />
+          <View style={{flex: 0.85}}>
+            <TextInput
+              style={styles.inputField}
+              onChangeText={onLocationChange}
+              value={locationName}
+            />
+          </View>
+          <View style={{flex: 0.15}}>
+            <LocationManager originScreen = {originScreen}/>
+          </View>
           </View>
         </View>
 
-        <View style={styles.formField}>
-        <View style={styles.datePickerContainer}>
-          <Text style={styles.labelText}>Date</Text>
+        <View style={styles.dateField}>
+          <View style={styles.datePickerContainer}>
+            <Text style={styles.labelText}>Date</Text>
 
-        <TouchableOpacity onPress={showDatePicker} style={styles.dateTextContainer}>
-        <View style={styles.rowContainer}>
-            <Text style={styles.dateText}>
-            {selectedDate.toLocaleDateString()}
-            </Text>
-            <AntDesign name="calendar" size={24} color="black" />
-        </View>
-        </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={confirmDate}
-            onCancel={hideDatePicker}
-            date={date}
-            /* IOS14 picker style */
-            display='inline'
-            />
+            <TouchableOpacity onPress={showDatePicker} style={styles.dateTextContainer}>
+            <View style={styles.rowContainer}>
+                <Text style={styles.dateText}>
+                {selectedDate.toLocaleDateString()}
+                </Text>
+                <AntDesign name="calendar" size={28} color="#309797" />
             </View>
+            </TouchableOpacity>
+
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={confirmDate}
+              onCancel={hideDatePicker}
+              date={date}
+              /* IOS14 picker style */
+              display='inline'
+              />
+          </View>
         </View>
 
-        <View style={styles.formField}>
+        <View style={styles.imageField}>
+          
             <Text style={styles.labelText}>Upload a receipt</Text>
             
             <ImageManager onImageTaken={getImageUri} initialPhotoUri={initialImageUri} />
         </View>
         
+        <View style={styles.buttonField}>
         <SaveCancelButtons onCancel={cancelHandler} onSave={confirmHandler} />
+        </View>
         
       </View>
+      </LinearGradientComp>
     );
   };
 
@@ -196,14 +219,33 @@ export default ExpenseForm;
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      //alignItems: 'center',
-      //padding: 10,
-      marginHorizontal:'5%',
-      marginTop:'10%',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      // marginHorizontal:'5%',
+      marginTop:'5%',
   },
     formField: {
-      marginBottom: 20,
-      marginHorizontal:20,
+      flex: 0.12,
+      width:'80%',
+    },
+    dateField: {
+      flex: 0.12,
+      width:'80%',
+    },
+    imageField: {
+      flex: 0.25,
+      width:'80%',
+
+    },
+    locationField: {
+      flex: 0.12,
+    },
+    categoryField: {
+      backgroundColor:'#FFFBF5',
+    },
+    buttonField: {
+      flex:0.2,
     },
     labelText: {
       fontSize: 20,
@@ -214,23 +256,26 @@ const styles = StyleSheet.create({
     },
     inputField: {
       height: 40,
-      paddingHorizontal: 5,
+      // paddingHorizontal: 5,
       backgroundColor:'transparent',
       fontSize: 20,
       width: 300,
       borderColor: 'gray',
     },
     dropDownPicker: {
+        flex: 0.15,
         zIndex: 2, // Higher zIndex to make it on top of the layers
-        marginBottom: 40,
-        marginHorizontal:20,
-        width:'90%',
+        // marginBottom: 40,
+        // marginHorizontal:20,
+        width:'80%',
         fontSize: 20,
-        width: 300,
+        // width: 300,
     },
     datePickerContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      width: '100%',
     },
     datePicker: {
       flex: 1,
@@ -242,14 +287,21 @@ const styles = StyleSheet.create({
         borderRadius: 5, 
         borderColor:'gray',
         borderWidth:1,
+        backgroundColor:'#FFFBF5',
+        width: '60%',
       },
       dateText: {
         fontSize: 20,
         marginHorizontal:'5%',
+        alignSelf: 'center',
+        color:Colors.entryTextDark,
+        marginRight:'15%',
       },
       rowContainer: {
         flexDirection: 'row',
-        alignItems: 'center', 
+        flex: 1,
+
+        width:'80%',
       },
 
   

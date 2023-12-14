@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
 import PressableButton from '../components/PressableButton';
 import{REACT_APP_BASE_API_URL,} from "@env";
 import Colors from '../styles/Colors';
+import { Octicons } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
+import LottieView from "lottie-react-native";
+import { Dimensions } from 'react-native';
+import LinearGradientComp from '../components/LinearGradient';
+import * as Animatable from 'react-native-animatable';
+
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const CurrencyExchangeTool = () => {
     const [amount, setAmount] = useState('');
-    const [fromCurrency, setFromCurrency] = useState('CAD');
-    const [toCurrency, setToCurrency] = useState('CAD');
+    const [fromCurrency, setFromCurrency] = useState(null);
+    const [toCurrency, setToCurrency] = useState(null);
     const [result, setResult] = useState('');
+    const [resetKey, setResetKey] = useState(0);
 
     // Fetch list of currencies
     const [currencyList, setCurrencyList] = useState([]);
@@ -21,11 +32,6 @@ const CurrencyExchangeTool = () => {
     useEffect(() => {
       const fetchCurrencies = async () => {
         try {
-        //   const response = await axios.get('https://open.er-api.com/v6/latest/USD');
-        //   const currencies = Object.keys(response.data.rates);
-        //   setCurrencyList(currencies);
-        
-        // Use backticks for template literals
         const response = await axios.get(`${apiUrl}/CAD`);
         const currencies = Object.keys(response.data.conversion_rates);
         setCurrencyList(currencies);
@@ -59,9 +65,32 @@ const CurrencyExchangeTool = () => {
         console.error('Error fetching exchange rates:', error);
       }
     };
+
+    const handleClear = () => {
+      setAmount('');
+      setResult('');
+      setFromCurrency(null); 
+      setToCurrency(null);  
+      setResetKey(prevKey => prevKey + 1); 
+    };
+
+    const handleCurrencySwap = () => {
+      const tempCurrency = fromCurrency;
+      setFromCurrency(toCurrency);
+      setToCurrency(tempCurrency);
+      setResetKey(prevKey => prevKey + 1); 
+    };
+
   
     return (
+      <LinearGradientComp>
       <View style={styles.container}>
+        <LottieView
+            source={require('../images/moneydrop-lottie.json')}
+            autoPlay
+            loop
+            style={styles.moneydropLottie}
+          />
         <TextInput
           style={styles.input}
           placeholder="Enter amount"
@@ -70,18 +99,38 @@ const CurrencyExchangeTool = () => {
           onChangeText={(text) => setAmount(text)}
         />
         <RNPickerSelect
+          key={`from-picker-${resetKey}`}
           style={pickerSelectStyles}
           placeholder={{ label: 'Select from currency', value: null }}
           onValueChange={(value) => setFromCurrency(value)}
+          value={fromCurrency}
           items={currencyList.map((currency) => ({ label: currency, value: currency }))}
         />
+        <Animatable.View
+          animation="swing"
+          iterationCount="infinite"
+        >
+          <TouchableOpacity onPress={handleCurrencySwap}>
+          <Octicons name="arrow-switch" style={styles.swapIcon} size={45} color={Colors.buttonBackground}/>
+          </TouchableOpacity>
+        </Animatable.View>
+        {/* 5<Fontisto name="arrow-swap" style={styles.swapIcon} size={40} color={Colors.buttonBackground} /> */}
         <RNPickerSelect
+          key={`to-picker-${resetKey}`}
           style={pickerSelectStyles}
           placeholder={{ label: 'Select to currency', value: null }}
           onValueChange={(value) => setToCurrency(value)}
+          value={toCurrency}
           items={currencyList.map((currency) => ({ label: currency, value: currency }))}
         />
         <View style={styles.buttonContainer}>
+        <PressableButton
+            pressedFunction={handleClear}
+            pressedStyle={styles.buttonPressed}
+            defaultStyle={styles.buttonDefault}
+          >
+            <Text style={styles.buttonText}>Clear</Text>
+          </PressableButton>
           <PressableButton
             pressedFunction={convertCurrency}
             pressedStyle={styles.buttonPressed}
@@ -92,6 +141,7 @@ const CurrencyExchangeTool = () => {
         </View>
         <Text style={styles.resultText}>{result}</Text>
       </View>
+      </LinearGradientComp>
     );
   };
   
@@ -102,16 +152,26 @@ const styles = StyleSheet.create({
       padding: 20,
     },
     input: {
-      height: 40,
+      height: 45,
       borderColor: 'gray',
       borderWidth: 1,
-      marginBottom: 10,
-      paddingHorizontal: 10,
+      marginBottom: 15,
+      paddingHorizontal: 15,
+      fontSize: 18,
+      borderRadius: 4,
+      backgroundColor: '#FFFBF5',
+      marginTop: -40,
+      shadowColor: 'gray',
+      shadowOffset: { width: 0, height: 1 }, // Shadow offset
+      shadowOpacity: 0.5, // Shadow opacity
+      shadowRadius: 5, // Shadow radius
+      elevation: 4, // Android shadow elevation
     },
     buttonContainer: {
       flexDirection: 'row',
-      justifyContent: 'center',
-      marginVertical: '5%',
+      justifyContent: 'space-evenly',
+      marginVertical: '10%',
+      alignItems:'center',
     },
     buttonDefault: {
       backgroundColor: Colors.buttonBackground,
@@ -119,6 +179,7 @@ const styles = StyleSheet.create({
       borderRadius: 4,
       padding: 5,
       width:'35%',
+      height: 45,
       justifyContent: 'center',
       alignItems:'center',
     },
@@ -133,36 +194,61 @@ const styles = StyleSheet.create({
     },
     buttonText: {
       color: 'white', 
-      fontSize: 17,
+      fontSize: 20,
+      fontWeight: 'bold',
     },
     resultText: {
-      fontSize: 17,
+      fontSize: 22,
+      fontWeight: 'bold',
+      color: Colors.labelText,
+      alignSelf: 'center',
+      marginTop: -10,
+    },
+    swapIcon:{
+      alignSelf:'center',
+      marginVertical: 10,
+      transform: [{ rotate: '90deg' }],
+    },
+    moneydropLottie: {
+      alignSelf: 'center',
+      width: windowWidth*1.2,
+      height: windowHeight * 0.3,
+      marginTop: -25,
     },
   });
   
   const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-      fontSize: 16,
+      fontSize: 18,
       paddingVertical: 12,
-      paddingHorizontal: 10,
+      paddingHorizontal: 15,
       borderWidth: 1,
       borderColor: 'gray',
       borderRadius: 4,
-      color: 'black',
+      // color: 'black',
       paddingRight: 30,
-      backgroundColor: 'white',
+      backgroundColor: '#FFFBF5',
       marginBottom: 10,
+      shadowColor: 'gray',
+      shadowOffset: { width: 0, height: 1 }, // Shadow offset
+      shadowOpacity: 0.5, // Shadow opacity
+      shadowRadius: 5, // Shadow radius
     },
     inputAndroid: {
-      fontSize: 16,
-      paddingHorizontal: 10,
+      fontSize: 18,
+      paddingHorizontal: 15,
       paddingVertical: 8,
       borderWidth: 0.5,
       borderColor: 'gray',
       borderRadius: 8,
-      color: 'black',
+      // color: 'black',
       paddingRight: 30,
-      backgroundColor: 'white',
+      backgroundColor: '#FFFBF5',
       marginBottom: 10,
+      shadowColor: 'gray',
+      shadowOffset: { width: 0, height: 1 }, // Shadow offset
+      shadowOpacity: 0.5, // Shadow opacity
+      shadowRadius: 5, // Shadow radius
+      elevation: 10, // Android shadow elevation
     },
   });

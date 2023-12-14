@@ -9,7 +9,7 @@ import { Entypo } from '@expo/vector-icons';
 
 const windowWidth = Dimensions.get("window").width;
 
-export default function LocationManager() {
+export default function LocationManager({originScreen}) {
   const navigation = useNavigation();
   const [status, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
@@ -22,6 +22,7 @@ export default function LocationManager() {
     return response.granted;
   };
 
+  // get user's current location
   async function locateMeHandler() {
     try {
       const hasPermission = await verifyPermission();
@@ -29,15 +30,10 @@ export default function LocationManager() {
         Alert.alert("You need to give access to the location");
       }
       const locationObject = await Location.getCurrentPositionAsync();
-
-    //   setLocation({
-    //     latitude: locationObject.coords.latitude,
-    //     longitude: locationObject.coords.longitude,
-    //   });
-    //   console.log("locationObject: ", locationObject);
-    //   console.log("location: ", location);
-      // navigate to SelectLocation screen and pass the location object
-        navigation.navigate("Location", {
+      
+        // navigate to the map screen with the current location
+        navigation.navigate('Location', {
+            originScreen: originScreen,
             currentLatitude: locationObject.coords.latitude,
             currentLongitude: locationObject.coords.longitude,
         });
@@ -46,35 +42,16 @@ export default function LocationManager() {
     }
   }
 
-//   const chooseLocationHandler = () => {
-//     navigation.navigate("Location");
-//   };
 
   return (
     <View>
-      {/* <Button title="Locate Me!" onPress={locateMeHandler} /> */}
-
       <PressableButton
         pressedFunction={locateMeHandler}
-        pressedStyle={{ backgroundColor: "#ccc" }}
-        defaultStyle={{ backgroundColor: "#eee" }}
+        pressedStyle={{ backgroundColor: "#e1f7f4", opacity: 0.5 }}
+        defaultStyle={{ backgroundColor: "#e1f7f4" }}
         >
-            <Entypo name="location" size={24} color="black" />
+            <Entypo name="location" size={26} color="#B31312" />
         </PressableButton>
-
-      {/* <Button
-        title="Let me choose on the map"
-        onPress={chooseLocationHandler}
-      />
-
-      {location && (
-        <Image
-          source={{
-            uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${MAPS_API_KEY}`,
-          }}
-          style={styles.image}
-        />
-      )} */}
     </View>
   );
 }

@@ -22,8 +22,9 @@ export default function Login({navigation}) {
             const userCred = await signInWithEmailAndPassword(auth, email, password);
             console.log(userCred);
         } catch (error) {
-            if (error.code === "auth/invalid-email") {
-                alert("Invalid email");
+            console.log(error.code);
+            if (error.code === "auth/invalid-login-credentials") {
+                alert("Invalid email or password");
             }
             else if (error.code === "auth/wrong-password") {
                 alert("Incorrect password");

@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet, Modal, TouchableOpacity, ScrollView } from 'react-native'
 import {useState, useEffect} from 'react';
 import React from 'react'
 import * as ImagePicker from 'expo-image-picker';
@@ -6,11 +6,19 @@ import PressableButton from './PressableButton';
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
 import { Entypo } from '@expo/vector-icons';
+import { Dimensions } from 'react-native';
+import ImageViewing from 'react-native-image-viewing';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default function ImageManager({onImageTaken, initialPhotoUri}) {
     const [imageUri, setImageUri] = useState(initialPhotoUri);
+    const [visible, setIsVisible] = useState(false);
 
-    // console.log("ImageManager: imageUri: ", imageUri);
+    const toggleModal = () => {
+        setModalVisible(!modalVisible);
+    };
 
     // take a new image with the camera
     const takeImageHandler = async () => {
@@ -75,26 +83,40 @@ export default function ImageManager({onImageTaken, initialPhotoUri}) {
         <View style={styles.buttonContainer}>
         <PressableButton 
             pressedFunction={takeImageHandler} 
-            pressedStyle={{backgroundColor: '#309797', margin: 10}}
-            defaultStyle={{backgroundColor: 'gray', margin: 10}}>
-            <Entypo name="camera" size={30} color="black" />
+            pressedStyle={{backgroundColor: '#e1f7f4', margin: 10, opacity: 0.5 }}
+            defaultStyle={{backgroundColor: '#e1f7f4', margin: 10}}>
+            <Entypo name="camera" size={30} color="#3081D0" />
             {/* <Text>Take Image</Text> */}
         </PressableButton>
 
         <PressableButton 
             pressedFunction={selectImageHandler} 
-            pressedStyle={{backgroundColor: '#309797', margin: 10}}
-            defaultStyle={{backgroundColor: 'gray', margin: 10}}>
-            <Entypo name="folder-images" size={30} color="black" />
+            pressedStyle={{backgroundColor: '#e1f7f4', margin: 10, opacity: 0.5}}
+            defaultStyle={{backgroundColor: '#e1f7f4', margin: 10}}>
+            <Entypo name="folder-images" size={30} color="#EE7214" />
             {/* <Text>Select Image from Library</Text> */}
         </PressableButton>
         </View>
 
         {imageUri ? (
-            <Image source={{ uri: imageUri }} style={styles.showImage} />
-        ) : (
-            <Text>No Image Selected</Text>
-        )}
+                        // <Image source={{ uri: imageUri }} style={styles.showImage} />
+                        <View>
+                            <TouchableOpacity onPress={() => setIsVisible(true)}>
+                            <Image source={{ uri: imageUri }} style={styles.showImage} />
+                            </TouchableOpacity>
+                            <ImageViewing
+                            images={[{uri: imageUri}]}
+                            visible={visible}
+                            onRequestClose={() => setIsVisible(false)}
+                            />
+                        </View>
+                           
+                        
+                ) : (
+                    <Text>No Image Selected</Text>
+                )}
+
+           
       </View>
     </View>
   )
@@ -118,6 +140,6 @@ const styles = StyleSheet.create({
         height: 100,
         marginBottom: 10,
         alignSelf: 'center',
-    }
-
+    },
+   
 })

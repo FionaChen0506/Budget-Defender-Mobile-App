@@ -21,17 +21,32 @@ import ExportReports from './screens/ExportReports';
 import EditProfile from './screens/EditProfile';
 import SelectLocation from './screens/SelectLocation';
 import CurrencyExchangeTool from './screens/CurrencyExchangeTool';
+import VisitedPlaces from './screens/VisitedPlaces';
+import MyReceipts from './screens/MyReceipts';
 
 import BottomTabBar from './components/BottomTabBar';
 import Colors from './styles/Colors';
 import PressableButton from './components/PressableButton';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
+import ChangePassword from './screens/ChangePassword';
+import NotificationSetting from './screens/NotificationSetting';
+import * as Notifications from "expo-notifications";
+
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+Notifications.setNotificationHandler({
+  handleNotification: async function (notification) {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: true,
+    };
+  },
+});
 
 // Auth Screens
 const AuthStack = <>
@@ -61,21 +76,6 @@ function TabNavigator() {
         name="Home" 
         component={Home}
         options={({ navigation }) => ({
-          headerRight: () => (
-            <PressableButton
-              pressedFunction={() => navigation.navigate('Profile')}
-              pressedStyle={{ 
-                backgroundColor: Colors.header,
-                marginRight: 10,
-              }}
-              defaultStyle={{ 
-                backgroundColor: Colors.header,
-                marginRight: 10,
-              }}
-            >
-              <Ionicons name="person-circle" size={24} color="white" />
-            </PressableButton>
-          ),
           headerStyle: {
             backgroundColor: Colors.header,
           },
@@ -92,21 +92,21 @@ function TabNavigator() {
         name="All Expenses" 
         component={AllExpenses}
         options={({ navigation }) => ({
-          headerRight: () => (
-            <PressableButton
-              pressedFunction={() => navigation.navigate('Export Reports')}
-              pressedStyle={{ 
-                backgroundColor: Colors.header,
-                marginRight: 10,
-              }}
-              defaultStyle={{ 
-                backgroundColor: Colors.header,
-                marginRight: 10,
-              }}
-            >
-              <Foundation name="page-export" size={24} color="white" />
-            </PressableButton>
-          ),
+          // headerRight: () => (
+          //   <PressableButton
+          //     pressedFunction={() => navigation.navigate('Export Reports')}
+          //     pressedStyle={{ 
+          //       backgroundColor: Colors.header,
+          //       marginRight: 10,
+          //     }}
+          //     defaultStyle={{ 
+          //       backgroundColor: Colors.header,
+          //       marginRight: 10,
+          //     }}
+          //   >
+          //     <Foundation name="page-export" size={24} color="white" />
+          //   </PressableButton>
+          // ),
           headerStyle: {
             backgroundColor: Colors.header,
           },
@@ -118,7 +118,7 @@ function TabNavigator() {
         })}
       />
 
-<Tab.Screen 
+      <Tab.Screen 
         name="Currency Exchange Tool" 
         component={CurrencyExchangeTool}
         options={({ navigation }) => ({
@@ -150,7 +150,8 @@ function TabNavigator() {
                 marginRight: 10,
               }}
             >
-              <Text>Log Out</Text>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', }}
+              >Log Out</Text>
             </PressableButton>
           ),
           headerStyle: {
@@ -220,12 +221,45 @@ const AppStack =
     />
 
     <Stack.Screen
+      name="Change Password"
+      component={ChangePassword}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
+    <Stack.Screen
       name="Currency Exchange Tool"
       component={CurrencyExchangeTool}
       options={{ 
         headerShown: true,
         }}
     />
+
+  <Stack.Screen
+      name="Visited Places"
+      component={VisitedPlaces}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
+  <Stack.Screen
+      name="Notification Setting"
+      component={NotificationSetting}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
+  <Stack.Screen
+      name="My Receipts"
+      component={MyReceipts}
+      options={{ 
+        headerShown: true,
+        }}
+    />
+
   </>
 
 

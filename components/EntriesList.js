@@ -11,10 +11,19 @@ import { where, query, orderBy} from 'firebase/firestore';
 import Colors from '../styles/Colors';
 import { getDocs } from 'firebase/firestore';
 import getIconName from './CategoryIcons';
+import * as Animatable from 'react-native-animatable';
 
 
-const EntriesList = ({navigation }) => {
+const EntriesList = ({navigation, selectedMonth }) => {
     const [entries, setEntries] = useState([]);
+    const [userUid, setUserUid] = useState(null);
+
+    // listen for changes to selected month
+  useEffect(() => {
+    if (userUid) {
+      fetchCategorySpendingData(userUid, selectedMonth);
+    }
+  }, [userUid, selectedMonth]);
   
     useEffect(() => {
         onSnapshot(query(collection(database, "Expenses"), 
@@ -22,7 +31,10 @@ const EntriesList = ({navigation }) => {
           if (!querySnapshot.empty) {
             let newArray = [];
             querySnapshot.forEach((docSnap) => {
-              newArray.push({...docSnap.data(), id: docSnap.id});
+              const entryData = {...docSnap.data(), id: docSnap.id};
+              if (isWithinSelectedMonth(entryData.date, selectedMonth)) {
+                newArray.push(entryData);
+              }
             });
             setEntries(newArray);
           } else {
@@ -36,8 +48,20 @@ const EntriesList = ({navigation }) => {
             }
           };
         });
-      }, []);
+      }, [selectedMonth]);
     
+
+      // check if expense is within selected month
+    const isWithinSelectedMonth = (firebaseTimestamp, selectedMonth) => {
+      const date = firebaseTimestamp.toDate();
+
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; 
+      const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+      const dateMonthYear = `${year}-${formattedMonth}`;
+
+      return dateMonthYear === selectedMonth;
+    };
 
     // Format the date to display in the list
     function formatDate(date) {
@@ -66,12 +90,17 @@ const EntriesList = ({navigation }) => {
     return (
         <View style={styles.container}>
           {entries.length === 0 ? (
-            <Text>No expenses found for this user.</Text>
+            <Text style={styles.noExpensesText}>
+              There are no expenses record. Start today!</Text>
           ) : (
             <FlatList
               data={entries}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
+                <Animatable.View
+                  animation="fadeInUp"
+                  duration={1000}
+                  >
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('Edit An Expense', {
@@ -102,6 +131,7 @@ const EntriesList = ({navigation }) => {
                     
                  </View>
                 </TouchableOpacity>
+                </Animatable.View>
               )}
             />
           )}
@@ -118,10 +148,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     entryContainer: {
-        backgroundColor: Colors.entryBackground, 
-        padding: 5,
+        backgroundColor: '#83c1c1',
+        padding: 10,
         alignItems:'center',
         flexDirection: 'row',
+        height: 60,
         // justifyContent: 'left',
         justifyContent: 'space-between',
         marginVertical:8,
@@ -129,13 +160,13 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         shadowColor: 'gray',
         shadowOffset: { width: 0, height: 1 }, // Shadow offset
-        shadowOpacity: 0.3, // Shadow opacity
-        shadowRadius: 3, // Shadow radius
+        shadowOpacity: 0.8, // Shadow opacity
+        shadowRadius: 5, // Shadow radius
         elevation: 4, // Android shadow elevation
       },
       iconContainer: {
         marginLeft: 5,
-        marginRight: 10,
+        marginRight: 15,
     },
 
       categoryContainer:{
@@ -150,7 +181,8 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         fontSize: 14,
-        color: '#888',
+        color: '#EEE7DA',
+        fontWeight: 'bold',
     },
     priceDateContainer: {
         alignItems: 'center',
@@ -164,7 +196,15 @@ const styles = StyleSheet.create({
     },
     dateText: {
         fontSize: 14,
-        color: '#888',
+        color: '#EEE7DA',
+        fontWeight: 'bold',
+    },
+
+    noExpensesText:{
+      textAlign:'center',
+      fontSize: 18,
+      fontWeight: 'bold',
+      color:Colors.entryTextDark,
     },
 
 })

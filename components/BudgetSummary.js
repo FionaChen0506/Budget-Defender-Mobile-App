@@ -5,6 +5,11 @@ import { database,auth } from "../firebase/firebaseSetup";
 import EditBudgetLimit from './EditBudgetLimit';
 import Colors from '../styles/Colors';
 import GetMonthSpending from './GetMonthSpending';
+import * as Animatable from 'react-native-animatable';
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const BudgetSummary = ({selectedMonth}) => {
   const userUid = auth.currentUser.uid;
@@ -31,8 +36,6 @@ const BudgetSummary = ({selectedMonth}) => {
     };
   }, [userUid]);
 
-  console.log("selected month in budget summary:", selectedMonth);
-
     // Assuming we only want the current month, format it to 'YYYY-MM' string
     const currentMonth = new Date().toISOString().slice(0, 7);
 
@@ -42,7 +45,10 @@ const BudgetSummary = ({selectedMonth}) => {
     //const { spending, budgetLimit } = GetMonthSummary({ month: '2023-11' });
     
     return (
-        <View style={styles.container}>
+        <Animatable.View 
+          style={styles.container}
+          animation="flipInX"
+        >
             <View style={styles.row1Container}>
             {/* <Text style={styles.monthText}>{selectedMonth}</Text> */}
             </View>
@@ -63,7 +69,7 @@ const BudgetSummary = ({selectedMonth}) => {
               {budgetLimit - spending < 0 ? `($${Math.abs(budgetLimit - spending).toFixed(2)})` : `$${(budgetLimit - spending).toFixed(2)}`}
             </Text>
             </View>
-        </View>
+        </Animatable.View>
     );
   };
   
@@ -73,17 +79,18 @@ const styles = StyleSheet.create({
     container: {
       //flex: 1, 
       alignItems:'center',
-      width:'95%',
+      width:'90%',
+      height: windowHeight * 0.23,
       backgroundColor: Colors.summaryBackground,
       borderRadius: 18,
       padding: 15,
-      margin: 10,
+      // margin: 10,
       justifyContent: 'center',
       shadowColor: 'gray',
-      shadowOffset: { width: 0, height: 1 }, // Shadow offset
-      shadowOpacity: 0.3, // Shadow opacity
-      shadowRadius: 3, // Shadow radius
-      elevation: 4, // Android shadow elevation
+        shadowOffset: { width: 5, height: 5 }, // Shadow offset
+        shadowOpacity: 0.8, // Shadow opacity
+        shadowRadius: 8, // Shadow radius
+        elevation: 10, // Android shadow elevation
   },
   row1Container: {
     flexDirection: 'row',

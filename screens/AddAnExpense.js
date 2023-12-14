@@ -9,14 +9,25 @@ import { getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
 
 
-
-const AddAnExpense = ({ navigation }) => {
+const AddAnExpense = ({ navigation, route }) => {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState(null);
   const [date, setDate] = useState(new Date());
   const [imageUri, setImageUri] = useState(null);
+
+  useEffect(() => {
+    // Check if location is passed from SelectLocation screen
+    if (route.params?.userSelectedLocation) {
+      const selectedLocation = route.params.userSelectedLocation;
+      // Update the location state and console log
+      setLocation(selectedLocation);
+    }
+  }, [route.params?.userSelectedLocation]);
+
+
+
 
   async function fetchImage(uri) {
     try{
@@ -45,24 +56,28 @@ const AddAnExpense = ({ navigation }) => {
       amount: parseFloat(data.amount),
       category: data.category,
       description: data.description,
-      location: data.location,
+      location: null,
       date: data.date,
       photo: null, 
     };
 
-    let imageRef = null;
-    if (data.uri) {
-      imageRef = await fetchImage(data.uri);
-    }
+    // Add location to the entry if it's provided
+  if (data.location) {
+    newExpenseEntry.location = data.location;
+  }
 
+  // Handle image uploading
+  if (data.uri) {
+    const imageRef = await fetchImage(data.uri);
     if (imageRef) {
       newExpenseEntry.photo = imageRef;
-      writeToDB(newExpenseEntry);
     }
-    else {
-      writeToDB(newExpenseEntry);
-    }
-    navigation.goBack();
+  }
+
+  // Write the expense entry to the database
+  writeToDB(newExpenseEntry);
+  navigation.goBack();
+
   }
   
 
@@ -91,8 +106,8 @@ const AddAnExpense = ({ navigation }) => {
   return (
     // <ScrollView>
     
-
     <ExpenseForm
+        originScreen='Add An Expense'
         initialAmount={amount}
         initialCategory={category}
         initialDescription={description}

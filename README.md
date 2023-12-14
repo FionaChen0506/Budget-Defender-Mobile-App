@@ -1,11 +1,13 @@
 #   APP Name: Budget-Defender
-### Budget Defender is a financial management Cross-Platform Native Mobile Application. It delivers features for detailed expense tracking, budget oversight, and analytical financial reporting.
+### Budget Defender is a financial management Cross-Platform Native Mobile Application. It delivers features for detailed expense tracking, budget oversight, currency converter, and receipts management.
 ###    Authors: Shaoyujie(Fiona) Chen, Yunke Li
 
 <!-- ##    Iteration1: overall stucture, navigation, and basis of CRUD operations to Firestore -->
-##    Iteration2: Authentication, Camera use, and External API use
-###    Data Modal and Collections:
-####   1. Users Collection:
+### Demo Video Link: [watch on Youtube](https://www.youtube.com/watch?v=7nR4R7SKF_Y)
+
+##    Data Modal and Collections
+#### This app uses Firestore database.
+###  1. Users Collection
 This is a top-level collection. Each document in the Users collection represents a user of our application. It has these fields:
 
 -   "uid": "user_unique_id",
@@ -13,36 +15,41 @@ This is a top-level collection. Each document in the Users collection represents
 -   "displayName": "User Name",
 -   "createdAt": Timestamp,
 
-####  2. Expenses Collection:
+###  2. Expenses Collection
 This is a top-level collection. Each document in the Expenses collection represents a single expense entry created by a user. It has these fields:
  
 -   "amount": 100.0,
 -   "category": "Grocery",
 -   "description": "Weekly grocery shopping",
 -   "date": Timestamp,
--   "location": Location,
+-   "location": [
+    address: "9151 Bridgeport Rd, Richmond, BC V6X 3L9, Canada",
+    latitude: 49.1930382, 
+    longitude: -123.1218312, 
+    name: "Costco Wholesale"
+    ],
 -   "photo": "photo uri",
 -   "user": "user_unique_id",
 
 
-####  3. Budgets Collection:
+###  3. Budgets Collection
 Budgets collection is a subcollection of the Users Collection. Each document in the Budgets collection represents the budget information for a user. It has these fields:
 
 -   "limit": 3000.0,
 -   "user": "user_unique_id",
 
-####  4. Categories Collection:
-Categories collection is a subcollection of the Users Collection. Each document in the Categories collection represents a unique expense category. It has these fields:
+###  4. Users Collection (notifications)
+Users Collection (notifications) is a subcollection of the Users Collection. Each document in this collection represents the notification preference of a user. It has these fields:
 
--   "name": "Newly-created category",
+-   "isNotification": true/false,
+-   "notificationTime": Timestamp,
 -   "user": "user_unique_id",
 
 
-### Screens
-#### Auth Stack Screens
-<img src="images/welcome-screen-iter2.png" alt="Alt text" width="200"> <img src="images/signup-screen-iter2.png" alt="Alt text" width="200"> <img src="images/login-screen-iter2.png" alt="Alt text" width="200">
+## Screens
+### 1. Auth Stack Screens
+<img src="images/final-ui/welcome.png" alt="Alt text" width="200"> <img src="images/final-ui/signup.png" alt="Alt text" width="200"> <img src="images/final-ui/login.png" alt="Alt text" width="200">
 
-Iteration2 updates the overall UI design of Auth Stack Screens using Lottie an Animatable libraries.
 
 The Auth Stack has three screens, including Welcome Screen, Sign Up Screen and Log In Screen. The Welcome Screen will appear when the user first open this app, and allow users to either signup or login to the app. The Log In Screen and Sign Up Screen can navigate to each other through informative buttons.
 
@@ -50,50 +57,181 @@ The Auth Stack has three screens, including Welcome Screen, Sign Up Screen and L
 
 The Log In Screen and Sign Up Screen follow Admin Authentication API Errors of Firebase, and show alerts to the main errors like invalid email format, weak password, mismatch password, etc.
 
-#### App Stack Screens
-#### Iteration2 enables camera use of Add An Expense Screen and Edit An Expense Screen.
-#### Iteration2 enables external API use on Currency Exchange Tool Screen.
+### 2. App Stack Screens
+#### Home Screen
 
-**Home Screen**
-
-<img src="images/Home-itr2-1.png" alt="Alt text" width="200"> <img src="images/Home-itr2-2.png" alt="Alt text" width="200">
+<img src="images/final-ui/home-underbudget.png" alt="Alt text" width="200"> <img src="images/final-ui/home-overbudget.png" alt="Alt text" width="200">
 
 On the home screen, the user can see monthly spending totals, the set budget limit and available remaining money. The default month is the current month, and users can also select any of the past 12 months to view the summary.
-The user can also see the entries of recently added expenses and can click on each entry. At the bottom, there is an Add button, click on the button, users can go to the "Add An Expense" screen.
+The user can also see the line chart of expenses history of current selected month, inclusing budget limit line, daily expense line, and accumulated expense line.
+At the bottom, there is an Add button, click on the button, users can go to the "Add An Expense" screen.
 
-**Add An Expense Screen**
+#### Add An Expense Screen
 
-<img src="images/addanexpense.png" alt="Alt text" width="200"> <img src="images/category.png" alt="Alt text" width="200"> <img src="images/date.png" alt="Alt text" width="200"> <img src="images/camera.png" alt="Alt text" width="200">
+<img src="images/final-ui/add-blank.png" alt="Alt text" width="200"> <img src="images/final-ui/add-category.png" alt="Alt text" width="200"> <img src="images/final-ui/add-date.png" alt="Alt text" width="200"> <img src="images/final-ui/add-date-alert.png" alt="Alt text" width="200">
  
-On the "Add An Expense" screen, users can enter the amount of money spent, select the category, enter a description (optional), a location (optional, to be implemented later), a date, and upload an image from either camera or album (optional). The amount spent must be a number with at most two decimals, the category cannot be empty, and the date must be today or earlier, or the APP will alert the users. Upon clicking Save, the expense will be upload to the database, and users can see that expense immediately on Home Screen and both All Expenses Screen.
+On the "Add An Expense" screen, users can enter the amount of money spent, select the category, enter a description (optional), a location (optional), a date, and upload an image from either camera or album (optional). The amount spent must be a number with at most two decimals, the category cannot be empty, and the date must be today or earlier, or the APP will alert the users. Upon clicking Save, the expense will be upload to the database, and users can see that expense immediately on Home Screen and both All Expenses Screen.
+ 
+
+#### Location Screen
+
+<img src="images/final-ui/location-user.png" alt="Alt text" width="200"> <img src="images/final-ui/location-search.png" alt="Alt text" width="200"> <img src="images/final-ui/location-select.png" alt="Alt text" width="200"> <img src="images/final-ui/add-image.png" alt="Alt text" width="200">
+ 
+When user clicks on the location icon of Add An Expense screen, the app will navigate to the Location screen with a map, and the marker shows the user's current location. This screen also includes a search box with google autocomplete API. User can search a location on the map and select it with other fields of Expense Entry.
 
 
-**All Expense Screen**
+#### All Expense Screen
 
-<img src="images/image-5.png" alt="Alt text" width="200">
+<img src="images/final-ui/all-expenses.png" alt="Alt text" width="200"> <img src="images/final-ui/all-expenses2.png" alt="Alt text" width="200">
+ 
+The All Expense Screen shows all the expenses created by the logged in user by month, and a pie chart showing the spendings of each category. 
+Users can click on each entry, and go into "Edit An Expense" screen to edit that expense's information. The spending entries are sorted by date in descending order and show the category, description, amount and date.
 
-The All Expense Screen currently shows all the expenses created by the logged in user, we will implement more functions on this screen later. For now, users can click each entry, and go into "Edit An Expense" screen to edit that expense's information. The spending entries are sorted by date in descending order and show the category, description, amount and date.
+#### Edit An Expense Screen
 
-**Edit An Expense Screen**
-
-<img src="images/edit.png" alt="Alt text" width="200"> <img src="images/delete.png" alt="Alt text" width="200">
+<img src="images/final-ui/edit.png" alt="Alt text" width="200"> <img src="images/final-ui/delete.png" alt="Alt text" width="200">
 
 The Edit An Expense screen looks similar to the Add An Expense screen, the difference is that when users go into the screen, it is already filled with the information the users saved last time. After the user clicks Save, there will be a pop up alert to double confirm, then this expense will be updated and displayed on the Home screen and All Expense screen. And, in the upper right corner of the Edit An Expense screen, there is a trash can icon, when the user clicks on it, it will double confirm if the user wants to delete it, if yes, then the expense will be deleted.
 
-**Currency Exchange Tool Screen**
+#### Currency Exchange Tool Screen
 
-<img src="images/currency-itr2-1.png" alt="Alt text" width="200">
+<img src="images/final-ui/converter-blank.png" alt="Alt text" width="200"> <img src="images/final-ui/converter-full.png" alt="Alt text" width="200">
 
-The Currency Exchange Tool screen allows the users to convert exchange rates by entering the amount to be converted, the currency to be converted and the wanted currency. After pressing the "Convert" button, the result of the exchange rate conversion will appear on the screen. This page uses the external API "exchange-api".
 
-**Location Screen (under implementation)**
+The Currency Exchange Tool screen allows the users to convert exchange rates by entering the amount to be converted, the currency to be converted and the wanted currency. After pressing the "Convert" button, the result of the exchange rate conversion will appear on the screen. The shaking convert icon in the middle can be clicked to exchange the upper and lower picker's currency. This page uses the external API "exchange-api".
 
-<img src="images/location.png" alt="Alt text" width="200"> <img src="images/autocomplete.png" alt="Alt text" width="200">
 
-When user clicks on the location icon of Add An Expense screen, the app will navigate to the Location screen with a map, and the marker shows the user's current location. This screen also includes a search box with google autocomplete. In next iteration, user will be able to select a location on the map and save/edit it with other fields of Expense Entry.
 
-**Profile Screen (under implementation)**
 
-<img src="images/profile-itr2-1.png" alt="Alt text" width="200"> <img src="images/profile-itr2-2.png" alt="Alt text" width="200">
+#### Profile Screen
 
-The Profile screen currently has "Edit My Budget Limit" function implemented. By clicking it, there will be a pop-up window for users to change their budget limit. Once the budget limit changed, the summary numbers on Home screen will also change accordingly.
+<img src="images/final-ui/profile.png" alt="Alt text" width="200">
+
+The Profile screen includes a user profile box and four setting options. The profile box is made with user name and avatar, My Visited Places and My Receipts buttons. On the top right conner is a log out button.
+
+The four setting options are as follows:
+
+<img src="images/final-ui/edit-profile.png" alt="Alt text" width="200"> <img src="images/final-ui/edit-budget.png" alt="Alt text" width="200"> <img src="images/final-ui/edit-password.png" alt="Alt text" width="200"> <img src="images/final-ui/notification-select.png" alt="Alt text" width="200"> <img src="images/final-ui/notification-badge.png" alt="Alt text" width="200">
+
+
+- Edit Profile: let user change username and avatar
+- Edit Budget Limit: let user change monthly budget limit
+- Change Password: let user change and confirm new password
+- Notifications Setting: let user choose the time to receive daily notifications
+
+#### Visited Places Screen
+<img src="images/final-ui/visited-places.png" alt="Alt text" width="200"> <img src="images/final-ui/visited-places2.png" alt="Alt text" width="200"> <img src="images/final-ui/visited-places3.png" alt="Alt text" width="200"> <img src="images/final-ui/visited-places-info.png" alt="Alt text" width="200">
+
+When click on My Visited Location button on Profile Screen, it will navigate to a map showing all the places the user has visited so far. Locatios are shown with different markers representing the frequency of visiting. User can select the filter to view different levels and check the location's name and address.
+
+#### My Receipts Screen
+<img src="images/final-ui/receipts.png" alt="Alt text" width="200"> <img src="images/final-ui/receipts-view.png" alt="Alt text" width="200">
+
+When click on My Receipts button on Profile Screen, it will navigate to an album showing all the receipts, each with its location name and date. The receipts can be clicked to zoom-in/out and slide to next image.
+
+### Group Contribution
+#### Shaoyujie(Fiona): 
+- Home Screen:
+    - Implemented Month Selector feature.
+    - Implemented the Show Spending, Budget and Remaining feature.
+    - Implemented the Add button feature.
+    - Done basic/updated UI for Budget Summary Panel.
+
+- Add An Expense Screen:
+    - Implemented Input Amount feature.
+    - Implemented Choose Categories feature.
+    - Implemented Input Description feature.
+    - Implemented Choose Date feature.
+    - Done basic UI for the screen.
+
+- All Expenses Screen:
+    - Implemented Show Entries Lists feature.
+    - Done basic UI for the Entries Lists.
+
+- Currency Exchange Tool Screen:
+    - Implemented Input Amount feature.
+    - Implemented Select from and to currency features using external API.
+    - Implemented 'Convert' button using external API.
+    - Done basic UI for the screen.
+
+- Profile Screen:
+    - Implemented Show Profile Name and Avatar feature.
+    - Implemented Edit Profile feature.
+    - Implemented Edit Budget Limit Modal feature.
+    - Implemented Change Password feature.
+    - Implemented Notifications Setting feature.
+    - Done basic UI for the Profile panel and settings.
+    - Done basic UI for Edit Budget Limit.
+
+- Edit Profile Screen:
+    - Implemented Edit Name and Avatar feature.
+    - Implemented show email address feature.
+    - Done basic/updated UI for the screen.
+
+- Change Password Screen:
+    - Implemented change and confirm password feature.
+    - Done basic/updated UI for the screen.
+
+- Notification Setting Screen:
+    - Implemented set daily notifications feature.
+    - Implemented show daily notification time feature.
+    - Implemented cancel notifications feature.
+    - Done basic/updated UI for the screen.
+
+#### Yunke:
+- Register/Login Screen:
+    - Implemented the Register feature.
+    - Implemented the Login feature.
+    - Done basic/updated UI for Register/Login Screens.
+
+- Home Screen:
+    - Implemented 4 Navigation bars feature.
+    - Implemented Line Chart feature.
+    - Done basic/updated UI for navigation bars.
+    - Done basic/updated UI for Line Chart.
+    - Done updated UI for month selector, add button.
+
+- Add An Expense Screen:
+    - Implemented Choose Location feature.
+    - Implemented Take a Photo feature.
+    - Implemented Photos Selector feature.
+    - Implemented Show Photo Selected feature.
+    - Done updated UI for the screen.
+
+- Location Screen:
+    - Implemented Search Locations feature using Google Map API.
+    - Implemented Add A Location feature.
+    - Done basic/updated UI for the screen.
+
+- All Expenses Screen:
+    - Implemented Month Selector feature.
+    - Implemented Pie Chart feature.
+    - Updated Show Entries Lists feature.
+    - Done basic/updated UI for pie chart.
+    - Done updated UI for Entries List.
+
+- Currency Exchange Tool Screen:
+    - Implemented the 'Clear' button feature.
+    - Implement the 'Exchange' icon button feature.
+    - Done updated UI for the screen.
+
+- Profile Screen:
+    - Implemented Log Out feature.
+    - Implemented My Visited Places feature.
+    - Implemented My Receipts feature.
+    - Done updated UI for the Profile panel and settings.
+    - Done updated UI for Edit Budget Limit.
+
+- Visited Places Screen:
+    - Implemented Show all visited places feature.
+    - Implemented Show visited places 3+ times feature.
+    - Implemented Show visited places 3+ times feature.
+    - Done basic/updated UI for the screen.
+
+- My Receipts Screen:
+    - Implemented Show all the user's receipts feature.
+    - Implemented Show receipts' location feature.
+    - Implemented Show receipts' time feature.
+    - Done basic/updated UI for the screen.
+
+- Done Background colors for all screens.
