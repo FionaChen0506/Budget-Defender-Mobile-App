@@ -3,7 +3,7 @@
 ###    Authors: Shaoyujie(Fiona) Chen, Yunke Li
 
 <!-- ##    Iteration1: overall stucture, navigation, and basis of CRUD operations to Firestore -->
-### Demo Video Link: 
+### Demo Video Link: [watch on Youtube](https://www.youtube.com/watch?v=7nR4R7SKF_Y)
 
 ##    Data Modal and Collections
 #### This app uses Firestore database.
