@@ -5,45 +5,6 @@
 <!-- ##    Iteration1: overall stucture, navigation, and basis of CRUD operations to Firestore -->
 ### Demo Video Link: [watch on Youtube](https://www.youtube.com/watch?v=7nR4R7SKF_Y)
 
-##    Data Modal and Collections
-#### This app uses Firestore database.
-###  1. Users Collection
-This is a top-level collection. Each document in the Users collection represents a user of our application. It has these fields:
-
--   "uid": "user_unique_id",
--   "email": "user@example.com",
--   "displayName": "User Name",
--   "createdAt": Timestamp,
-
-###  2. Expenses Collection
-This is a top-level collection. Each document in the Expenses collection represents a single expense entry created by a user. It has these fields:
- 
--   "amount": 100.0,
--   "category": "Grocery",
--   "description": "Weekly grocery shopping",
--   "date": Timestamp,
--   "location": [
-    address: "9151 Bridgeport Rd, Richmond, BC V6X 3L9, Canada",
-    latitude: 49.1930382, 
-    longitude: -123.1218312, 
-    name: "Costco Wholesale"
-    ],
--   "photo": "photo uri",
--   "user": "user_unique_id",
-
-
-###  3. Budgets Collection
-Budgets collection is a subcollection of the Users Collection. Each document in the Budgets collection represents the budget information for a user. It has these fields:
-
--   "limit": 3000.0,
--   "user": "user_unique_id",
-
-###  4. Users Collection (notifications)
-Users Collection (notifications) is a subcollection of the Users Collection. Each document in this collection represents the notification preference of a user. It has these fields:
-
--   "isNotification": true/false,
--   "notificationTime": Timestamp,
--   "user": "user_unique_id",
 
 
 ## Screens
@@ -129,109 +90,43 @@ When click on My Visited Location button on Profile Screen, it will navigate to 
 
 When click on My Receipts button on Profile Screen, it will navigate to an album showing all the receipts, each with its location name and date. The receipts can be clicked to zoom-in/out and slide to next image.
 
-### Group Contribution
-#### Shaoyujie(Fiona): 
-- Home Screen:
-    - Implemented Month Selector feature.
-    - Implemented the Show Spending, Budget and Remaining feature.
-    - Implemented the Add button feature.
-    - Done basic/updated UI for Budget Summary Panel.
 
-- Add An Expense Screen:
-    - Implemented Input Amount feature.
-    - Implemented Choose Categories feature.
-    - Implemented Input Description feature.
-    - Implemented Choose Date feature.
-    - Done basic UI for the screen.
+##    Data Modal and Collections
+#### This app uses Firestore database.
+###  1. Users Collection
+This is a top-level collection. Each document in the Users collection represents a user of our application. It has these fields:
 
-- All Expenses Screen:
-    - Implemented Show Entries Lists feature.
-    - Done basic UI for the Entries Lists.
+-   "uid": "user_unique_id",
+-   "email": "user@example.com",
+-   "displayName": "User Name",
+-   "createdAt": Timestamp,
 
-- Currency Exchange Tool Screen:
-    - Implemented Input Amount feature.
-    - Implemented Select from and to currency features using external API.
-    - Implemented 'Convert' button using external API.
-    - Done basic UI for the screen.
+###  2. Expenses Collection
+This is a top-level collection. Each document in the Expenses collection represents a single expense entry created by a user. It has these fields:
+ 
+-   "amount": 100.0,
+-   "category": "Grocery",
+-   "description": "Weekly grocery shopping",
+-   "date": Timestamp,
+-   "location": [
+    address: "9151 Bridgeport Rd, Richmond, BC V6X 3L9, Canada",
+    latitude: 49.1930382, 
+    longitude: -123.1218312, 
+    name: "Costco Wholesale"
+    ],
+-   "photo": "photo uri",
+-   "user": "user_unique_id",
 
-- Profile Screen:
-    - Implemented Show Profile Name and Avatar feature.
-    - Implemented Edit Profile feature.
-    - Implemented Edit Budget Limit Modal feature.
-    - Implemented Change Password feature.
-    - Implemented Notifications Setting feature.
-    - Done basic UI for the Profile panel and settings.
-    - Done basic UI for Edit Budget Limit.
 
-- Edit Profile Screen:
-    - Implemented Edit Name and Avatar feature.
-    - Implemented show email address feature.
-    - Done basic/updated UI for the screen.
+###  3. Budgets Collection
+Budgets collection is a subcollection of the Users Collection. Each document in the Budgets collection represents the budget information for a user. It has these fields:
 
-- Change Password Screen:
-    - Implemented change and confirm password feature.
-    - Done basic/updated UI for the screen.
+-   "limit": 3000.0,
+-   "user": "user_unique_id",
 
-- Notification Setting Screen:
-    - Implemented set daily notifications feature.
-    - Implemented show daily notification time feature.
-    - Implemented cancel notifications feature.
-    - Done basic/updated UI for the screen.
+###  4. Users Collection (notifications)
+Users Collection (notifications) is a subcollection of the Users Collection. Each document in this collection represents the notification preference of a user. It has these fields:
 
-#### Yunke:
-- Register/Login Screen:
-    - Implemented the Register feature.
-    - Implemented the Login feature.
-    - Done basic/updated UI for Register/Login Screens.
-
-- Home Screen:
-    - Implemented 4 Navigation bars feature.
-    - Implemented Line Chart feature.
-    - Done basic/updated UI for navigation bars.
-    - Done basic/updated UI for Line Chart.
-    - Done updated UI for month selector, add button.
-
-- Add An Expense Screen:
-    - Implemented Choose Location feature.
-    - Implemented Take a Photo feature.
-    - Implemented Photos Selector feature.
-    - Implemented Show Photo Selected feature.
-    - Done updated UI for the screen.
-
-- Location Screen:
-    - Implemented Search Locations feature using Google Map API.
-    - Implemented Add A Location feature.
-    - Done basic/updated UI for the screen.
-
-- All Expenses Screen:
-    - Implemented Month Selector feature.
-    - Implemented Pie Chart feature.
-    - Updated Show Entries Lists feature.
-    - Done basic/updated UI for pie chart.
-    - Done updated UI for Entries List.
-
-- Currency Exchange Tool Screen:
-    - Implemented the 'Clear' button feature.
-    - Implement the 'Exchange' icon button feature.
-    - Done updated UI for the screen.
-
-- Profile Screen:
-    - Implemented Log Out feature.
-    - Implemented My Visited Places feature.
-    - Implemented My Receipts feature.
-    - Done updated UI for the Profile panel and settings.
-    - Done updated UI for Edit Budget Limit.
-
-- Visited Places Screen:
-    - Implemented Show all visited places feature.
-    - Implemented Show visited places 3+ times feature.
-    - Implemented Show visited places 3+ times feature.
-    - Done basic/updated UI for the screen.
-
-- My Receipts Screen:
-    - Implemented Show all the user's receipts feature.
-    - Implemented Show receipts' location feature.
-    - Implemented Show receipts' time feature.
-    - Done basic/updated UI for the screen.
-
-- Done Background colors for all screens.
+-   "isNotification": true/false,
+-   "notificationTime": Timestamp,
+-   "user": "user_unique_id",
